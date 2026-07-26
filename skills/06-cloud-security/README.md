@@ -8,7 +8,7 @@ The perimeter moved into IAM policies and resource configs. Most cloud incidents
 | 02 | [iam-privilege-escalation](02-iam-privilege-escalation/SKILL.md) | Trace paths from low priv to admin | ✅ |
 | 03 | cloud-credential-hygiene | Rotate, scope, and detect leaked keys | TODO |
 | 04 | security-group-review | Audit network exposure of cloud resources | TODO |
-| 05 | cloudtrail-and-audit-logging | Turn on and read the audit trail that matters | TODO |
+| 05 | [cloudtrail-and-audit-logging](05-cloudtrail-and-audit-logging/SKILL.md) | Turn on and read the audit trail that matters | ✅ |
 | 06 | serverless-security | Lambda/Functions permissions and event injection | TODO |
 | 07 | kms-and-secrets-management | Key policies, envelope encryption, secret stores | TODO |
 | 08 | cspm-baseline | Continuous posture checks with open tooling | TODO |
