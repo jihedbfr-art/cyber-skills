@@ -7,8 +7,8 @@ In most enterprises, owning Active Directory means owning the company. Attackers
 | 01 | [ad-enumeration-bloodhound](01-ad-enumeration-bloodhound/SKILL.md) | Map attack paths across the domain | ✅ |
 | 02 | [kerberoasting](02-kerberoasting/SKILL.md) | Crack service account tickets, and rotate them away | ✅ |
 | 03 | as-rep-roasting | Abuse accounts without pre-auth | TODO |
-| 04 | ntlm-relay | Relay authentication, and enforce signing | TODO |
-| 05 | dcsync-and-credential-dumping | Pull hashes, and detect it | TODO |
+| 04 | [ntlm-relay](04-ntlm-relay/SKILL.md) | Relay authentication, and enforce signing | ✅ |
+| 05 | [dcsync-and-credential-dumping](05-dcsync-and-credential-dumping/SKILL.md) | Pull hashes, and detect it | ✅ |
 | 06 | delegation-abuse | Unconstrained and constrained delegation attacks | TODO |
 | 07 | gpo-security | Group Policy as an attack and defence surface | TODO |
 | 08 | tiered-admin-model | Break the credential-theft chain by design | TODO |
