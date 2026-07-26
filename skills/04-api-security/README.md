@@ -11,8 +11,8 @@ APIs fail differently from the web apps that front them. No browser to enforce a
 | 05 | [mass-assignment](05-mass-assignment/SKILL.md) | Binding fields the client shouldn't control | ✅ |
 | 06 | [graphql-security](06-graphql-security/SKILL.md) | Introspection, depth, batching abuse | ✅ |
 | 07 | [jwt-attacks](07-jwt-attacks/SKILL.md) | alg confusion, weak secrets, unchecked claims | ✅ |
-| 08 | api-gateway-hardening | Where to enforce auth, rate limits, schema | TODO |
-| 09 | grpc-security | Auth and input validation over gRPC | TODO |
-| 10 | webhook-security | Verifying and locking down inbound webhooks | TODO |
+| 08 | [api-gateway-hardening](08-api-gateway-hardening/SKILL.md) | Where to enforce auth, rate limits, schema | ✅ |
+| 09 | [grpc-security](09-grpc-security/SKILL.md) | Auth and input validation over gRPC | ✅ |
+| 10 | [webhook-security](10-webhook-security/SKILL.md) | Verifying and locking down inbound webhooks | ✅ |
 
-Start with `broken-object-level-authorization`. It's the flaw most APIs actually ship with.
+This domain is complete (10/10). Start with `broken-object-level-authorization` — it's the flaw most APIs actually ship with.
