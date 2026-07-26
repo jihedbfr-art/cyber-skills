@@ -5,10 +5,10 @@ When prevention fails, this is what's left. Contain the damage, kick the attacke
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
 | 01 | [incident-triage-and-severity](01-incident-triage-and-severity/SKILL.md) | Decide how bad it is, fast | ✅ |
-| 02 | containment-strategies | Stop the bleed without destroying evidence | TODO |
-| 03 | evidence-preservation | Capture volatile data in the right order | TODO |
+| 02 | [containment-strategies](02-containment-strategies/SKILL.md) | Stop the bleed without destroying evidence | ✅ |
+| 03 | [evidence-preservation](03-evidence-preservation/SKILL.md) | Capture volatile data in the right order | ✅ |
 | 04 | eradication-and-recovery | Remove the foothold, restore cleanly | TODO |
-| 05 | ransomware-response | The playbook for the worst common case | TODO |
+| 05 | [ransomware-response](05-ransomware-response/SKILL.md) | The playbook for the worst common case | ✅ |
 | 06 | account-compromise-response | Contain a stolen identity | TODO |
 | 07 | communication-during-incidents | Who to tell, when, and what | TODO |
 | 08 | cloud-incident-response | IR when there's no host to image | TODO |
