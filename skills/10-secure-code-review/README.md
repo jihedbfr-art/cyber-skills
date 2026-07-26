@@ -4,7 +4,7 @@ Tools find patterns; people find bugs. This domain is about reading source the w
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | taint-tracking-by-hand | Follow user input from source to sink | TODO |
+| 01 | [taint-tracking-by-hand](01-taint-tracking-by-hand/SKILL.md) | Follow user input from source to sink | ✅ |
 | 02 | injection-patterns | Spot the shapes that become SQLi/command/LDAP injection | TODO |
 | 03 | auth-and-authz-review | Read access-control logic for gaps | TODO |
 | 04 | crypto-misuse-review | Find weak, misused, or hand-rolled crypto | TODO |
@@ -15,4 +15,4 @@ Tools find patterns; people find bugs. This domain is about reading source the w
 | 09 | dependency-and-config-review | The insecure default nobody changed | TODO |
 | 10 | reviewing-a-pr-for-security | A repeatable checklist for day-to-day PRs | TODO |
 
-TODO: domain scaffolded. `taint-tracking-by-hand` is the skill the rest depend on.
+`taint-tracking-by-hand` (done) is the skill the rest depend on.
