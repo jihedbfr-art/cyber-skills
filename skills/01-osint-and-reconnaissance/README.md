@@ -5,10 +5,10 @@ Before you touch a target you map it, and most of that map is public. This domai
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
 | 01 | [subdomain-enumeration](01-subdomain-enumeration/SKILL.md) | Find the subdomains that widen the attack surface | ✅ |
-| 02 | dns-recon | Zone data, records, and misconfig from DNS alone | TODO |
+| 02 | [dns-recon](02-dns-recon/SKILL.md) | Zone data, records, and misconfig from DNS alone | ✅ |
 | 03 | google-dorking | Query operators that surface exposed files and panels | TODO |
 | 04 | email-and-credential-leaks | Check breach corpora for org accounts | TODO |
-| 05 | github-secret-recon | Find secrets and infra leaked in public repos | TODO |
+| 05 | [github-secret-recon](05-github-secret-recon/SKILL.md) | Find secrets and infra leaked in public repos | ✅ |
 | 06 | metadata-extraction | Pull names, paths, software from public documents | TODO |
 | 07 | certificate-transparency | Discover hosts via CT logs | TODO |
 | 08 | shodan-censys-recon | Fingerprint internet-facing services | TODO |
