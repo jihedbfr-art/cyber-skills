@@ -4,7 +4,7 @@ The servers running your workloads. This domain covers hardening a host, the pri
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | linux-privilege-escalation | Enumerate the ways up from a low-priv shell | TODO |
+| 01 | [linux-privilege-escalation](01-linux-privilege-escalation/SKILL.md) | Enumerate the ways up from a low-priv shell | ✅ |
 | 02 | suid-sgid-audit | Find and reason about dangerous set-uid binaries | TODO |
 | 03 | sudo-hardening | Lock down sudoers without breaking ops | TODO |
 | 04 | file-permissions-and-acls | Get the basics actually right | TODO |
