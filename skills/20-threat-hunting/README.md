@@ -4,7 +4,7 @@ Assume the alerts missed something and go looking. Hunting starts from a hypothe
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | hypothesis-driven-hunting | Frame a hunt you can actually answer | TODO |
+| 01 | [hypothesis-driven-hunting](01-hypothesis-driven-hunting/SKILL.md) | Frame a hunt you can actually answer | ✅ |
 | 02 | hunting-with-attack | Use ATT&CK to pick what to hunt | TODO |
 | 03 | beaconing-detection | Find C2 in the noise of outbound traffic | TODO |
 | 04 | lateral-movement-hunting | Spot movement across hosts | TODO |
@@ -15,4 +15,4 @@ Assume the alerts missed something and go looking. Hunting starts from a hypothe
 | 09 | data-stacking | Frequency analysis to surface outliers | TODO |
 | 10 | operationalising-a-hunt | Turn a finding into a lasting detection | TODO |
 
-TODO: domain scaffolded. Begin with `hypothesis-driven-hunting` — the method matters more than any single query.
+Begin with `hypothesis-driven-hunting` (done) — the method matters more than any single query.
