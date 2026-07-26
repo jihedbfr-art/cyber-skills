@@ -4,7 +4,7 @@ The pipeline has write access to production and runs whatever the last commit to
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | secrets-scanning-in-pipelines | Block commits and builds that leak credentials | TODO |
+| 01 | [secrets-scanning-in-pipelines](01-secrets-scanning-in-pipelines/SKILL.md) | Block commits and builds that leak credentials | ✅ |
 | 02 | sast-integration | Wire static analysis into the build without drowning in noise | TODO |
 | 03 | dependency-scanning | Fail builds on known-vulnerable packages | TODO |
 | 04 | pipeline-hardening | Least-privilege runners, pinned actions, protected branches | TODO |
@@ -15,4 +15,4 @@ The pipeline has write access to production and runs whatever the last commit to
 | 09 | policy-as-code | Codify the gates so they can't be skipped | TODO |
 | 10 | build-provenance-slsa | Prove where an artifact came from | TODO |
 
-TODO: no skills written yet. `secrets-scanning-in-pipelines` is the highest-value starting point.
+`secrets-scanning-in-pipelines` is the highest-value starting point and is written; the rest follow.
