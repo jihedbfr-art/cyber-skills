@@ -4,7 +4,7 @@ Treating detections like code: written to a hypothesis, tested against real tele
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | writing-sigma-rules | Portable detection logic in Sigma | TODO |
+| 01 | [writing-sigma-rules](01-writing-sigma-rules/SKILL.md) | Portable detection logic in Sigma | ✅ |
 | 02 | detection-as-code | Version, test, and deploy rules through CI | TODO |
 | 03 | mapping-to-attack | Tie every rule to an ATT&CK technique | TODO |
 | 04 | reducing-false-positives | Tune without creating blind spots | TODO |
@@ -15,4 +15,4 @@ Treating detections like code: written to a hypothesis, tested against real tele
 | 09 | detection-metrics | Measure coverage and quality | TODO |
 | 10 | threat-informed-detection | Build from real intel, not guesses | TODO |
 
-TODO: domain scaffolded. Start at `writing-sigma-rules` and pair it with `mapping-to-attack`.
+Start at `writing-sigma-rules` (done) and pair it with `mapping-to-attack`.
