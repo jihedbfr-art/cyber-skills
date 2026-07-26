@@ -5,11 +5,11 @@ Auth is where most apps decide who you are and what you can touch, and it's easy
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
 | 01 | [oauth2-flows-and-pitfalls](01-oauth2-flows-and-pitfalls/SKILL.md) | Pick the right grant and avoid the classic mistakes | ✅ |
-| 02 | oidc-validation | Validate ID tokens properly | TODO |
-| 03 | saml-security | Signature wrapping and assertion tampering | TODO |
+| 02 | [oidc-validation](02-oidc-validation/SKILL.md) | Validate ID tokens properly | ✅ |
+| 03 | [saml-security](03-saml-security/SKILL.md) | Signature wrapping and assertion tampering | ✅ |
 | 04 | [session-management](04-session-management/SKILL.md) | Cookie flags, rotation, fixation, timeout | ✅ |
-| 05 | mfa-and-step-up | Add a real second factor, not a checkbox | TODO |
-| 06 | password-storage | Hashing, peppering, and breach resilience | TODO |
+| 05 | [mfa-and-step-up](05-mfa-and-step-up/SKILL.md) | Add a real second factor, not a checkbox | ✅ |
+| 06 | [password-storage](06-password-storage/SKILL.md) | Hashing, peppering, and breach resilience | ✅ |
 | 07 | rbac-and-abac-design | Model permissions that scale | TODO |
 | 08 | sso-integration-review | Trust boundaries between IdP and app | TODO |
 | 09 | token-lifecycle | Issue, refresh, revoke without gaps | TODO |
