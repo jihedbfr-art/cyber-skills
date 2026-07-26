@@ -4,7 +4,7 @@ When prevention fails, this is what's left. Contain the damage, kick the attacke
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | incident-triage-and-severity | Decide how bad it is, fast | TODO |
+| 01 | [incident-triage-and-severity](01-incident-triage-and-severity/SKILL.md) | Decide how bad it is, fast | ✅ |
 | 02 | containment-strategies | Stop the bleed without destroying evidence | TODO |
 | 03 | evidence-preservation | Capture volatile data in the right order | TODO |
 | 04 | eradication-and-recovery | Remove the foothold, restore cleanly | TODO |
