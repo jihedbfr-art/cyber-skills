@@ -4,10 +4,10 @@ Auth is where most apps decide who you are and what you can touch, and it's easy
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | oauth2-flows-and-pitfalls | Pick the right grant and avoid the classic mistakes | TODO |
+| 01 | [oauth2-flows-and-pitfalls](01-oauth2-flows-and-pitfalls/SKILL.md) | Pick the right grant and avoid the classic mistakes | ✅ |
 | 02 | oidc-validation | Validate ID tokens properly | TODO |
 | 03 | saml-security | Signature wrapping and assertion tampering | TODO |
-| 04 | session-management | Cookie flags, rotation, fixation, timeout | TODO |
+| 04 | [session-management](04-session-management/SKILL.md) | Cookie flags, rotation, fixation, timeout | ✅ |
 | 05 | mfa-and-step-up | Add a real second factor, not a checkbox | TODO |
 | 06 | password-storage | Hashing, peppering, and breach resilience | TODO |
 | 07 | rbac-and-abac-design | Model permissions that scale | TODO |
