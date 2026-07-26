@@ -4,7 +4,7 @@ Containers don't contain by default. A root process in a privileged pod is a roo
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | container-image-scanning | Scan images for CVEs and bad practice | TODO |
+| 01 | [container-image-scanning](01-container-image-scanning/SKILL.md) | Scan images for CVEs and bad practice | ✅ |
 | 02 | dockerfile-hardening | Non-root, minimal base, no secrets in layers | TODO |
 | 03 | kubernetes-rbac-audit | Find over-permissive roles and bindings | TODO |
 | 04 | pod-security-standards | Enforce restricted pod configs | TODO |
@@ -15,4 +15,4 @@ Containers don't contain by default. A root process in a privileged pod is a roo
 | 09 | runtime-threat-detection | Catch anomalous container behaviour | TODO |
 | 10 | supply-chain-for-images | Sign and verify what you deploy | TODO |
 
-TODO: domain scaffolded, skills pending. Suggested order: image scanning → Dockerfile hardening → RBAC audit.
+Suggested order: image scanning (done) → Dockerfile hardening → RBAC audit.
