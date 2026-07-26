@@ -1,0 +1,16 @@
+# local agent instructions, never published
+CLAUDE.md
+
+# os / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+
+# scratch and loot from running the skills locally
+scratch/
+loot/
+*.log
