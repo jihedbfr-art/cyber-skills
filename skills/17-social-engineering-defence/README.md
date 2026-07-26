@@ -4,7 +4,7 @@ The attack that skips the firewall and emails the accountant. This domain is def
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | phishing-email-analysis | Dissect a suspicious message header to payload | TODO |
+| 01 | [phishing-email-analysis](01-phishing-email-analysis/SKILL.md) | Dissect a suspicious message header to payload | ✅ |
 | 02 | spf-dkim-dmarc | Stop spoofing of your own domain | TODO |
 | 03 | phishing-simulation-programme | Run authorised tests that teach, not punish | TODO |
 | 04 | url-and-attachment-detonation | Safely analyse links and files | TODO |
@@ -15,4 +15,4 @@ The attack that skips the firewall and emails the accountant. This domain is def
 | 09 | takedown-workflow | Get malicious lookalike sites removed | TODO |
 | 10 | tabletop-social-engineering | Exercise the human response | TODO |
 
-TODO: domain scaffolded. `phishing-email-analysis` is the practical starting point.
+`phishing-email-analysis` (done) is the practical starting point.
