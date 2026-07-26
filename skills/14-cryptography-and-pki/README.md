@@ -4,7 +4,7 @@ You almost never need to invent crypto — you need to use the right primitive c
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | choosing-the-right-primitive | Pick hash/cipher/KDF for the job | TODO |
+| 01 | [choosing-the-right-primitive](01-choosing-the-right-primitive/SKILL.md) | Pick hash/cipher/KDF for the job | ✅ |
 | 02 | password-hashing | Argon2/bcrypt/scrypt parameters that hold up | TODO |
 | 03 | symmetric-encryption-correctly | AEAD, nonces, and the mistakes that leak | TODO |
 | 04 | tls-configuration | Server-side TLS that scores clean and stays usable | TODO |
@@ -15,4 +15,4 @@ You almost never need to invent crypto — you need to use the right primitive c
 | 09 | crypto-agility | Design so you can rotate algorithms later | TODO |
 | 10 | post-quantum-readiness | Where PQC matters now, where it doesn't yet | TODO |
 
-TODO: domain scaffolded. `choosing-the-right-primitive` is the anchor — most crypto bugs are a wrong choice, not a broken algorithm.
+`choosing-the-right-primitive` (done) is the anchor — most crypto bugs are a wrong choice, not a broken algorithm.
