@@ -4,7 +4,7 @@ The app on the device is a client you don't control. Anything it stores, hardcod
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | android-static-analysis | Decompile an APK and read it for secrets and flaws | TODO |
+| 01 | [android-static-analysis](01-android-static-analysis/SKILL.md) | Decompile an APK and read it for secrets and flaws | ✅ |
 | 02 | ios-static-analysis | Inspect an IPA, entitlements, and binary protections | TODO |
 | 03 | insecure-data-storage | Find secrets in prefs, keychains, sqlite, logs | TODO |
 | 04 | ssl-pinning-bypass | Defeat pinning in a lab to inspect traffic | TODO |
@@ -15,4 +15,4 @@ The app on the device is a client you don't control. Anything it stores, hardcod
 | 09 | mobile-auth-and-biometrics | Local auth done wrong | TODO |
 | 10 | play-appstore-hardening | Ship-side controls and store requirements | TODO |
 
-TODO: whole domain is scaffolded, no skills written yet. `android-static-analysis` is the natural first entry.
+`android-static-analysis` is the entry point; the rest of the roster is next.
