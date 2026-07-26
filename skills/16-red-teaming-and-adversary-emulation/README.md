@@ -4,7 +4,7 @@ Authorised, scoped, goal-driven offence. Not "run every exploit" — pick a real
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | scoping-and-rules-of-engagement | Set the boundaries before anything runs | TODO |
+| 01 | [scoping-and-rules-of-engagement](01-scoping-and-rules-of-engagement/SKILL.md) | Set the boundaries before anything runs | ✅ |
 | 02 | attack-emulation-planning | Map a scenario to ATT&CK techniques | TODO |
 | 03 | initial-access-tradecraft | Phishing and exposed-service footholds, safely | TODO |
 | 04 | c2-frameworks | Operate command-and-control in a lab/engagement | TODO |
@@ -15,4 +15,4 @@ Authorised, scoped, goal-driven offence. Not "run every exploit" — pick a real
 | 09 | purple-teaming | Run it collaboratively with detection engineering | TODO |
 | 10 | reporting-and-retest | Write findings the org can close | TODO |
 
-TODO: domain scaffolded. `scoping-and-rules-of-engagement` is mandatory reading before any other skill here.
+`scoping-and-rules-of-engagement` (done) is mandatory reading before any other skill here.
