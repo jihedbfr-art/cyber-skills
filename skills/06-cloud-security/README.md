@@ -6,8 +6,8 @@ The perimeter moved into IAM policies and resource configs. Most cloud incidents
 |---|-------|--------------|--------|
 | 01 | [s3-bucket-misconfiguration](01-s3-bucket-misconfiguration/SKILL.md) | Find and fix public/writable object storage | ✅ |
 | 02 | [iam-privilege-escalation](02-iam-privilege-escalation/SKILL.md) | Trace paths from low priv to admin | ✅ |
-| 03 | cloud-credential-hygiene | Rotate, scope, and detect leaked keys | TODO |
-| 04 | security-group-review | Audit network exposure of cloud resources | TODO |
+| 03 | [cloud-credential-hygiene](03-cloud-credential-hygiene/SKILL.md) | Rotate, scope, and detect leaked keys | ✅ |
+| 04 | [security-group-review](04-security-group-review/SKILL.md) | Audit network exposure of cloud resources | ✅ |
 | 05 | [cloudtrail-and-audit-logging](05-cloudtrail-and-audit-logging/SKILL.md) | Turn on and read the audit trail that matters | ✅ |
 | 06 | serverless-security | Lambda/Functions permissions and event injection | TODO |
 | 07 | kms-and-secrets-management | Key policies, envelope encryption, secret stores | TODO |
