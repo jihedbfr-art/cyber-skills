@@ -4,7 +4,7 @@ Reconstructing what happened from what's left behind, in a way that holds up. Or
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | disk-imaging-and-hashing | Acquire a defensible forensic image | TODO |
+| 01 | [disk-imaging-and-hashing](01-disk-imaging-and-hashing/SKILL.md) | Acquire a defensible forensic image | ✅ |
 | 02 | memory-forensics | Pull secrets and malware from RAM | TODO |
 | 03 | windows-artefacts | Registry, event logs, prefetch, and friends | TODO |
 | 04 | linux-artefacts | Where the evidence hides on Unix hosts | TODO |
@@ -15,4 +15,4 @@ Reconstructing what happened from what's left behind, in a way that holds up. Or
 | 09 | anti-forensics-awareness | Recognise tampering and wiping | TODO |
 | 10 | chain-of-custody | Document evidence so it stands up | TODO |
 
-TODO: domain scaffolded. `disk-imaging-and-hashing` is the foundation — get acquisition right or nothing after it matters.
+`disk-imaging-and-hashing` (done) is the foundation — get acquisition right or nothing after it matters.
