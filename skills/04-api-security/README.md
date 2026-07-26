@@ -10,7 +10,7 @@ APIs fail differently from the web apps that front them. No browser to enforce a
 | 04 | rate-limiting-and-resource-abuse | Missing quotas, brute force, cost attacks | TODO |
 | 05 | mass-assignment | Binding fields the client shouldn't control | TODO |
 | 06 | graphql-security | Introspection, depth, batching abuse | TODO |
-| 07 | jwt-attacks | alg confusion, weak secrets, unchecked claims | TODO |
+| 07 | [jwt-attacks](07-jwt-attacks/SKILL.md) | alg confusion, weak secrets, unchecked claims | ✅ |
 | 08 | api-gateway-hardening | Where to enforce auth, rate limits, schema | TODO |
 | 09 | grpc-security | Auth and input validation over gRPC | TODO |
 | 10 | webhook-security | Verifying and locking down inbound webhooks | TODO |
