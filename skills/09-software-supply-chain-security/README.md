@@ -4,7 +4,7 @@ Your code is a small fraction of what you ship. The rest is dependencies, base i
 
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
-| 01 | sbom-generation | Produce and read a software bill of materials | TODO |
+| 01 | [sbom-generation](01-sbom-generation/SKILL.md) | Produce and read a software bill of materials | ✅ |
 | 02 | dependency-confusion | Understand and block the namespace attack | TODO |
 | 03 | typosquat-detection | Catch malicious lookalike packages | TODO |
 | 04 | artifact-signing-sigstore | Sign and verify with cosign/sigstore | TODO |
@@ -15,4 +15,4 @@ Your code is a small fraction of what you ship. The rest is dependencies, base i
 | 09 | package-repo-hardening | Lock down internal registries | TODO |
 | 10 | malicious-package-response | What to do when a dep goes bad | TODO |
 
-TODO: domain scaffolded. Start with `sbom-generation` — you can't defend a supply chain you can't enumerate.
+Start with `sbom-generation` (done) — you can't defend a supply chain you can't enumerate.
