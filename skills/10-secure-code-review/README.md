@@ -5,14 +5,14 @@ Tools find patterns; people find bugs. This domain is about reading source the w
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
 | 01 | [taint-tracking-by-hand](01-taint-tracking-by-hand/SKILL.md) | Follow user input from source to sink | ✅ |
-| 02 | injection-patterns | Spot the shapes that become SQLi/command/LDAP injection | TODO |
-| 03 | auth-and-authz-review | Read access-control logic for gaps | TODO |
-| 04 | crypto-misuse-review | Find weak, misused, or hand-rolled crypto | TODO |
-| 05 | deserialization-review | Unsafe deserialisation across languages | TODO |
-| 06 | secrets-in-code | Hardcoded keys and how to grep them out | TODO |
-| 07 | race-conditions | TOCTOU and concurrency bugs with security impact | TODO |
-| 08 | error-handling-and-logging | Leaks, swallowed failures, log injection | TODO |
-| 09 | dependency-and-config-review | The insecure default nobody changed | TODO |
-| 10 | reviewing-a-pr-for-security | A repeatable checklist for day-to-day PRs | TODO |
+| 02 | [injection-patterns](02-injection-patterns/SKILL.md) | Spot the shapes that become SQLi/command/LDAP injection | ✅ |
+| 03 | [auth-and-authz-review](03-auth-and-authz-review/SKILL.md) | Read access-control logic for gaps | ✅ |
+| 04 | [crypto-misuse-review](04-crypto-misuse-review/SKILL.md) | Find weak, misused, or hand-rolled crypto | ✅ |
+| 05 | [deserialization-review](05-deserialization-review/SKILL.md) | Unsafe deserialisation across languages | ✅ |
+| 06 | [secrets-in-code](06-secrets-in-code/SKILL.md) | Hardcoded keys and how to grep them out | ✅ |
+| 07 | [race-conditions](07-race-conditions/SKILL.md) | TOCTOU and concurrency bugs with security impact | ✅ |
+| 08 | [error-handling-and-logging](08-error-handling-and-logging/SKILL.md) | Leaks, swallowed failures, log injection | ✅ |
+| 09 | [dependency-and-config-review](09-dependency-and-config-review/SKILL.md) | The insecure default nobody changed | ✅ |
+| 10 | [reviewing-a-pr-for-security](10-reviewing-a-pr-for-security/SKILL.md) | A repeatable checklist for day-to-day PRs | ✅ |
 
-`taint-tracking-by-hand` (done) is the skill the rest depend on.
+`taint-tracking-by-hand` is the skill the rest depend on — start there. `reviewing-a-pr-for-security` ties them together into a day-to-day pass.
