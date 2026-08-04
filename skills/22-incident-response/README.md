@@ -11,8 +11,8 @@ When prevention fails, this is what's left. Contain the damage, kick the attacke
 | 05 | [ransomware-response](05-ransomware-response/SKILL.md) | The playbook for the worst common case | ✅ |
 | 06 | [account-compromise-response](06-account-compromise-response/SKILL.md) | Contain a stolen identity | ✅ |
 | 07 | [communication-during-incidents](07-communication-during-incidents/SKILL.md) | Who to tell, when, and what | ✅ |
-| 08 | cloud-incident-response | IR when there's no host to image | TODO |
+| 08 | [cloud-incident-response](08-cloud-incident-response/SKILL.md) | IR when there's no host to image | ✅ |
 | 09 | [blameless-postmortem](09-blameless-postmortem/SKILL.md) | Learn without hunting scapegoats | ✅ |
-| 10 | ir-playbook-development | Write the runbook before you need it | TODO |
+| 10 | [ir-playbook-development](10-ir-playbook-development/SKILL.md) | Write the runbook before you need it | ✅ |
 
-TODO: domain scaffolded. `incident-triage-and-severity` gates everything that follows.
+This domain is complete (10/10). `incident-triage-and-severity` gates everything that follows; `ir-playbook-development` is what you write before any of it is needed.
