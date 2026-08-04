@@ -1,8 +1,16 @@
-# cyber-skills
+<p align="center">
+  <img src="assets/jihedailabs-logo.svg" alt="JihedAiLabs" width="150" height="150">
+</p>
 
-Une bibliothèque de skills sécurité regroupées en 26 domaines. Chaque skill occupe son propre dossier avec un seul `SKILL.md`, lisible de deux façons : comme une checklist qu'un ingénieur déroule, et comme une procédure qu'un assistant de code agentique charge et exécute.
+<h1 align="center">cyber-skills</h1>
 
-[English version](README.md)
+<p align="center"><b>Un projet JihedAiLabs</b> — une bibliothèque de skills sécurité regroupées en 26 domaines.</p>
+
+<p align="center"><a href="README.md">English version</a></p>
+
+---
+
+Chaque skill occupe son propre dossier avec un seul `SKILL.md`, lisible de deux façons : comme une checklist qu'un ingénieur déroule, et comme une procédure qu'un assistant de code agentique charge et exécute.
 
 ## Pourquoi ce repo
 
@@ -89,3 +97,10 @@ Voir [CONTRIBUTING.md](CONTRIBUTING.md). En résumé : une skill par pull reques
 ## Licence
 
 MIT pour le contenu de ce dépôt. Les outils tiers cités conservent leurs propres licences.
+
+---
+
+<p align="center">
+  <img src="assets/jihedailabs-logo.svg" alt="JihedAiLabs" width="80" height="80"><br>
+  <sub>Conçu et maintenu sous <b>JihedAiLabs</b>.</sub>
+</p>
