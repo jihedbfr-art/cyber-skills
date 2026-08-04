@@ -16,3 +16,6 @@ Everything that moves between hosts. Discovering what's listening, segmenting so
 | 10 | network-access-control | 802.1X and NAC enforcement | TODO |
 
 `port-and-service-scanning` is the entry point — you can't secure a service you didn't know was exposed.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

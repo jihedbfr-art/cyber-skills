@@ -16,3 +16,6 @@ Treating detections like code: written to a hypothesis, tested against real tele
 | 10 | threat-informed-detection | Build from real intel, not guesses | TODO |
 
 Start at `writing-sigma-rules` (done) and pair it with `mapping-to-attack`.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

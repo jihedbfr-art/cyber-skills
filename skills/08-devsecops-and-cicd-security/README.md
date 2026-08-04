@@ -16,3 +16,6 @@ The pipeline has write access to production and runs whatever the last commit to
 | 10 | build-provenance-slsa | Prove where an artifact came from | TODO |
 
 `secrets-scanning-in-pipelines` is the highest-value starting point and is written; the rest follow.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

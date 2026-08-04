@@ -16,3 +16,6 @@ The app on the device is a client you don't control. Anything it stores, hardcod
 | 10 | play-appstore-hardening | Ship-side controls and store requirements | TODO |
 
 `android-static-analysis` is the entry point; the rest of the roster is next.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

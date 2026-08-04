@@ -16,3 +16,6 @@ Assume the alerts missed something and go looking. Hunting starts from a hypothe
 | 10 | operationalising-a-hunt | Turn a finding into a lasting detection | TODO |
 
 Begin with `hypothesis-driven-hunting` (done) — the method matters more than any single query.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

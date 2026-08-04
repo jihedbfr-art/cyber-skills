@@ -16,3 +16,6 @@ Auth is where most apps decide who you are and what you can touch, and it's easy
 | 10 | [passwordless-and-passkeys](10-passwordless-and-passkeys/SKILL.md) | WebAuthn done correctly | ✅ |
 
 This domain is complete (10/10). Start with `oauth2-flows-and-pitfalls`.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

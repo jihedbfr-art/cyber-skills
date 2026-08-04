@@ -16,3 +16,6 @@ When prevention fails, this is what's left. Contain the damage, kick the attacke
 | 10 | [ir-playbook-development](10-ir-playbook-development/SKILL.md) | Write the runbook before you need it | ✅ |
 
 This domain is complete (10/10). `incident-triage-and-severity` gates everything that follows; `ir-playbook-development` is what you write before any of it is needed.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

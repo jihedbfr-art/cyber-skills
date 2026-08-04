@@ -16,3 +16,6 @@ Containers don't contain by default. A root process in a privileged pod is a roo
 | 10 | supply-chain-for-images | Sign and verify what you deploy | TODO |
 
 Suggested order: image scanning (done) → Dockerfile hardening → RBAC audit.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

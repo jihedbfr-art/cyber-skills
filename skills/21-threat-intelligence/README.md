@@ -16,3 +16,6 @@ Turning raw indicators into decisions. A feed of IPs is data; knowing which acto
 | 10 | reporting-and-dissemination | Write intel people actually read | TODO |
 
 `the-pyramid-of-pain` (done) reframes how you value everything else here.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

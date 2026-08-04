@@ -16,3 +16,6 @@ APIs fail differently from the web apps that front them. No browser to enforce a
 | 10 | [webhook-security](10-webhook-security/SKILL.md) | Verifying and locking down inbound webhooks | ✅ |
 
 This domain is complete (10/10). Start with `broken-object-level-authorization` — it's the flaw most APIs actually ship with.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

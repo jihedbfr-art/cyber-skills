@@ -16,3 +16,6 @@ Your code is a small fraction of what you ship. The rest is dependencies, base i
 | 10 | malicious-package-response | What to do when a dep goes bad | TODO |
 
 Start with `sbom-generation` (done) — you can't defend a supply chain you can't enumerate.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

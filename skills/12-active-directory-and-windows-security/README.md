@@ -16,3 +16,6 @@ In most enterprises, owning Active Directory means owning the company. Attackers
 | 10 | [ad-hardening-baseline](10-ad-hardening-baseline/SKILL.md) | The settings that shut most paths | ✅ |
 
 This domain is complete (10/10). `ad-enumeration-bloodhound` first — you attack and defend the graph you can see; `ad-hardening-baseline` is the index that ties the defensive side together.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

@@ -16,3 +16,6 @@ The attack that skips the firewall and emails the accountant. This domain is def
 | 10 | tabletop-social-engineering | Exercise the human response | TODO |
 
 `phishing-email-analysis` (done) is the practical starting point.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

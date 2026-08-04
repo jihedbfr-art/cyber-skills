@@ -16,3 +16,6 @@ You almost never need to invent crypto — you need to use the right primitive c
 | 10 | post-quantum-readiness | Where PQC matters now, where it doesn't yet | TODO |
 
 `choosing-the-right-primitive` (done) is the anchor — most crypto bugs are a wrong choice, not a broken algorithm.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

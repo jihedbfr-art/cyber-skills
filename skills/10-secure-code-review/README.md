@@ -16,3 +16,6 @@ Tools find patterns; people find bugs. This domain is about reading source the w
 | 10 | [reviewing-a-pr-for-security](10-reviewing-a-pr-for-security/SKILL.md) | A repeatable checklist for day-to-day PRs | ✅ |
 
 `taint-tracking-by-hand` is the skill the rest depend on — start there. `reviewing-a-pr-for-security` ties them together into a day-to-day pass.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

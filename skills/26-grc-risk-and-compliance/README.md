@@ -16,3 +16,6 @@ The part that makes the rest defensible to auditors, regulators, and the board. 
 | 10 | gap-analysis | Find the distance between current and required | TODO |
 
 `risk-assessment` (done) underpins every framework here — start with it.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

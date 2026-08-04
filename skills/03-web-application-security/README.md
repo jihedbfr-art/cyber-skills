@@ -16,3 +16,6 @@ The biggest domain in the repo, because it's where most real bugs live. Injectio
 | 10 | [security-headers](10-security-headers/SKILL.md) | CSP, HSTS and the rest, done right | ✅ |
 
 This domain is complete (10/10). If you're new here, do `sql-injection-testing` then `xss-testing` — they teach the two habits (never trust input, always encode output) that the rest of the domain builds on.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

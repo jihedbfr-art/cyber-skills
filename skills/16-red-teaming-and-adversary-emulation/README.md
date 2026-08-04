@@ -16,3 +16,6 @@ Authorised, scoped, goal-driven offence. Not "run every exploit" — pick a real
 | 10 | reporting-and-retest | Write findings the org can close | TODO |
 
 `scoping-and-rules-of-engagement` (done) is mandatory reading before any other skill here.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

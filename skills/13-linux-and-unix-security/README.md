@@ -16,3 +16,6 @@ The servers running your workloads. This domain covers hardening a host, the pri
 | 10 | cis-benchmark-automation | Apply and verify a baseline at scale | TODO |
 
 TODO: domain scaffolded. Suggested first skill: `linux-privilege-escalation`.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

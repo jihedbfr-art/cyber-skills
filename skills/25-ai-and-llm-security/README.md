@@ -16,3 +16,6 @@ The newest surface, and the one moving fastest. When an application hands a lang
 | 10 | [ml-model-security](10-ml-model-security/SKILL.md) | Adversarial inputs and model theft beyond LLMs | ✅ |
 
 This domain is complete (10/10). Start with `prompt-injection-testing` — it's the root cause behind most of the other entries.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>

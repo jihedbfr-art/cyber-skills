@@ -16,3 +16,6 @@ Reconstructing what happened from what's left behind, in a way that holds up. Or
 | 10 | chain-of-custody | Document evidence so it stands up | TODO |
 
 `disk-imaging-and-hashing` (done) is the foundation — get acquisition right or nothing after it matters.
+
+---
+<p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>
