@@ -14,3 +14,6 @@ desktop.ini
 scratch/
 loot/
 *.log
+
+# local handoff/working doc, never published
+RECAP.md
