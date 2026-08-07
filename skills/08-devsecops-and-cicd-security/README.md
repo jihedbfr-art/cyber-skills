@@ -5,17 +5,17 @@ The pipeline has write access to production and runs whatever the last commit to
 | # | Skill | What it does | Status |
 |---|-------|--------------|--------|
 | 01 | [secrets-scanning-in-pipelines](01-secrets-scanning-in-pipelines/SKILL.md) | Block commits and builds that leak credentials | ✅ |
-| 02 | sast-integration | Wire static analysis into the build without drowning in noise | TODO |
-| 03 | dependency-scanning | Fail builds on known-vulnerable packages | TODO |
-| 04 | pipeline-hardening | Least-privilege runners, pinned actions, protected branches | TODO |
-| 05 | dast-in-cicd | Run dynamic scans against ephemeral environments | TODO |
-| 06 | iac-scanning | Catch misconfig in Terraform/CloudFormation pre-deploy | TODO |
-| 07 | artifact-integrity | Sign build outputs, verify before deploy | TODO |
-| 08 | secure-runners | Isolate and clean self-hosted runners | TODO |
-| 09 | policy-as-code | Codify the gates so they can't be skipped | TODO |
-| 10 | build-provenance-slsa | Prove where an artifact came from | TODO |
+| 02 | [sast-integration](02-sast-integration/SKILL.md) | Wire static analysis into the build without drowning in noise | ✅ |
+| 03 | [dependency-scanning](03-dependency-scanning/SKILL.md) | Fail builds on known-vulnerable packages | ✅ |
+| 04 | [pipeline-hardening](04-pipeline-hardening/SKILL.md) | Least-privilege runners, pinned actions, protected branches | ✅ |
+| 05 | [dast-in-cicd](05-dast-in-cicd/SKILL.md) | Run dynamic scans against ephemeral environments | ✅ |
+| 06 | [iac-scanning](06-iac-scanning/SKILL.md) | Catch misconfig in Terraform/CloudFormation pre-deploy | ✅ |
+| 07 | [artifact-integrity](07-artifact-integrity/SKILL.md) | Sign build outputs, verify before deploy | ✅ |
+| 08 | [secure-runners](08-secure-runners/SKILL.md) | Isolate and clean self-hosted runners | ✅ |
+| 09 | [policy-as-code](09-policy-as-code/SKILL.md) | Codify the gates so they can't be skipped | ✅ |
+| 10 | [build-provenance-slsa](10-build-provenance-slsa/SKILL.md) | Prove where an artifact came from | ✅ |
 
-`secrets-scanning-in-pipelines` is the highest-value starting point and is written; the rest follow.
+This domain is complete (10/10). `secrets-scanning-in-pipelines` is the highest-value starting point; `policy-as-code` ties the gates into unskippable enforcement.
 
 ---
 <p align="center"><sub><b>JihedAiLabs</b> &middot; part of the <a href="../../README.md">cyber-skills</a> library</sub></p>
