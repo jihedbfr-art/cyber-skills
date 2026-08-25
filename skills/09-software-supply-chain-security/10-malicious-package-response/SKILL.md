@@ -1,21 +1,33 @@
 ---
-name: malicious-package-response
-domain: 09-software-supply-chain-security
-description: Use when a dependency you use turns out to be malicious or compromised — the response to a supply-chain incident where the threat is inside a package you already trusted and installed.
-difficulty: intermediate
-tags: [supply-chain, incident-response, malicious-package, compromise, remediation]
-tools: []
+format: "v2"
+name: "malicious-package-response"
+title: "Malicious Package Response"
+title_fr: "Réponse aux paquets malveillants"
+description: "Use when a dependency you use turns out to be malicious or compromised — the response to a supply-chain incident where the threat is inside a package you already trusted and installed."
+description_fr: "À utiliser lorsqu'une dépendance déjà utilisée s'avère malveillante ou compromise — la réponse à un incident de la chaîne d'approvisionnement où la menace se trouve à l'intérieur d'un paquet déjà installé et de confiance."
+domain: "09-software-supply-chain-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Sometimes a package you already use goes bad — a maintainer account is compromised and pushes a malicious version, a dependency is hijacked, or a package is revealed as malicious after you adopted it. This is a supply-chain incident with a twist: the malicious code is *inside software you already trusted, installed, and possibly shipped*. This skill covers responding to a malicious or compromised package — a scenario that's become common (event-stream, ua-parser-js, and others) and needs a specific response.
 
-## When to use it
+### When to use it
 
 When you learn a dependency you use is malicious or compromised — from a security advisory, a scanner alert, or news of a package hijack. It combines supply-chain knowledge with the incident-response discipline, applied to the specific case where the threat rode in through a trusted dependency.
 
-## Procedure
+### Procedure
 
 1. **Determine your exposure fast.** Do you actually use the affected package and version? This is where an SBOM pays off — query it to instantly answer "are we affected, and where" across your projects and deployments (the sbom-generation skill). Without an SBOM, this is a frantic manual hunt.
 2. **Assess what the malicious code did.** Malicious packages typically: steal secrets/environment variables/credentials, exfiltrate data, install backdoors, or run on install (install scripts) or at runtime. Understand the specific package's malicious behaviour (from the advisory/analysis) to know what to assume compromised — if it steals credentials, assume those credentials are compromised.
@@ -25,7 +37,7 @@ When you learn a dependency you use is malicious or compromised — from a secur
 6. **Check where it shipped.** If the malicious package made it into artifacts you released or deployed, the exposure extends to those — and possibly to *your* downstream consumers. You may need to notify them (you became a supply-chain link).
 7. **Prevent recurrence.** Add the controls that would have caught or contained it — dependency scanning, install-script review, pinning/lockfile integrity, and reducing the blast radius (least-privilege builds so a malicious package can't reach much). Feed lessons into a blameless postmortem (IR domain).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 malicious code INSIDE software you already trusted + installed + maybe shipped (event-stream, ua-parser-js)
@@ -46,7 +58,7 @@ malicious code INSIDE software you already trusted + installed + maybe shipped (
      -> blameless postmortem
 ```
 
-## Reading the incident
+### Reading the incident
 
 - **Confirmed use of the malicious package version** = you're exposed; the SBOM query that tells you this instantly is why SBOMs matter — without one, determining exposure across projects is slow and error-prone under time pressure.
 - **A package that steals credentials/secrets** = assume those credentials are compromised and rotate them; the malicious code ran with your access, so what it could reach must be treated as breached. This assume-breach step is the key difference from a normal vulnerability and the most commonly missed.
@@ -55,7 +67,7 @@ malicious code INSIDE software you already trusted + installed + maybe shipped (
 - **The malicious package shipped in your released artifacts** = your exposure extends to those deployments and possibly your downstream consumers; you became a supply-chain link and may need to notify.
 - **Exposure determined via SBOM, malicious version removed, reachable secrets rotated, compromise investigated, downstream notified, prevention added** = a complete malicious-package response.
 
-## Pitfalls
+### Pitfalls
 
 - **Just removing the package.** Removal stops future execution but doesn't address that the code already *ran* with your access. If it could reach secrets, they may be compromised regardless of removal. Assume-breach and rotate.
 - **Not rotating reachable secrets.** The most overlooked step — malicious code that ran in your build/runtime could read env vars, CI credentials, and cloud keys; assume anything it could reach is compromised and rotate it.
@@ -64,9 +76,15 @@ malicious code INSIDE software you already trusted + installed + maybe shipped (
 - **Ignoring downstream.** If it shipped in your artifacts, your consumers are exposed; you may have a notification obligation.
 - **Not adding prevention.** Without dependency scanning, install-script review, pinning, and least-privilege builds, the next malicious package lands the same way. Feed lessons back.
 
-## References
+### References
 
 - The sbom-generation skill (exposure determination) and the incident-response domain (assume-breach, eradication, postmortem)
 - Notable cases: event-stream, ua-parser-js, node-ipc (malicious/compromised package incidents)
 - The dependency-scanning, typosquat-detection, and pipeline least-privilege skills
 - OpenSSF and CISA supply-chain incident guidance
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: vulnerable-dependency-triage
-domain: 09-software-supply-chain-security
-description: Use when triaging flagged vulnerable dependencies — telling exploitable from merely-present so you fix what actually matters instead of chasing every CVE in the dependency tree.
-difficulty: intermediate
-tags: [supply-chain, dependencies, triage, reachability, prioritisation]
-tools: [snyk, osv-scanner]
+format: "v2"
+name: "vulnerable-dependency-triage"
+title: "Vulnerable Dependency Triage"
+title_fr: "Triage des dépendances vulnérables"
+description: "Use when triaging flagged vulnerable dependencies — telling exploitable from merely-present so you fix what actually matters instead of chasing every CVE in the dependency tree."
+description_fr: "À utiliser pour trier les dépendances vulnérables signalées — distinguer ce qui est réellement exploitable de ce qui n'est que présent, afin de corriger ce qui compte vraiment plutôt que de courir après chaque CVE de l'arbre de dépendances."
+domain: "09-software-supply-chain-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Dependency scanners flag every dependency with a known CVE — and in a real project that's often hundreds of findings, most of which aren't actually exploitable in your context. Chasing all of them wastes effort and causes fatigue; ignoring them risks missing the real one. This skill covers triaging vulnerable dependencies — distinguishing the exploitable from the merely-present — so remediation effort goes where it reduces real risk. It's the dependency-specific application of vulnerability triage.
 
-## When to use it
+### When to use it
 
 Whenever dependency scanning (the devsecops skill) produces more findings than you can fix at once — which is always in a mature project. It's the discipline that turns a scanner's raw output into an actionable, prioritised set.
 
-## Procedure
+### Procedure
 
 1. **Start from the reality: most flagged CVEs aren't exploitable in your context.** A dependency having a CVE doesn't mean *your* application is vulnerable — the vulnerable function may never be called, the vulnerable code path may be unreachable, or the CVE may require conditions your usage doesn't meet. The core triage question is "is this actually reachable and exploitable here?", not "does this dependency have a CVE?".
 2. **Assess reachability — the key discriminator.** Is the vulnerable code actually reachable from your application? Reachability analysis (some scanners offer it) determines whether your code paths actually invoke the vulnerable function. An unreachable vulnerability is far lower priority than a reachable one. This single factor separates most noise from signal.
@@ -25,7 +37,7 @@ Whenever dependency scanning (the devsecops skill) produces more findings than y
 6. **Handle the no-fix and transitive cases.** A vulnerable transitive dependency you don't directly control may need an override/resolution to force a fixed version, or waiting for the direct dependency to update. A vulnerability with no available fix is a risk-acceptance decision (document it).
 7. **Suppress the confirmed non-issues with reasons.** An unreachable or non-applicable finding, once confirmed, should be suppressed with a recorded justification so it doesn't reappear every scan and cause fatigue — but review suppressions periodically (reachability can change with code changes).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 scanners flag EVERY dep with a CVE -> hundreds of findings, most NOT exploitable in your context
@@ -43,7 +55,7 @@ core question: "reachable + exploitable HERE?" — not "does this dep have a CVE
 6. SUPPRESS confirmed non-issues WITH reason (don't reappear) — but re-review (reachability changes)
 ```
 
-## Reading the findings
+### Reading the findings
 
 - **A reachable, exploitable vulnerability in an internet-facing dependency with a known exploit** = the actionable priority; a real risk. This is what triage should surface to the top from the hundreds of findings.
 - **A flagged CVE in a dependency whose vulnerable function you never call** = usually not exploitable in your context; the reachability question is what tells you this. Treating it as urgent wastes effort — the core triage discipline is distinguishing this from real risk.
@@ -52,7 +64,7 @@ core question: "reachable + exploitable HERE?" — not "does this dep have a CVE
 - **A vulnerability with no available fix** = a risk-acceptance/mitigation decision (remove the dependency, avoid the path, compensating control), documented — not an indefinite open finding ignored silently.
 - **Confirmed non-issues suppressed with reasons, priorities remediated** = triage working; effort on real risk, noise filtered, decisions recorded.
 
-## Pitfalls
+### Pitfalls
 
 - **Treating every flagged CVE as a vulnerability in your app.** A dependency's CVE doesn't mean you're exploitable; reachability and context usually make most findings low or non-issues. Triage by "exploitable here", not "has a CVE".
 - **Ignoring reachability.** It's the key discriminator between noise and signal; without it you can't tell the exploitable few from the flagged many. Use reachability analysis where available.
@@ -60,9 +72,15 @@ core question: "reachable + exploitable HERE?" — not "does this dep have a CVE
 - **Missing transitive vulnerabilities' remediation path.** You can't just "update" a transitive dependency you don't declare; use overrides/resolutions or wait for the direct dependency.
 - **Silent suppression or silent ignoring.** Confirmed non-issues should be suppressed *with a reason* (and re-reviewed, since reachability changes); real no-fix risks should be documented acceptances, not quietly ignored.
 
-## References
+### References
 
 - The vulnerability-management domain (cvss-in-context, epss, triage-and-deduplication)
 - The devsecops dependency-scanning skill and reachability-analysis tooling (Snyk, endor, etc.)
 - OSV, GitHub Advisory Database (vulnerability data)
 - The lockfile-integrity and malicious-package-response skills
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

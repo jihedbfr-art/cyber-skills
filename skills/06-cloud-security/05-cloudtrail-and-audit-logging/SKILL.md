@@ -1,21 +1,33 @@
 ---
-name: cloudtrail-and-audit-logging
-domain: 06-cloud-security
-description: Use when setting up or reviewing cloud audit logging — making sure API activity is recorded, protected from tampering, and actually usable during an investigation.
-difficulty: intermediate
-tags: [cloud, aws, logging, cloudtrail, detection, forensics]
-tools: [aws-cli]
+format: "v2"
+name: "cloudtrail-and-audit-logging"
+title: "Cloudtrail And Audit Logging"
+title_fr: "CloudTrail et journalisation d'audit"
+description: "Use when setting up or reviewing cloud audit logging — making sure API activity is recorded, protected from tampering, and actually usable during an investigation."
+description_fr: "À utiliser pour mettre en place ou revoir la journalisation d'audit cloud — s'assurer que l'activité des API est bien enregistrée, protégée contre toute altération, et réellement exploitable lors d'une investigation."
+domain: "06-cloud-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 In the cloud, almost everything is an API call — and the audit log of those calls is how you detect misuse and investigate an incident. If it isn't turned on, isn't complete, or can be deleted by the attacker, you're blind exactly when it matters. This skill covers getting cloud audit logging right, using AWS CloudTrail as the concrete example (Azure Activity Log and GCP Cloud Audit Logs follow the same principles).
 
-## When to use it
+### When to use it
 
 Standing up a cloud account, hardening an existing one, or preparing for incident response and compliance. Do it before an incident — reconstructing "who did what" is only possible if the logging was already correct when it happened.
 
-## Procedure
+### Procedure
 
 1. **Confirm logging is on and org-wide.** A trail should capture every region and every account, so activity can't hide in an unmonitored corner:
    ```
@@ -32,22 +44,19 @@ Standing up a cloud account, hardening an existing one, or preparing for inciden
 5. **Alert on the log-tampering signals themselves**: `StopLogging`, `DeleteTrail`, `UpdateTrail`, bucket policy changes on the log bucket. If someone disables the trail, that action must page you.
 6. **Test it.** Perform a known action and confirm it appears, correctly attributed, where you expect. An untested logging pipeline fails silently.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# is logging on, multi-region, healthy?
 aws cloudtrail describe-trails --query 'trailList[].{name:Name,region:IsMultiRegionTrail,val:LogFileValidationEnabled}'
 aws cloudtrail get-trail-status --name TRAIL     # IsLogging: true?
 
-# find recent activity / investigate
 aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=ConsoleLogin
 aws cloudtrail lookup-events --lookup-attributes AttributeKey=Username,AttributeValue=<user>
 
-# the tampering events to ALERT on
 StopLogging  DeleteTrail  UpdateTrail  PutBucketPolicy(on log bucket)
 ```
 
-## Reading the setup
+### Reading the setup
 
 - **No trail, or single-region only** = blind spots; activity in unmonitored regions/accounts leaves no trace. Fix before anything else.
 - **Management events only when you needed object access** = you'll know a bucket policy changed but not who read the objects — enable data events for the resources that matter.
@@ -55,7 +64,7 @@ StopLogging  DeleteTrail  UpdateTrail  PutBucketPolicy(on log bucket)
 - **Log file validation off** = you can't prove the logs weren't altered — a problem for both investigation and compliance.
 - **A `StopLogging` event with no alert** = the one event you most need to see got buried. Alerting on tampering is the backstop.
 
-## The fix / best practice
+### The fix / best practice
 
 - **One multi-region, all-account trail**, delivering to a **dedicated logging account** with a bucket the workloads can't write to or delete from.
 - **Enable log file validation** and **Object Lock/versioning + MFA-delete** on the log bucket so history is immutable.
@@ -63,16 +72,22 @@ StopLogging  DeleteTrail  UpdateTrail  PutBucketPolicy(on log bucket)
 - **Centralise and index** logs into a SIEM/queryable store, and **alert on tampering** (`StopLogging`/`DeleteTrail`) and other high-signal events.
 - **Set retention** to meet investigation and compliance needs, and periodically **test** that a known action shows up correctly.
 
-## Pitfalls
+### Pitfalls
 
 - **Assuming it's on by default.** Baseline logging often exists, but multi-region, data events, and tamper protection usually aren't configured until someone does it.
 - **Log bucket in the same account with workload write access.** The attacker deletes the evidence of their own actions. Isolate it.
 - **Skipping data events, then needing them.** You can't retroactively log object access that wasn't being recorded. Decide coverage in advance.
 - **Collecting logs nobody can query.** During an incident, an unsearchable archive is nearly useless. Index it.
 
-## References
+### References
 
 - AWS CloudTrail best practices documentation
 - AWS Security Reference Architecture (logging account pattern)
 - Azure Activity Log / GCP Cloud Audit Logs equivalents
 - NIST SP 800-92 (log management)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

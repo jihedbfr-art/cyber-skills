@@ -1,21 +1,33 @@
 ---
-name: typosquat-detection
-domain: 09-software-supply-chain-security
-description: Use when defending against typosquatted and malicious lookalike packages — catching the malicious package with a name close to a popular one before a typo pulls it into your build.
-difficulty: intermediate
-tags: [supply-chain, typosquatting, packages, malicious, registries]
-tools: [npm, pip, guarddog]
+format: "v2"
+name: "typosquat-detection"
+title: "Typosquat Detection"
+title_fr: "Détection de typosquatting"
+description: "Use when defending against typosquatted and malicious lookalike packages — catching the malicious package with a name close to a popular one before a typo pulls it into your build."
+description_fr: "À utiliser pour se défendre contre les paquets malveillants imitant des paquets populaires (typosquatting) — repérer le paquet au nom trompeur avant qu'une faute de frappe ne l'introduise dans le build."
+domain: "09-software-supply-chain-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Attackers publish malicious packages with names deliberately close to popular ones — `reqeusts` for `requests`, `python3-dateutil` for `python-dateutil` — betting on a typo or a copied-wrong name pulling their code into someone's build. Typosquatting (and related name-confusion attacks) are a constant, low-effort supply-chain threat. This skill covers detecting and preventing typosquatted and malicious lookalike packages entering your dependencies.
 
-## When to use it
+### When to use it
 
 Protecting the dependency intake for any project using public registries, and vetting new dependencies before adoption. It complements dependency confusion (same-name attacks) with the similar-name variant, and pairs with malicious-package response.
 
-## Procedure
+### Procedure
 
 1. **Understand the name-confusion variants** an attacker uses:
    - **Typosquatting** — a name one keystroke off a popular package (`reqeusts`, `loadsh`).
@@ -33,7 +45,7 @@ Protecting the dependency intake for any project using public registries, and ve
 6. **Monitor for squats of *your* packages.** If you publish packages, watch for typosquats of *your* names targeting *your* users, and report them for takedown.
 7. **Report and remove malicious packages** you find (the malicious-package-response skill) — reporting to the registry protects the whole community.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 attack: malicious package with name CLOSE to a popular one -> typo/mis-copy pulls it in
@@ -52,7 +64,7 @@ defend
   MONITOR squats of YOUR packages ; REPORT malicious ones (protects community)
 ```
 
-## Reading the risk
+### Reading the risk
 
 - **A newly-published package with a name one keystroke off a popular one and few downloads** = a classic typosquat red flag; verify the exact correct name against the genuine package before adopting. The core detection.
 - **A candidate package with an install script running code** (`postinstall`, `setup.py` executing) = a common malicious-package tell; legitimate packages rarely need to run arbitrary code on install. A strong indicator to investigate.
@@ -61,7 +73,7 @@ defend
 - **A typosquat of your *own* package** = a threat to your users; monitor for lookalikes of your names and report them.
 - **Vetted, pinned, reviewed dependencies from allowlisted sources** = the intake protected against name-confusion attacks.
 
-## Pitfalls
+### Pitfalls
 
 - **Not verifying the exact package name.** A single typo or mis-copied name pulls in the squat; verify against the genuine popular package (downloads, maintainer, repo) before adopting. The whole attack relies on this slip.
 - **Ignoring install scripts.** Malicious packages run code on install (postinstall/setup.py); a package that executes arbitrary code on install is a red flag. Scan for it.
@@ -69,9 +81,15 @@ defend
 - **Trusting a name because it's plausible.** Combosquats (`python-requests`) look reasonable but may be malicious; verify it's the genuine package, not just a plausible name.
 - **Not monitoring your own package names.** Typosquats of your packages target your users; watch for and report them.
 
-## References
+### References
 
 - GuardDog, OSSF package analysis, and Socket.dev (malicious-package detection)
 - The dependency-confusion, lockfile-integrity, and malicious-package-response skills
 - npm/PyPI security and reporting documentation
 - OpenSSF supply-chain security guidance
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

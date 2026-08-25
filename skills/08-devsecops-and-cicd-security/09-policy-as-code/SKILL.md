@@ -1,21 +1,33 @@
 ---
-name: policy-as-code
-domain: 08-devsecops-and-cicd-security
-description: Use when codifying security gates so they can't be skipped — expressing policy as versioned, testable code enforced automatically in the pipeline instead of relying on manual review.
-difficulty: intermediate
-tags: [devsecops, policy-as-code, opa, gates, automation]
-tools: [opa, conftest, sentinel]
+format: "v2"
+name: "policy-as-code"
+title: "Policy As Code"
+title_fr: "Politique as code"
+description: "Use when codifying security gates so they can't be skipped — expressing policy as versioned, testable code enforced automatically in the pipeline instead of relying on manual review."
+description_fr: "À utiliser pour coder les contrôles de sécurité afin qu'ils ne puissent plus être contournés — en exprimant la politique sous forme de code versionné et testable, appliqué automatiquement par le pipeline plutôt que confié à une revue manuelle."
+domain: "08-devsecops-and-cicd-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Security policies enforced by manual review or documentation get skipped under deadline pressure — the whole point of DevSecOps is that security gates run automatically and consistently. Policy as code expresses your security and compliance rules as versioned, testable code that the pipeline enforces on every change, so a policy can't be forgotten, bypassed, or applied inconsistently. This skill covers codifying policy so the gates are automatic and reliable, the discipline that ties the DevSecOps controls together.
 
-## When to use it
+### When to use it
 
 Maturing a DevSecOps practice from "we have guidelines" to "the pipeline enforces them". It's what makes SAST, dependency scanning, IaC scanning, and artifact verification into hard, consistent gates rather than optional steps, and it applies the same discipline to custom organisational policy.
 
-## Procedure
+### Procedure
 
 1. **Codify the policies that should be enforced, not documented.** Any security or compliance rule that must hold — "no deploy without passing scans", "no public storage", "images must be signed", "no secrets in code", "required approvals for prod" — becomes code the pipeline checks automatically. Documentation is advisory; code is enforced.
 2. **Use a policy engine.** Open Policy Agent (OPA) with Rego, Conftest (OPA for config files), or platform tools (Sentinel for Terraform) let you write policies as code that evaluate pipeline artifacts, configs, and deployments. The engine runs the policy on every change.
@@ -25,7 +37,7 @@ Maturing a DevSecOps practice from "we have guidelines" to "the pipeline enforce
 6. **Handle exceptions as code too.** Real exceptions exist (a documented, approved deviation); handle them explicitly in the policy (an allowlist with justification) rather than by disabling the gate. An exception should be a deliberate, recorded decision, not a bypassed control.
 7. **Roll out carefully.** Like any enforcement, start in warn/audit mode, find what breaks, fix it, then enforce — so codifying policy doesn't suddenly block everyone.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 manual/documented policy = SKIPPED under deadline pressure. codify -> automatic + consistent + unskippable.
@@ -46,7 +58,7 @@ EXCEPTIONS as code (allowlist + justification), not a disabled gate — delibera
 roll out warn/audit -> fix -> enforce
 ```
 
-## Reading the practice
+### Reading the practice
 
 - **Security policy enforced by manual review or documentation** = inconsistent and skipped under pressure; different reviewers apply it differently, and deadline pressure bypasses it. Codifying it makes the gate automatic and uniform — the core DevSecOps value.
 - **Policies as versioned, tested code** = reliable gates; because they're tested, they reject what they should and allow legitimate work. Untested policies cause outages (too strict) or false assurance (too loose).
@@ -55,7 +67,7 @@ roll out warn/audit -> fix -> enforce
 - **Exceptions handled by disabling the gate** = a bypassed control; real exceptions should be explicit, justified allowlist entries — a recorded decision, not a hole.
 - **Codified, tested, consistently-enforced policy with clear feedback and explicit exceptions** = DevSecOps gates that actually hold, tying the other controls into unskippable enforcement.
 
-## Pitfalls
+### Pitfalls
 
 - **Relying on manual review or documentation.** It's inconsistent and skipped under deadline pressure; the whole point is automatic, uniform enforcement. Codify the policy.
 - **Untested policies.** A policy that blocks legitimate work causes outages; one too loose gives false assurance. Test policies like the code they govern.
@@ -64,9 +76,15 @@ roll out warn/audit -> fix -> enforce
 - **Enforcing without a rollout.** Codifying and immediately enforcing untested policy blocks everyone; use warn/audit mode first.
 - **Codifying everything rigidly.** Some things genuinely need human judgement; codify the clear rules, and don't force nuanced decisions into brittle policy.
 
-## References
+### References
 
 - Open Policy Agent (OPA/Rego), Conftest, and HashiCorp Sentinel documentation
 - The Kubernetes admission-control skill (policy-as-code for clusters) and the other DevSecOps gates
 - OWASP CI/CD Security and DevSecOps guidelines
 - The GRC domain (compliance-as-code overlaps)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

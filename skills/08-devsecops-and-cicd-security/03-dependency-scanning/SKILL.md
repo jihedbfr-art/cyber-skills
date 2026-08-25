@@ -1,21 +1,33 @@
 ---
-name: dependency-scanning
-domain: 08-devsecops-and-cicd-security
-description: Use when scanning project dependencies for known vulnerabilities in CI — catching vulnerable third-party packages before they ship, and telling exploitable from merely-flagged.
-difficulty: beginner
-tags: [devsecops, dependencies, sca, cicd, vulnerabilities]
-tools: [dependabot, snyk, trivy, osv-scanner]
+format: "v2"
+name: "dependency-scanning"
+title: "Dependency Scanning"
+title_fr: "Analyse des dépendances"
+description: "Use when scanning project dependencies for known vulnerabilities in CI — catching vulnerable third-party packages before they ship, and telling exploitable from merely-flagged."
+description_fr: "À utiliser pour scanner les dépendances du projet à la recherche de vulnérabilités connues en CI — afin d'intercepter les paquets tiers vulnérables avant livraison et de distinguer ce qui est réellement exploitable de ce qui est simplement signalé."
+domain: "08-devsecops-and-cicd-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Most of an application is third-party code, and vulnerable dependencies are one of the most common ways applications get compromised (Log4Shell being the famous case). Software Composition Analysis / dependency scanning checks your dependencies against vulnerability databases and flags known-vulnerable packages. This skill covers integrating dependency scanning into CI and — the harder part — turning its output into action without drowning in unexploitable findings.
 
-## When to use it
+### When to use it
 
 A core CI security control for any project with dependencies (nearly all). It's high-value and low-effort to add, but like SAST, its worth depends on managing the output so real risks get fixed and noise doesn't cause fatigue.
 
-## Procedure
+### Procedure
 
 1. **Scan dependencies in CI on every build (and on a schedule).** Wire a scanner (Dependabot, Snyk, Trivy, OSV-Scanner) into the pipeline to check declared and transitive dependencies against vulnerability databases. Scan on commits *and* on a schedule — new vulnerabilities are disclosed against dependencies you haven't changed (the vuln-mgmt "scan continuously" principle).
 2. **Cover transitive dependencies, not just direct ones.** Most dependencies are transitive (dependencies of your dependencies), and vulnerabilities there count just as much. Ensure the scanner reads the full dependency tree (lockfiles), not only your direct declarations.
@@ -25,7 +37,7 @@ A core CI security control for any project with dependencies (nearly all). It's 
 6. **Gate builds carefully.** Fail builds on high-severity, exploitable, fixable vulnerabilities (there's a patched version to move to); report the rest without blocking. Blocking on every flagged CVE (including unexploitable ones) causes the same fatigue as noisy SAST.
 7. **Generate an SBOM** so you can answer "are we affected by CVE-X?" instantly when the next big vulnerability drops (the supply-chain domain).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 most of your app = third-party code ; vulnerable deps = a top compromise vector (Log4Shell)
@@ -45,7 +57,7 @@ GATE on high-severity + exploitable + FIXABLE ; report rest (block-everything ->
 generate SBOM -> answer "affected by CVE-X?" instantly (supply-chain)
 ```
 
-## Reading the results
+### Reading the results
 
 - **A vulnerable, reachable, internet-facing dependency with a known exploit** = the actionable priority; a real compromise vector. This is what dependency scanning should surface to the top.
 - **A flagged CVE in a dependency whose vulnerable function you never call** = often not exploitable in your context; treating every flagged package as urgent wastes effort and causes fatigue. Distinguish exploitable from merely-flagged — the core discipline.
@@ -54,7 +66,7 @@ generate SBOM -> answer "affected by CVE-X?" instantly (supply-chain)
 - **A one-time scan** = stale fast; new CVEs land against unchanged dependencies constantly. Scan on a schedule, not just on change.
 - **Prioritised, exploitability-filtered findings with automated updates and an SBOM** = dependency scanning working; real risks fixed fast, noise filtered, and instant answers when the next big CVE drops.
 
-## Pitfalls
+### Pitfalls
 
 - **Treating every flagged CVE as urgent.** Many aren't exploitable in your context; the key discipline is distinguishing exploitable from merely-flagged, or you drown in noise and fatigue sets in.
 - **Missing transitive dependencies.** Most vulnerabilities are in dependencies-of-dependencies; scanning only direct declarations misses them. Read the full lockfile tree.
@@ -63,9 +75,15 @@ generate SBOM -> answer "affected by CVE-X?" instantly (supply-chain)
 - **Not automating updates.** Manual dependency bumps lag; automated PRs (with good tests) are one of the highest-leverage practices. Use them.
 - **No SBOM.** Without it, "are we affected by the new CVE?" is a frantic manual hunt; generate one.
 
-## References
+### References
 
 - Dependabot, Snyk, Trivy, OSV-Scanner documentation
 - The vulnerability-management domain (cvss-in-context, EPSS, KEV) and software-supply-chain domain (SBOM)
 - OWASP Dependency-Check and SCA guidance
 - The sast-integration and build-provenance-slsa skills
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

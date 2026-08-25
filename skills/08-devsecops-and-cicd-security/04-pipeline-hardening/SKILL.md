@@ -1,21 +1,33 @@
 ---
-name: pipeline-hardening
-domain: 08-devsecops-and-cicd-security
-description: Use when securing the CI/CD pipeline itself — least-privilege runners, pinned actions, protected branches, and the controls that stop the pipeline from becoming an attack path to production.
-difficulty: intermediate
-tags: [devsecops, cicd, pipeline, hardening, supply-chain]
-tools: [github-actions, gitlab-ci]
+format: "v2"
+name: "pipeline-hardening"
+title: "Pipeline Hardening"
+title_fr: "Durcissement du pipeline"
+description: "Use when securing the CI/CD pipeline itself — least-privilege runners, pinned actions, protected branches, and the controls that stop the pipeline from becoming an attack path to production."
+description_fr: "À utiliser pour sécuriser le pipeline CI/CD lui-même — runners à privilèges minimaux, actions épinglées, branches protégées et les contrôles qui empêchent le pipeline de devenir une voie d'attaque vers la production."
+domain: "08-devsecops-and-cicd-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The CI/CD pipeline has write access to production and runs whatever the latest commit tells it to — which makes it one of the most powerful and most attacked parts of the software supply chain. A compromised pipeline can inject malicious code into every build, steal secrets, and deploy to production. This skill covers hardening the pipeline itself so it doesn't become the attack path — securing the thing that secures everything else it touches.
 
-## When to use it
+### When to use it
 
 Hardening any CI/CD setup, especially given how often pipelines are the target of supply-chain attacks. It's foundational: a pipeline that scans code but is itself compromised provides false assurance. Securing the pipeline is as important as what the pipeline does.
 
-## Procedure
+### Procedure
 
 1. **Least-privilege the pipeline's access.** Pipelines often run with broad permissions (deploy to prod, read all secrets, write to any repo). Scope each pipeline/job to the minimum it needs — a build job doesn't need deploy credentials; a test job doesn't need production access. Over-privileged pipelines turn one compromised workflow into total compromise.
 2. **Pin third-party actions/dependencies — a key supply-chain control.** Pipelines pull in reusable actions/steps (GitHub Actions, GitLab includes), and referencing them by mutable tag (`@v3`) means a compromised or repointed action runs in your pipeline. Pin third-party actions by **commit SHA**, not tag, so you run exactly the reviewed code. A tag can be moved to malicious code; a SHA can't.
@@ -25,7 +37,7 @@ Hardening any CI/CD setup, especially given how often pipelines are the target o
 6. **Isolate and clean runners** (the secure-runners skill) — especially self-hosted runners, which persist state between jobs and can be a foothold.
 7. **Log and monitor pipeline activity.** Treat the pipeline as the high-value target it is — log configuration changes, secret access, and deployments, and alert on anomalies (a workflow suddenly accessing secrets it never did).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 the pipeline has WRITE access to prod + runs whatever the latest commit says
@@ -45,7 +57,7 @@ harden
   LOG + monitor (config changes, secret access, deploys) — it's a high-value target
 ```
 
-## Reading the pipeline
+### Reading the pipeline
 
 - **Over-privileged pipeline jobs** (build jobs with deploy credentials, broad secret access) = one compromised workflow becomes total compromise; least-privilege per job is the core hardening. A common, high-impact finding.
 - **Third-party actions referenced by mutable tag** (`@v3`) = a compromised or repointed action runs in your trusted pipeline — a real supply-chain vector. Pin by commit SHA.
@@ -54,7 +66,7 @@ harden
 - **Untrusted PR code running with secret/prod access** = poisoned pipeline execution; the attacker executes code in your trusted CI. Separate untrusted builds from privileged ones.
 - **A hardened pipeline** (least privilege, SHA-pinned actions, protected config, scoped secrets, isolated runners, monitored) = the securer is itself secure; it can't be turned into the attack path.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Least-privilege every job** to the minimum access it needs; separate build, test, and deploy privileges.
 - **Pin third-party actions by commit SHA**, not tag, and review them before adopting.
@@ -63,7 +75,7 @@ harden
 - **Separate untrusted-PR execution** from privileged pipelines to prevent poisoned pipeline execution.
 - **Isolate and clean runners**, and **log/monitor** the pipeline as the high-value target it is.
 
-## Pitfalls
+### Pitfalls
 
 - **Over-privileged pipelines.** Broad access turns one compromised workflow into total compromise; scope every job to least privilege. The most common and impactful pipeline weakness.
 - **Mutable action references.** `@v3` and tags can be repointed to malicious code; pin third-party actions by commit SHA.
@@ -72,9 +84,15 @@ harden
 - **Running untrusted code with privileges.** Poisoned pipeline execution lets an attacker run code in trusted CI; separate untrusted builds from privileged pipelines.
 - **Trusting the pipeline blindly.** A pipeline that scans code but is itself compromised gives false assurance; harden and monitor the pipeline itself.
 
-## References
+### References
 
 - OWASP CI/CD Security Top 10 and SLSA framework
 - GitHub Actions / GitLab CI security hardening documentation
 - The secure-runners, artifact-integrity, and build-provenance-slsa skills
 - The software-supply-chain-security domain
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

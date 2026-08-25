@@ -1,21 +1,33 @@
 ---
-name: runtime-threat-detection
-domain: 07-container-and-kubernetes-security
-description: Use when detecting malicious behaviour in running containers — the runtime monitoring that catches escapes, crypto-mining, and anomalous activity that build-time controls can't.
-difficulty: intermediate
-tags: [containers, runtime, detection, falco, behavioural]
-tools: [falco, tetragon]
+format: "v2"
+name: "runtime-threat-detection"
+title: "Runtime Threat Detection"
+title_fr: "Détection des menaces à l'exécution"
+description: "Use when detecting malicious behaviour in running containers — the runtime monitoring that catches escapes, crypto-mining, and anomalous activity that build-time controls can't."
+description_fr: "À utiliser pour détecter les comportements malveillants dans des conteneurs en cours d'exécution — la surveillance runtime qui repère les évasions, le cryptominage et les activités anormales que les contrôles de build ne peuvent pas voir."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Scanning images and enforcing policy at deploy time keeps a lot of bad things out — but it can't catch what happens *after* a container starts: an exploited application, a container escape attempt, crypto-mining, or an attacker's post-compromise activity. Runtime threat detection watches running containers for malicious behaviour, providing the detection layer that build-time and deploy-time controls can't. This skill covers runtime monitoring for containers and Kubernetes, closing the gap after the container is live.
 
-## When to use it
+### When to use it
 
 As the runtime layer of container security, complementing image scanning (build), admission control (deploy), and hardening (config). It's what detects the compromise that gets through those — because prevention is never perfect, you need detection for running workloads.
 
-## Procedure
+### Procedure
 
 1. **Understand what runtime detection adds.** Build/deploy controls are preventive and static; runtime detection is behavioural and live. It catches: an application exploited at runtime, a container escape attempt, unexpected process execution (a shell spawned in a container that shouldn't have one), crypto-mining, connections to C2, and file/privilege changes — activity that only exists once the container runs.
 2. **Deploy a runtime security tool.** Falco (the CNCF standard, using kernel-level syscall monitoring) or eBPF-based tools (Tetragon, Cilium) observe container behaviour at the kernel level and alert on suspicious activity. These see what containers actually do, not just what they were configured to do.
@@ -30,7 +42,7 @@ As the runtime layer of container security, complementing image scanning (build)
 6. **Wire alerts into the SOC and response.** Runtime detections feed the SOC (triage) and IR; a confirmed container compromise needs response (isolate the pod, investigate, eradicate). Detection without response is incomplete.
 7. **Combine with the preventive controls.** Runtime detection is the backstop, not a replacement — a compromise it catches should also prompt fixing the preventive gap (the image vuln, the missing policy) that let it happen.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 build scan + deploy admission = PREVENTIVE/static. can't catch what happens AFTER start.
@@ -51,7 +63,7 @@ TUNE noise (detection-engineering discipline) ; wire to SOC + IR (detection need
 backstop, not replacement -> also fix the preventive gap that let it in
 ```
 
-## Reading the detections
+### Reading the detections
 
 - **A shell spawned inside a container that only runs an app** = one of the strongest container-compromise signals; containers are single-purpose, so an interactive shell is almost always an attacker or an exploited process. High-value detection.
 - **Container escape-attempt behaviour** (privileged operations, sensitive mounts accessed, host namespace access at runtime) = an active attempt to break out to the node; escalate immediately and fix the config that allowed it.
@@ -61,7 +73,7 @@ backstop, not replacement -> also fix the preventive gap that let it in
 - **A runtime detection with no response path** = incomplete; a caught compromise needs isolation, investigation, and eradication. Wire it to IR.
 - **Baselined, tuned runtime detection feeding the SOC, backing up preventive controls** = the complete picture — prevention plus detection for what gets through.
 
-## Pitfalls
+### Pitfalls
 
 - **Relying only on build/deploy controls.** They're preventive and can't catch runtime compromise (exploited apps, escapes, mining). Prevention isn't perfect; you need runtime detection for what gets through.
 - **No runtime monitoring.** A compromised running container is invisible without it; escapes and mining proceed unseen. Deploy Falco or an eBPF tool.
@@ -70,9 +82,15 @@ backstop, not replacement -> also fix the preventive gap that let it in
 - **Treating detection as a substitute for prevention.** It's a backstop — also fix the preventive gap (image vuln, missing policy, escape vector) that allowed the compromise.
 - **Ignoring the single-purpose advantage.** Containers' predictability makes anomaly detection more effective than on general hosts; baseline and exploit that.
 
-## References
+### References
 
 - Falco (falco.org, CNCF) and Tetragon/Cilium eBPF documentation
 - The container-image-scanning, admission-control, and container-escape-vectors skills
 - The detection-engineering and SOC domains (tuning, triage, response)
 - MITRE ATT&CK for Containers
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

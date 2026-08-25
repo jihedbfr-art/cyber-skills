@@ -1,21 +1,33 @@
 ---
-name: dockerfile-hardening
-domain: 07-container-and-kubernetes-security
-description: Use when writing or reviewing a Dockerfile for security — non-root users, minimal base images, no secrets in layers, and the build practices that shrink the attack surface.
-difficulty: beginner
-tags: [containers, docker, dockerfile, hardening, images]
-tools: [docker, hadolint, trivy]
+format: "v2"
+name: "dockerfile-hardening"
+title: "Dockerfile Hardening"
+title_fr: "Durcissement du Dockerfile"
+description: "Use when writing or reviewing a Dockerfile for security — non-root users, minimal base images, no secrets in layers, and the build practices that shrink the attack surface."
+description_fr: "À utiliser pour écrire ou relire un Dockerfile sous l'angle sécurité — utilisateur non-root, image de base minimale, absence de secrets dans les layers, et les pratiques de build qui réduisent la surface d'attaque."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The Dockerfile decides what's in your container and how it runs — and a few habits separate a hardened image from a bloated, root-running, secret-leaking one. This skill covers the Dockerfile practices that shrink the attack surface: minimal bases, non-root execution, no secrets baked into layers, and pinned, verifiable dependencies. It's where container security starts, before the image ever runs.
 
-## When to use it
+### When to use it
 
 Writing or reviewing any Dockerfile, and as a baseline for the whole container programme. It pairs with image scanning (which finds vulnerabilities) — hardening reduces what's there to be vulnerable in the first place.
 
-## Procedure
+### Procedure
 
 1. **Start from a minimal base image — the highest-impact choice.** Every package in the base is attack surface and a potential CVE. Prefer distroless, alpine, or slim variants over full OS images. A smaller base means fewer vulnerabilities, a smaller image, and less for an attacker to use (fewer shells and tools inside).
 2. **Run as a non-root user.** By default containers run as root, so a container escape or app compromise is root. Create and switch to a non-root user (`USER`), so the process has minimal privilege even if compromised. This is one of the most important hardening steps.
@@ -25,7 +37,7 @@ Writing or reviewing any Dockerfile, and as a baseline for the whole container p
 6. **Drop unnecessary capabilities and set a read-only filesystem** where possible (often at runtime, but design for it) — the container should have only what it needs.
 7. **Lint and scan the result.** Use a Dockerfile linter (hadolint) to catch bad practices and a scanner (Trivy — the image-scanning skill) on the built image. Automate both in CI.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 the Dockerfile decides what's IN the container + how it RUNS. harden it.
@@ -45,7 +57,7 @@ the Dockerfile decides what's IN the container + how it RUNS. harden it.
 quick check: does it run as root? secrets in layers? full-fat base? unpinned?
 ```
 
-## Reading a Dockerfile
+### Reading a Dockerfile
 
 - **A full-OS base image** = large attack surface and many inherited CVEs; switching to distroless/alpine/slim removes most of them at once. The single highest-impact hardening choice.
 - **No `USER` directive (runs as root)** = a container escape or app compromise is immediately root; a non-root user is one of the most important mitigations. A common, high-value finding.
@@ -54,7 +66,7 @@ quick check: does it run as root? secrets in layers? full-fat base? unpinned?
 - **Build tools and caches in the final image** = unnecessary bloat and attack surface (compilers, package managers an attacker can use); multi-stage builds and same-layer cleanup remove them.
 - **A minimal, non-root, secret-free, pinned, multi-stage image** = the hardened baseline; scanning it should find far less.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Minimal base + non-root user + no baked secrets** are the three highest-value habits; adopt them as defaults.
 - **Multi-stage builds** to keep build-time tooling out of the runtime image.
@@ -63,7 +75,7 @@ quick check: does it run as root? secrets in layers? full-fat base? unpinned?
 - **`.dockerignore`** to avoid copying `.git`, secrets, and junk.
 - **Lint (hadolint) and scan (Trivy) in CI**, failing the build on bad practices and fixable high/critical vulnerabilities.
 
-## Pitfalls
+### Pitfalls
 
 - **Running as root.** The default, and a major mitigation missed; escape or compromise becomes root. Add a non-root `USER`.
 - **Secrets in layers.** `COPY`/`ENV` of a credential persists in the inspectable layer history even if "removed" later — a real leak. Use build secrets or runtime injection.
@@ -72,9 +84,15 @@ quick check: does it run as root? secrets in layers? full-fat base? unpinned?
 - **Leaving build tooling in the final image.** Compilers and package managers are attack surface; use multi-stage builds.
 - **Not linting/scanning.** Bad practices and vulnerabilities ship silently; automate hadolint and Trivy in CI.
 
-## References
+### References
 
 - Docker security best practices and Dockerfile reference
 - hadolint (Dockerfile linter) and Trivy (image scanner) documentation
 - CIS Docker Benchmark
 - The container-image-scanning and supply-chain-for-images skills
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: kubernetes-rbac-audit
-domain: 07-container-and-kubernetes-security
-description: Use when auditing Kubernetes RBAC for over-permissive roles and bindings — the excessive permissions that let a compromised workload or user take over the cluster.
-difficulty: advanced
-tags: [kubernetes, rbac, authorization, audit, privilege-escalation]
-tools: [kubectl, rbac-tool, kubectl-who-can]
+format: "v2"
+name: "kubernetes-rbac-audit"
+title: "Kubernetes Rbac Audit"
+title_fr: "Audit RBAC Kubernetes"
+description: "Use when auditing Kubernetes RBAC for over-permissive roles and bindings — the excessive permissions that let a compromised workload or user take over the cluster."
+description_fr: "À utiliser pour auditer le RBAC Kubernetes à la recherche de rôles et de bindings trop permissifs — les permissions excessives qui permettent à un workload compromis ou à un utilisateur de prendre le contrôle du cluster."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Kubernetes RBAC controls who and what can do what in a cluster — and over-permissive roles are how a compromised pod or a stolen credential becomes cluster-wide compromise. A service account with too many rights, a role that grants `*` on everything, or the ability to create pods (and thus run arbitrary containers) can all lead to takeover. This skill covers auditing RBAC for the excessive permissions that create those escalation paths, the cluster equivalent of the cloud IAM-privesc review.
 
-## When to use it
+### When to use it
 
 Auditing a Kubernetes cluster's security posture, after deployment, or when assessing whether a compromised workload could escalate. RBAC misconfiguration is a leading cause of Kubernetes compromise, making this a high-value audit.
 
-## Procedure
+### Procedure
 
 1. **Enumerate roles, cluster roles, and their bindings.** Map who (users, groups, service accounts) has what permissions. `kubectl` and tools like `rbac-tool` or `kubectl-who-can` help visualise it:
    ```
@@ -34,7 +46,7 @@ Auditing a Kubernetes cluster's security posture, after deployment, or when asse
 6. **Trace escalation paths.** Like cloud IAM, the risk is a *chain* — a pod's SA can read a secret that's a more privileged SA's token, or create a pod as a privileged SA. Map how a low-priv foothold could reach cluster-admin.
 7. **Report the specific over-grants** and the escalation paths — the fix is tightening the role/binding, not a generic "improve RBAC".
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 RBAC = who/what can do what in the cluster ; over-permission = pod/cred -> cluster takeover
@@ -56,7 +68,7 @@ focus on SERVICE ACCOUNTS (compromised pod inherits SA rights)
 trace ESCALATION CHAINS (pod SA -> read a privileged SA token -> ...)
 ```
 
-## Reading the audit
+### Reading the audit
 
 - **A workload service account bound to `cluster-admin` or with wildcard permissions** = a compromised pod using that SA owns the cluster; the worst and most impactful RBAC finding. Scope it to the minimum immediately.
 - **`create`/`update` on pods granted broadly** = effectively cluster code execution; whoever has it can run privileged containers, mount host paths, and reach other secrets. A subtle but critical over-grant.
@@ -66,7 +78,7 @@ trace ESCALATION CHAINS (pod SA -> read a privileged SA token -> ...)
 - **A traced chain from a low-priv SA to cluster-admin** = the real risk, expressed as the exact escalation path; that path is what to break.
 - **Least-privilege roles scoped to specific verbs/resources/namespaces** = the good state; a compromised workload gains little.
 
-## The fix
+### The fix
 
 - **Least privilege on every role and binding** — grant only the specific verbs, resources, and namespaces a workload needs, never `*`. This is the direct remediation.
 - **No `cluster-admin` for workloads** — reserve it for genuine cluster administration, never bind it to a service account.
@@ -75,7 +87,7 @@ trace ESCALATION CHAINS (pod SA -> read a privileged SA token -> ...)
 - **Namespace-scope roles** where possible rather than cluster-wide, to limit blast radius.
 - **Audit continuously** — RBAC drifts as teams add permissions; re-audit regularly and use admission control (that skill) to prevent dangerous grants.
 
-## Pitfalls
+### Pitfalls
 
 - **Wildcard permissions.** `*` on verbs/resources/apiGroups grants far more than needed and is the root of most RBAC over-permission. Scope explicitly.
 - **cluster-admin on workloads.** Binding it to a service account means any pod compromise is cluster compromise. Never do it for workloads.
@@ -83,9 +95,15 @@ trace ESCALATION CHAINS (pod SA -> read a privileged SA token -> ...)
 - **Ignoring service accounts.** Users get attention but workload SAs are what compromised pods use; over-permissioned SAs (especially defaults) are the real risk.
 - **Auditing once.** RBAC accumulates permissions over time; re-audit and enforce with admission control.
 
-## References
+### References
 
 - Kubernetes RBAC documentation and CIS Kubernetes Benchmark
 - rbac-tool, kubectl-who-can, and Kubernetes RBAC audit tooling
 - The cloud iam-privilege-escalation skill (same reasoning), pod-security-standards, and admission-control skills
 - MITRE ATT&CK for Containers
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

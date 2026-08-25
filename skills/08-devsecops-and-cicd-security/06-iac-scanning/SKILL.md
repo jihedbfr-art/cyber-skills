@@ -1,21 +1,33 @@
 ---
-name: iac-scanning
-domain: 08-devsecops-and-cicd-security
-description: Use when scanning infrastructure-as-code for misconfigurations before deploy — catching the insecure Terraform/CloudFormation/Kubernetes settings that become cloud breaches.
-difficulty: intermediate
-tags: [devsecops, iac, terraform, misconfiguration, shift-left]
-tools: [checkov, tfsec, trivy, kics]
+format: "v2"
+name: "iac-scanning"
+title: "Iac Scanning"
+title_fr: "Analyse de l'infrastructure as code"
+description: "Use when scanning infrastructure-as-code for misconfigurations before deploy — catching the insecure Terraform/CloudFormation/Kubernetes settings that become cloud breaches."
+description_fr: "À utiliser pour scanner l'infrastructure as code à la recherche de mauvaises configurations avant déploiement — afin d'intercepter les réglages Terraform/CloudFormation/Kubernetes non sécurisés qui se transforment en brèches cloud."
+domain: "08-devsecops-and-cicd-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Infrastructure is code now — Terraform, CloudFormation, Kubernetes manifests — and an insecure setting there (a public S3 bucket, an open security group, an unencrypted database) becomes a real cloud misconfiguration the moment it deploys. IaC scanning catches those misconfigurations *before* deployment, at the code stage, where they're a one-line fix instead of a production exposure. This skill covers integrating IaC scanning into the pipeline, shifting cloud security left.
 
-## When to use it
+### When to use it
 
 Any pipeline that deploys infrastructure via IaC (most modern ones). It's the shift-left counterpart to the cloud-security domain's posture management (CSPM) — IaC scanning prevents misconfigurations at the code stage, CSPM catches them at runtime; together they cover the lifecycle.
 
-## Procedure
+### Procedure
 
 1. **Scan IaC in the pipeline before deploy.** Wire an IaC scanner (Checkov, tfsec, Trivy, KICS) into CI to check Terraform/CloudFormation/Kubernetes/ARM against misconfiguration rules on every change. Catching the public bucket in the pull request is far cheaper than catching it in production.
 2. **Cover the high-impact misconfiguration classes** — the same ones the cloud domain warns about, but caught in code:
@@ -30,7 +42,7 @@ Any pipeline that deploys infrastructure via IaC (most modern ones). It's the sh
 6. **Handle the existing-infrastructure baseline.** As with SAST, turning IaC scanning on surfaces many pre-existing findings; baseline them and gate on new misconfigurations so the pipeline stays usable while debt is worked down.
 7. **Close the loop with CSPM.** IaC scanning prevents misconfigurations pre-deploy, but drift happens (manual changes in the console). Pair with runtime CSPM (cloud domain) so a misconfiguration introduced outside IaC is still caught. Fix drift back in the IaC, not the console.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 infra = code (Terraform/CloudFormation/K8s) ; insecure setting -> real cloud misconfig on deploy
@@ -49,7 +61,7 @@ integrate
   pair with CSPM (drift happens — console changes) ; fix drift in the IaC not the console
 ```
 
-## Reading the results
+### Reading the results
 
 - **A public storage bucket or open security group flagged in the IaC** = a cloud breach caught at the code stage — a one-line fix now versus a production exposure and possible incident later. The highest-value IaC-scanning catch, and exactly what shift-left is for.
 - **Wildcard IAM policies in the IaC** = over-permission caught before it deploys; the cloud IAM-privesc paths prevented at source.
@@ -59,7 +71,7 @@ integrate
 - **A misconfiguration introduced in the console (drift)** = IaC scanning won't catch it (it's not in the code); CSPM does. Pair them, and fix drift back in the IaC.
 - **Pre-deploy IaC scanning gating dangerous misconfigs, paired with runtime CSPM** = cloud security covered across the lifecycle.
 
-## Pitfalls
+### Pitfalls
 
 - **Only catching misconfigurations at runtime (CSPM), not in code.** IaC scanning prevents them pre-deploy, far cheaper than remediating a live exposure. Shift the check left.
 - **Not tuning the broad rule set.** IaC scanners flag many low-impact rules; without prioritising the dangerous ones, fatigue sets in. Tune like SAST.
@@ -68,9 +80,15 @@ integrate
 - **Fixing drift in the console.** Manual console fixes get overwritten by the next IaC apply; fix misconfigurations in the IaC so they stick.
 - **Treating IaC scanning as sufficient alone.** Drift and console changes bypass it; pair with runtime CSPM.
 
-## References
+### References
 
 - Checkov, tfsec, Trivy, KICS documentation
 - The cloud-security domain (the misconfigurations, and cspm-baseline for runtime)
 - The sast-integration and policy-as-code skills (same integration discipline)
 - CIS benchmarks for cloud providers
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.
