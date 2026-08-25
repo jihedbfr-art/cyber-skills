@@ -1,21 +1,33 @@
 ---
-name: tls-configuration
-domain: 14-cryptography-and-pki
-description: Use when configuring TLS on a server — protocol versions, cipher suites, and settings that score clean and stay usable — the config side of the network TLS-inspection check.
-difficulty: intermediate
-tags: [crypto, tls, ssl, ciphers, server-config]
-tools: []
+format: "v2"
+name: "tls-configuration"
+title: "Tls Configuration"
+title_fr: "Configuration TLS"
+description: "Use when configuring TLS on a server — protocol versions, cipher suites, and settings that score clean and stay usable — the config side of the network TLS-inspection check."
+description_fr: "À utiliser pour configurer TLS sur un serveur — versions de protocole, suites de chiffrement et réglages qui obtiennent un bon score tout en restant compatibles — le pendant configuration du contrôle réseau d'inspection TLS."
+domain: "14-cryptography-and-pki"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 TLS-inspection (network domain) tells you what a service's TLS *looks like* from the outside; this skill is the other half — how to *configure* a server so it comes out clean and stays compatible with real clients. Getting TLS config right is mostly about disabling the old and dangerous while keeping what legitimate clients need, and not hand-picking cipher lists you don't fully understand. This skill covers the server-side settings and the sane way to derive them.
 
-## When to use it
+### When to use it
 
 Configuring TLS on any server (web, API, mail, load balancer, reverse proxy), or hardening an existing config flagged by a scan. It pairs directly with the network `tls-inspection` skill (which verifies the result from the wire).
 
-## Procedure
+### Procedure
 
 1. **Don't hand-write cipher strings — generate them.** The reliable way to get a correct, current config is a trusted generator (Mozilla SSL Configuration Generator) for your server software and a chosen compatibility profile. Hand-picked cipher lists are where subtle mistakes and outdated suites creep in.
 2. **Pick a compatibility profile deliberately:**
@@ -28,7 +40,7 @@ Configuring TLS on any server (web, API, mail, load balancer, reverse proxy), or
 6. **Verify from the outside** with the tls-inspection tools (`testssl.sh`/SSLyze) after configuring — the config is a claim; the wire is the truth. Confirm the score and that no weak protocols/ciphers slipped through.
 7. **Balance security against your clients.** The Modern profile is strongest but breaks old clients; choose the profile that fits your actual client base rather than blindly maximising and locking legitimate users out (while still dropping genuinely obsolete protocols).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 generate, don't hand-write
@@ -48,7 +60,7 @@ verify from the wire: testssl.sh / sslyze  (config = claim, wire = truth)
 balance: pick the profile that fits your real clients (don't lock them out)
 ```
 
-## Reading the config/result
+### Reading the config/result
 
 - **SSLv3 / TLS 1.0 / 1.1 enabled** = deprecated protocols enabling downgrade attacks; disable them. A clear finding regardless of client concerns.
 - **Non-forward-secret or weak ciphers** (RC4, 3DES, static RSA key exchange) = decryptable/interceptable; restrict to AEAD + ECDHE.
@@ -57,7 +69,7 @@ balance: pick the profile that fits your real clients (don't lock them out)
 - **Config claims clean but the wire shows a weak suite** = something didn't apply (a default, a fronting proxy); the external scan is what confirms reality.
 - **Intermediate/Modern profile, TLS 1.2+1.3, AEAD+FS, valid cert, HSTS, verified externally** = the clean, usable state.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Generate the config from a trusted source** (Mozilla generator) for your server and a chosen profile — don't hand-assemble cipher strings.
 - **Default to the Intermediate profile**; use Modern where you can drop legacy clients, Old only when truly forced.
@@ -66,7 +78,7 @@ balance: pick the profile that fits your real clients (don't lock them out)
 - **Verify from the wire** with tls-inspection tools after every change, and re-check periodically (recommendations and your config both drift).
 - **Match the profile to your real clients** so hardening doesn't lock out legitimate traffic.
 
-## Pitfalls
+### Pitfalls
 
 - **Hand-writing cipher lists.** Easy to include an outdated suite or misorder preferences; generate from a trusted source instead.
 - **Leaving old protocols on.** TLS 1.0/1.1 and SSLv3 enable downgrade attacks; disable them even when keeping some client compatibility.
@@ -74,9 +86,15 @@ balance: pick the profile that fits your real clients (don't lock them out)
 - **Trusting the config without verifying.** A fronting proxy, a default, or a load balancer can serve weaker TLS than your config says; verify from the wire.
 - **Config without the surrounding pieces.** A perfect cipher list with an expired cert or no HSTS is still a finding; certificate and header hygiene matter too.
 
-## References
+### References
 
 - Mozilla SSL Configuration Generator and Server Side TLS guidelines
 - OWASP Transport Layer Protection Cheat Sheet
 - The network tls-inspection skill (external verification) and certificate-management skill
 - NIST SP 800-52 (TLS configuration guidance)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,25 +1,37 @@
 ---
-name: gpo-security
-domain: 12-active-directory-and-windows-security
-description: Use when assessing Group Policy as both an attack surface and a defensive tool — finding GPOs that can be abused to push code across the domain, and using them to enforce hardening.
-difficulty: intermediate
-tags: [active-directory, group-policy, gpo, windows, hardening]
-tools: [bloodhound, powerview]
+format: "v2"
+name: "gpo-security"
+title: "Gpo Security"
+title_fr: "Sécurité des GPO"
+description: "Use when assessing Group Policy as both an attack surface and a defensive tool — finding GPOs that can be abused to push code across the domain, and using them to enforce hardening."
+description_fr: "À utiliser pour évaluer les GPO à la fois comme surface d'attaque et comme outil défensif : repérer les GPO exploitables pour pousser du code sur tout le domaine, et s'en servir pour imposer un durcissement à grande échelle."
+domain: "12-active-directory-and-windows-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Group Policy is how AD pushes configuration to thousands of machines — which makes it a powerful hardening tool and a devastating attack vector at the same time. If an attacker can edit a GPO linked to sensitive systems, they can run code as SYSTEM across every machine it applies to. This skill covers both sides: finding abusable GPO permissions, and using Group Policy to enforce security at scale.
 
-## When to use it
+### When to use it
 
 During AD assessment (who can modify which GPOs, and what they reach) and during hardening (deploying baseline settings domain-wide). Attack and defence share the same mechanism, which is why they're one skill.
 
-## The attack: GPO edit rights as code execution
+### The attack: GPO edit rights as code execution
 
 A GPO applies to the OUs, domains, or sites it's linked to. Anyone with edit rights on a GPO can add a scheduled task, a startup script, or a setting that runs as SYSTEM on every machine that processes it. So the security question is: **who can edit which GPOs, and what do those GPOs apply to?**
 
-## Procedure
+### Procedure
 
 1. **Enumerate who can modify GPOs.** BloodHound flags `WriteGPO`/`GpLink` and dangerous GPO ACLs; PowerView can list GPO permissions. Look for non-admin principals with edit rights, especially on GPOs linked to sensitive OUs (domain controllers, servers):
    ```
@@ -31,12 +43,12 @@ A GPO applies to the OUs, domains, or sites it's linked to. Anyone with edit rig
 4. **Check GPO-delivered credentials/settings** for exposure — historically, Group Policy Preferences stored passwords in a reversibly-encrypted `cpassword` (the MS14-025 issue); any lingering GPP passwords are a straight credential leak.
 5. **Report the ACL and its reach** — the fix is the permission, not the payload.
 
-## The defence: GPO as a hardening lever
+### The defence: GPO as a hardening lever
 
 6. **Use Group Policy to enforce the baseline** — Group Policy is how you deploy most of the AD hardening skill's settings at scale: disabling weak protocols, enforcing LSASS protection, setting audit policy, restricting local admin. One well-secured GPO hardens the whole domain.
 7. **Protect the GPOs themselves.** Tightly control who can edit GPOs (especially those linked to Tier 0 / DCs), monitor GPO changes, and keep GPO edit rights inside the tiered-admin boundary.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 attack question: WHO can edit WHICH GPO, applying to WHAT?
@@ -56,7 +68,7 @@ defence
   lock down GPO edit rights (esp. DC-linked) + monitor GPO changes
 ```
 
-## Reading the assessment
+### Reading the assessment
 
 - **A non-admin with edit rights on a GPO linked to Domain Controllers or servers** = effectively SYSTEM code execution across those systems — a domain-compromise path. The highest-impact GPO finding.
 - **`cpassword` in a Group Policy Preferences file in SYSVOL** = decryptable credentials readable by any domain user; a direct, well-known leak to remediate immediately.
@@ -64,7 +76,7 @@ defence
 - **GPO edit rights held outside the admin tier** = a break in the tiered-admin model; that principal is effectively as privileged as what the GPO controls.
 - **Well-scoped GPO permissions + a hardening baseline GPO in place** = the good state; Group Policy working for you, not against you.
 
-## The fix
+### The fix
 
 - **Restrict GPO edit rights** to the appropriate admin tier — nobody outside Tier 0 should edit GPOs linked to domain controllers. Audit GPO ACLs and remove unintended write access.
 - **Remove any GPP `cpassword`** and rotate the exposed credentials; use LAPS for local admin passwords instead.
@@ -72,16 +84,22 @@ defence
 - **Use GPO deliberately for hardening** — deploy the baseline (protocol hardening, LSASS/Credential Guard, audit policy, restricted local admin) domain-wide, and keep those GPOs protected.
 - Keep GPO management inside the tiered-admin model so editing a DC-linked policy requires Tier 0 access.
 
-## Pitfalls
+### Pitfalls
 
 - **Assessing GPO edit rights without mapping the link.** The permission's severity is entirely about what the GPO applies to — an editable GPO on nothing is nothing; on the DC OU it's the domain.
 - **Detonating a test payload on production GPOs.** A malicious GPO hits every machine in scope; demonstrate capability, don't push live code across the fleet.
 - **Missing legacy GPP passwords.** They persist in SYSVOL from old configs and leak credentials to any domain user.
 - **Forgetting GPO edit rights in tiering.** Whoever can edit a Tier 0 GPO is Tier 0, whatever their nominal role.
 
-## References
+### References
 
 - MITRE ATT&CK — T1484.001 (Group Policy Modification)
 - Microsoft MS14-025 (Group Policy Preferences password vulnerability)
 - BloodHound and PowerView GPO enumeration documentation
 - Microsoft security baselines (delivered via GPO)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

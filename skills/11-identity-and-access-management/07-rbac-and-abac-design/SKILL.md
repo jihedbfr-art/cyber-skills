@@ -1,28 +1,40 @@
 ---
-name: rbac-and-abac-design
-domain: 11-identity-and-access-management
-description: Use when designing an authorization model — choosing between role-based and attribute-based access control, and structuring permissions that stay correct as the system grows.
-difficulty: intermediate
-tags: [iam, authorization, rbac, abac, access-control, design]
-tools: []
+format: "v2"
+name: "rbac-and-abac-design"
+title: "Rbac And Abac Design"
+title_fr: "Conception RBAC et ABAC"
+description: "Use when designing an authorization model — choosing between role-based and attribute-based access control, and structuring permissions that stay correct as the system grows."
+description_fr: "À utiliser pour concevoir un modèle d'autorisation : choisir entre contrôle d'accès basé sur les rôles (RBAC) et basé sur les attributs (ABAC), et structurer les permissions pour qu'elles restent correctes et auditables à mesure que le système grandit."
+domain: "11-identity-and-access-management"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Authentication proves who you are; authorization decides what you can do — and it's where most access-control bugs are born, because permission models that start simple rot into a tangle nobody can reason about. This skill covers choosing an authorization model (RBAC, ABAC, or a blend) and structuring it so access decisions stay correct and auditable as the system scales.
 
-## When to use it
+### When to use it
 
 Designing a new system's permissions, or refactoring a permission model that's become unmanageable (roles multiplying, one-off exceptions everywhere, nobody able to answer "who can do X"). It's the design counterpart to the access-control *testing* skills in the web/API domains.
 
-## The models
+### The models
 
 - **RBAC (role-based)** — permissions attach to roles, users get roles. Simple, auditable, and the right default for most systems: "editors can publish", "admins can delete". Struggles when access depends on context beyond the role (this record, this time, this location).
 - **ABAC (attribute-based)** — decisions are computed from attributes of the user, the resource, the action, and the environment ("a manager can approve expenses *in their own department* under $X"). Powerful and fine-grained, but more complex to reason about and audit.
 - **ReBAC (relationship-based)** — access follows relationships ("can edit documents they own or that are shared with them"); common in collaborative apps.
 - **In practice, most systems blend them**: RBAC for the coarse structure, attributes for the contextual conditions. Start with RBAC and add attribute conditions where the role alone can't decide.
 
-## Procedure
+### Procedure
 
 1. **Enumerate the resources and actions** first — what can be done to what. This is the vocabulary of your permissions; get it explicit before assigning anyone anything.
 2. **Choose the model by how access actually depends on things.** If access is well-described by job function alone, RBAC. If it genuinely depends on context (ownership, department, amount, time), you need attribute conditions — but don't reach for full ABAC complexity if a handful of roles would do.
@@ -32,7 +44,7 @@ Designing a new system's permissions, or refactoring a permission model that's b
 6. **Plan for review.** Design so you can answer "who can do X?" and "what can this user do?" — periodic access review and least-privilege audits depend on the model being legible. If nobody can answer those, the model is already broken.
 7. **Handle escalation and separation of duties** where needed — step-up for sensitive actions, and splitting conflicting permissions (the person who requests can't also approve).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 pick the model by how access DEPENDS
@@ -53,7 +65,7 @@ design rules
 smell: roles multiplying, one-off exceptions, nobody can answer "who can X?"
 ```
 
-## Reading a design
+### Reading a design
 
 - **Authorization logic scattered across the codebase** = the model will drift and develop gaps; each ad-hoc check is a future access-control bug. Centralize it.
 - **A model that defaults to allow** (or where a forgotten check grants access) = fails open; one omission becomes an exposure. Default deny.
@@ -61,7 +73,7 @@ smell: roles multiplying, one-off exceptions, nobody can answer "who can X?"
 - **Nobody can answer "who can do X?"** = the model isn't auditable, which means least-privilege review is impossible and privilege creep is invisible. Legibility is a security property here.
 - **A clean role structure with attribute conditions only where context demands** = the pragmatic sweet spot; note it as the target.
 
-## Pitfalls
+### Pitfalls
 
 - **Scattered, duplicated authorization checks.** The single biggest source of access-control bugs — logic drifts, one path forgets the check. Centralize the policy.
 - **Reaching for full ABAC when RBAC would do.** Fine-grained attribute policies are powerful and hard to audit; use them where context genuinely decides, not everywhere.
@@ -69,9 +81,15 @@ smell: roles multiplying, one-off exceptions, nobody can answer "who can X?"
 - **Fail-open defaults.** Access must be explicitly granted; a missing decision must deny.
 - **Ignoring auditability.** If you can't enumerate who has access to what, you can't do least-privilege review — and privilege creep goes unchecked.
 
-## References
+### References
 
 - NIST RBAC model (INCITS 359) and NIST SP 800-162 (ABAC)
 - OWASP Authorization Cheat Sheet
 - Google Zanzibar (ReBAC) as a reference for relationship-based models
 - CWE-284, CWE-269 (improper access control / privilege management)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

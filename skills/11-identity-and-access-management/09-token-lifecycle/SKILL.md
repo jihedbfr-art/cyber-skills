@@ -1,21 +1,33 @@
 ---
-name: token-lifecycle
-domain: 11-identity-and-access-management
-description: Use when designing how access and refresh tokens are issued, stored, refreshed, and revoked — closing the gaps that let stolen or stale tokens keep working.
-difficulty: intermediate
-tags: [iam, tokens, oauth2, jwt, revocation, sessions]
-tools: [burp]
+format: "v2"
+name: "token-lifecycle"
+title: "Token Lifecycle"
+title_fr: "Cycle de vie des tokens"
+description: "Use when designing how access and refresh tokens are issued, stored, refreshed, and revoked — closing the gaps that let stolen or stale tokens keep working."
+description_fr: "À utiliser pour concevoir la façon dont les access tokens et refresh tokens sont émis, stockés, renouvelés et révoqués, afin de combler les failles qui laissent des tokens volés ou périmés rester utilisables."
+domain: "11-identity-and-access-management"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A token is a bearer credential — whoever holds it is treated as the user. That makes the whole lifecycle security-critical: how long it lives, where it's stored, how it's refreshed, and — the part everyone underestimates — how it's revoked. This skill covers designing a token lifecycle where theft has a short window and revocation actually works, rather than tokens that stay valid long after they should.
 
-## When to use it
+### When to use it
 
 Designing or reviewing token-based auth (OAuth2/OIDC access + refresh tokens, API tokens, session tokens). It ties together threads from the OAuth2, JWT, and session skills into the end-to-end question: from issue to death, can a token be misused?
 
-## The lifecycle stages
+### The lifecycle stages
 
 1. **Issuance** — what's in the token, how long it's valid, what it's scoped to.
 2. **Storage** — where the client keeps it (and how exposed that is).
@@ -23,7 +35,7 @@ Designing or reviewing token-based auth (OAuth2/OIDC access + refresh tokens, AP
 4. **Refresh** — how a short access token is renewed without re-login.
 5. **Revocation** — how a token is killed before its natural expiry.
 
-## Procedure
+### Procedure
 
 1. **Keep access tokens short-lived.** A short expiry (minutes to an hour) means a stolen access token has a small window. This is the cheapest, most effective control — it bounds the damage of theft without requiring perfect revocation.
 2. **Use refresh tokens for continuity, and rotate them.** A longer-lived refresh token gets new access tokens. Rotate it on each use (issue a new refresh token, invalidate the old) and detect reuse of an old one as a theft signal — reuse means someone has a stolen copy, so revoke the whole chain.
@@ -32,7 +44,7 @@ Designing or reviewing token-based auth (OAuth2/OIDC access + refresh tokens, AP
 5. **Scope tokens narrowly.** Least-privilege scope and audience so a leaked token does the minimum, and can't be replayed against a different service.
 6. **Test the gaps:** does an expired token still work (validation not checking `exp`)? Does logout leave the token usable? Does a rotated refresh token's predecessor still work? Does password change kill existing tokens?
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 lifecycle design
@@ -53,7 +65,7 @@ tests
   old (rotated) refresh token still works?  pw-change kills tokens?
 ```
 
-## Reading the design
+### Reading the design
 
 - **Long-lived access tokens** = a stolen token works for hours or days; the single biggest lifecycle weakness. Shorten them and lean on refresh.
 - **No refresh-token rotation / reuse detection** = a stolen refresh token grants indefinite access silently. Rotation plus reuse-detection turns theft into a detectable, revocable event.
@@ -61,7 +73,7 @@ tests
 - **JWTs treated as revocable when they aren't** = a false sense of control; logout "works" in the UI but the token still validates. Add short lifetimes and a real revocation path.
 - **Password change that doesn't invalidate tokens** = a compromised account whose owner resets the password is still accessible to the attacker via existing tokens. Kill them on credential change.
 
-## The fix
+### The fix
 
 - **Short access-token lifetimes + rotating refresh tokens** with reuse detection — the core pattern. Short windows bound theft; rotation makes stolen refresh tokens detectable and killable.
 - **Store tokens out of JavaScript's reach** (httpOnly secure cookies / secure mobile storage), never in URLs.
@@ -69,7 +81,7 @@ tests
 - **Scope narrowly** (least privilege, correct audience) to limit what a leaked token can do and prevent cross-service replay.
 - **Invalidate on the events that matter**: logout, password/credential change, role downgrade, suspected compromise.
 
-## Pitfalls
+### Pitfalls
 
 - **Long-lived access tokens "for convenience".** Convenience for the attacker too — theft stays useful for a long time. Short + refresh instead.
 - **Refresh tokens without rotation.** A stolen one is a permanent, silent backdoor. Rotate and detect reuse.
@@ -77,9 +89,15 @@ tests
 - **Tokens in localStorage or URLs.** XSS-exfiltratable and log-leaking respectively. Use httpOnly cookies / secure storage.
 - **Not killing tokens on password change.** The reset that's supposed to lock an attacker out leaves them in via existing tokens.
 
-## References
+### References
 
 - OAuth 2.0 Security BCP (RFC 9700) — refresh token rotation, short-lived tokens
 - OWASP JWT and Session Management Cheat Sheets
 - RFC 7009 (OAuth Token Revocation)
 - CWE-613 (Insufficient Session Expiration), CWE-522
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

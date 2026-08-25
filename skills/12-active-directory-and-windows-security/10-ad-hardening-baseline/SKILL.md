@@ -1,21 +1,33 @@
 ---
-name: ad-hardening-baseline
-domain: 12-active-directory-and-windows-security
-description: Use when you need a prioritised checklist of the Active Directory settings that shut most attack paths — the baseline that turns a soft domain into a hard target.
-difficulty: intermediate
-tags: [active-directory, hardening, baseline, windows, defense]
-tools: [pingcastle, purpleknight]
+format: "v2"
+name: "ad-hardening-baseline"
+title: "Ad Hardening Baseline"
+title_fr: "Socle de durcissement AD"
+description: "Use when you need a prioritised checklist of the Active Directory settings that shut most attack paths — the baseline that turns a soft domain into a hard target."
+description_fr: "À utiliser pour disposer d'une checklist priorisée des réglages Active Directory qui ferment la plupart des chemins d'attaque — le socle qui transforme un domaine mal protégé en cible difficile."
+domain: "12-active-directory-and-windows-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The individual AD skills each attack or defend one thing; this one steps back and gives the prioritised baseline — the settings that, together, close the paths behind most real-world domain compromises. It's the checklist to bring a neglected domain up to a defensible standard, and to measure where an existing one stands. Think of it as the index that ties the domain together.
 
-## When to use it
+### When to use it
 
 Hardening an AD environment from scratch, doing a posture assessment, or after an engagement to make sure the systemic issues (not just the findings) get closed. Run an automated AD health tool first to see where you stand, then work the baseline.
 
-## Procedure
+### Procedure
 
 1. **Measure first.** Run an AD security-posture scanner (PingCastle, Purple Knight) to get a scored baseline of your current state — it surfaces most of the issues below and gives you a before/after number to track. Don't harden blind.
 2. **Work the baseline in priority order** — these are the high-leverage items, each with its own skill for the detail:
@@ -29,7 +41,7 @@ Hardening an AD environment from scratch, doing a posture assessment, or after a
 4. **Set up detection** for the attacks the baseline is meant to prevent (roasting, DCSync, relay, delegation abuse) so a bypass is visible.
 5. **Re-scan and track.** Re-run the posture tool, compare the score, and schedule periodic re-assessment — AD drifts back toward insecure defaults over time.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 measure:  PingCastle / Purple Knight  -> scored baseline (before/after)
@@ -49,7 +61,7 @@ verify:  BloodHound -> short paths to DA gone?   detection on roast/DCSync/relay
 track:   re-scan, compare score, re-assess on a cadence
 ```
 
-## Reading the posture
+### Reading the posture
 
 - **Short BloodHound paths from a normal workstation to Domain Admins** = the domain is soft regardless of individual settings; the tiering + LSASS + delegation items are where to start, because they close those paths.
 - **A high PingCastle/Purple Knight risk score** = concrete, prioritised issues to work; use it as the roadmap and the metric, not just a report.
@@ -57,7 +69,7 @@ track:   re-scan, compare score, re-assess on a cadence
 - **Service accounts with SPNs and weak passwords, or accounts with pre-auth off** = roasting exposure; gMSA and requiring pre-auth close it.
 - **Score improved but BloodHound paths unchanged** = you fixed settings that weren't the actual escalation path; the graph is the truer measure — chase the paths, not just the checklist.
 
-## Pitfalls
+### Pitfalls
 
 - **Hardening blind.** Without measuring first (a posture scan, BloodHound), you can't prioritise or prove progress. Baseline, then improve, then re-measure.
 - **Chasing settings instead of paths.** A better config score with the same attack paths open isn't real progress; verify with the graph that the escalation routes are gone.
@@ -65,9 +77,15 @@ track:   re-scan, compare score, re-assess on a cadence
 - **Skipping the hard structural items.** Tiering and delegation cleanup are the highest-impact and the most work, so they get deferred — but they're exactly what closes the common compromise paths. Don't stop at the easy protocol toggles.
 - **Baseline without detection.** Prevention will eventually be bypassed; pair the hardening with detection for the attacks it targets.
 
-## References
+### References
 
 - Microsoft — Securing Privileged Access / security baselines
 - PingCastle and Purple Knight (AD posture assessment)
 - CISA and CIS Active Directory hardening guidance
 - The other skills in this domain (each baseline item in depth); BloodHound for verification
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.
