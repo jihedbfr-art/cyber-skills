@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="JihedAiLabs">
+  <title>JihedAiLabs</title>
+  <defs>
+    <radialGradient id="jbfr-bg" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#0a1420"/>
+      <stop offset="55%" stop-color="#05080d"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <linearGradient id="jbfr-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff3c4"/>
+      <stop offset="28%" stop-color="#f5d47a"/>
+      <stop offset="55%" stop-color="#d4af37"/>
+      <stop offset="80%" stop-color="#b8860b"/>
+      <stop offset="100%" stop-color="#8a6508"/>
+    </linearGradient>
+    <linearGradient id="jbfr-gold-soft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7e39c"/>
+      <stop offset="100%" stop-color="#c9a233"/>
+    </linearGradient>
+  </defs>
+
+  <!-- backdrop -->
+  <circle cx="256" cy="256" r="252" fill="url(#jbfr-bg)"/>
+
+  <!-- outer + inner gold rings -->
+  <circle cx="256" cy="256" r="244" fill="none" stroke="url(#jbfr-gold)" stroke-width="7"/>
+  <circle cx="256" cy="256" r="224" fill="none" stroke="url(#jbfr-gold)" stroke-width="2.5" opacity="0.7"/>
+
+  <!-- blue network mesh behind the monogram -->
+  <g stroke="#2f9bd6" stroke-width="1.1" opacity="0.55">
+    <line x1="168" y1="196" x2="214" y2="168"/>
+    <line x1="214" y1="168" x2="286" y2="176"/>
+    <line x1="286" y1="176" x2="344" y2="204"/>
+    <line x1="168" y1="196" x2="190" y2="262"/>
+    <line x1="190" y1="262" x2="256" y2="300"/>
+    <line x1="256" y1="300" x2="330" y2="272"/>
+    <line x1="330" y1="272" x2="344" y2="204"/>
+    <line x1="214" y1="168" x2="256" y2="300"/>
+    <line x1="286" y1="176" x2="330" y2="272"/>
+  </g>
+  <g fill="#4fc0ff">
+    <circle cx="168" cy="196" r="3.5"/><circle cx="214" cy="168" r="3"/>
+    <circle cx="286" cy="176" r="3.5"/><circle cx="344" cy="204" r="3"/>
+    <circle cx="190" cy="262" r="3"/><circle cx="256" cy="300" r="3.5"/>
+    <circle cx="330" cy="272" r="3"/>
+  </g>
+
+  <!-- circuit traces flanking the monogram -->
+  <g stroke="url(#jbfr-gold-soft)" stroke-width="2" fill="none" opacity="0.85" stroke-linecap="round">
+    <path d="M120 232 h34 v-20 h22"/>
+    <path d="M120 262 h50"/>
+    <path d="M120 292 h34 v22 h20"/>
+    <path d="M392 232 h-34 v-20 h-22"/>
+    <path d="M392 262 h-50"/>
+    <path d="M392 292 h-34 v22 h-20"/>
+  </g>
+  <g fill="url(#jbfr-gold-soft)">
+    <circle cx="118" cy="232" r="3"/><circle cx="118" cy="262" r="3"/><circle cx="118" cy="292" r="3"/>
+    <circle cx="394" cy="232" r="3"/><circle cx="394" cy="262" r="3"/><circle cx="394" cy="292" r="3"/>
+  </g>
+
+  <!-- AI monogram -->
+  <g fill="url(#jbfr-gold)" stroke="#7a5a0a" stroke-width="1">
+    <!-- A -->
+    <path d="M196 330 L232 176 L262 176 L298 330 L272 330 L264 296 L230 296 L222 330 Z M236 272 L258 272 L247 224 Z"/>
+    <!-- I -->
+    <rect x="312" y="176" width="26" height="154" rx="3"/>
+  </g>
+
+  <!-- top wordmark: J.BFR -->
+  <text x="256" y="118" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="52" font-weight="700" letter-spacing="4" fill="url(#jbfr-gold)">J.BFR</text>
+
+  <!-- bottom wordmark: JIHED AI LABS -->
+  <text x="256" y="410" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="34" font-weight="700" letter-spacing="3" fill="url(#jbfr-gold)">JIHED AI LABS</text>
+  <line x1="150" y1="430" x2="362" y2="430" stroke="url(#jbfr-gold)" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="256" cy="446" r="2.5" fill="url(#jbfr-gold)"/>
+</svg>
