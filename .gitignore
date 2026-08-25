@@ -17,3 +17,6 @@ loot/
 
 # local handoff/working doc, never published
 RECAP.md
+
+__pycache__/
+*.pyc
