@@ -7,7 +7,7 @@
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning \"who and how\" into defensive advantage.
+**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning "who and how" into defensive advantage.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -16,7 +16,7 @@
 ---
 
 ## Description
-Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning \"who and how\" into defensive advantage.
+Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning "who and how" into defensive advantage.
 
 ## Domain & Metadata
 - **Domain:** `21-threat-intelligence`

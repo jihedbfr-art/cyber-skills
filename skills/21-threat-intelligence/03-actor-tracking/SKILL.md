@@ -4,7 +4,7 @@ name: "actor-tracking"
 title: "Actor Tracking"
 title_fr: "Suivi d'acteurs de la menace"
 description: "Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning \"who and how\" into defensive advantage."
-description_fr: "À utiliser pour suivre un acteur de la menace dans le temps — attribuer son activité, suivre l'évolution de son mode opératoire, et transformer le "qui et comment" en avantage défensif."
+description_fr: "À utiliser pour suivre un acteur de la menace dans le temps — attribuer son activité, suivre l'évolution de son mode opératoire, et transformer le \"qui et comment\" en avantage défensif."
 domain: "21-threat-intelligence"
 tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
