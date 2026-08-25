@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Containment Strategies
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use once an incident is confirmed and scoped — deciding how to stop the spread without destroying evidence or tipping off the attacker prematurely.
+Use once an incident is confirmed and scoped — deciding how to stop the spread without destroying evidence or tipping off the attacker prematurely.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use once an incident is confirmed and scoped — deciding how to stop the spread
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

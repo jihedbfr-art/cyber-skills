@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Flux OAuth2 et pièges courants
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour choisir ou auditer un flux OAuth2 : sélectionner le bon grant selon le type de client et éviter les erreurs de redirect_uri, de paramètre state et de PKCE qui compromettent l'authentification.
+À utiliser pour choisir ou auditer un flux OAuth2 : sélectionner le bon grant selon le type de client et éviter les erreurs de redirect_uri, de paramètre state et de PKCE qui compromettent l'authentification.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

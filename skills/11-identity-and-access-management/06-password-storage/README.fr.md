@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Stockage des mots de passe
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour mettre en place ou auditer le stockage des mots de passe utilisateurs : choisir une fonction de hachage lente adaptée, régler ses paramètres, et éviter les erreurs de stockage qui transforment une fuite de données en catastrophe.
+À utiliser pour mettre en place ou auditer le stockage des mots de passe utilisateurs : choisir une fonction de hachage lente adaptée, régler ses paramètres, et éviter les erreurs de stockage qui transforment une fuite de données en catastrophe.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Automatisation SOAR
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour automatiser le travail du SOC avec le SOAR — des playbooks qui gèrent les parties répétitives du triage et de la réponse pour que les analystes se concentrent sur le jugement, sans automatiser le contrôle des actions à conséquences.
+À utiliser pour automatiser le travail du SOC avec le SOAR — des playbooks qui gèrent les parties répétitives du triage et de la réponse pour que les analystes se concentrent sur le jugement, sans automatiser le contrôle des actions à conséquences.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

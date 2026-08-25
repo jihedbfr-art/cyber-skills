@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Eradication And Recovery
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use after containment — removing the attacker's foothold completely and restoring to clean, trustworthy operation without reintroducing the compromise or leaving persistence behind.
+Use after containment — removing the attacker's foothold completely and restoring to clean, trustworthy operation without reintroducing the compromise or leaving persistence behind.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use after containment — removing the attacker's foothold completely and restor
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

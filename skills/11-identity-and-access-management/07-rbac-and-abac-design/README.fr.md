@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Conception RBAC et ABAC
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour concevoir un modèle d'autorisation : choisir entre contrôle d'accès basé sur les rôles (RBAC) et basé sur les attributs (ABAC), et structurer les permissions pour qu'elles restent correctes et auditables à mesure que le système grandit.
+À utiliser pour concevoir un modèle d'autorisation : choisir entre contrôle d'accès basé sur les rôles (RBAC) et basé sur les attributs (ABAC), et structurer les permissions pour qu'elles restent correctes et auditables à mesure que le système grandit.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

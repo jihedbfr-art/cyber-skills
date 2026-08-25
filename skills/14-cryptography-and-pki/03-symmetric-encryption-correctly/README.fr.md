@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Bien utiliser le chiffrement symétrique
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour chiffrer des données avec un algorithme symétrique — recourir à l'AEAD, gérer correctement les nonces et les clés, et éviter les erreurs de mode ou de réutilisation qui compromettent silencieusement la confidentialité.
+À utiliser pour chiffrer des données avec un algorithme symétrique — recourir à l'AEAD, gérer correctement les nonces et les clés, et éviter les erreurs de mode ou de réutilisation qui compromettent silencieusement la confidentialité.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

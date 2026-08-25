@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Vulnérabilités liées à l'upload de fichiers
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser quand une application accepte des uploads de fichiers — pour tester si l'upload peut mener à l'exécution de code, à un XSS stocké, ou à un écrasement de fichier, et comment construire un upload sûr.
+À utiliser quand une application accepte des uploads de fichiers — pour tester si l'upload peut mener à l'exécution de code, à un XSS stocké, ou à un écrasement de fichier, et comment construire un upload sûr.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

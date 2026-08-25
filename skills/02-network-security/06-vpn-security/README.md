@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Vpn Security
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when assessing or hardening a VPN — IPsec or WireGuard configuration, authentication, and the exposure a remote-access gateway creates — so the tunnel doesn't become the way in.
+Use when assessing or hardening a VPN — IPsec or WireGuard configuration, authentication, and the exposure a remote-access gateway creates — so the tunnel doesn't become the way in.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when assessing or hardening a VPN — IPsec or WireGuard configuration, auth
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

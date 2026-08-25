@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Secrets dans Kubernetes
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour gérer les secrets dans Kubernetes — éviter les secrets en clair et trop exposés qui font fuiter des identifiants, et mettre en place une vraie gestion des secrets avec chiffrement et contrôle d'accès.
+À utiliser pour gérer les secrets dans Kubernetes — éviter les secrets en clair et trop exposés qui font fuiter des identifiants, et mettre en place une vraie gestion des secrets avec chiffrement et contrôle d'accès.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

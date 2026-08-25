@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Evidence Preservation
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use during an incident to capture volatile and persistent evidence in the right order, without contaminating it — so the investigation (and any legal case) holds up.
+Use during an incident to capture volatile and persistent evidence in the right order, without contaminating it — so the investigation (and any legal case) holds up.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use during an incident to capture volatile and persistent evidence in the right 
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

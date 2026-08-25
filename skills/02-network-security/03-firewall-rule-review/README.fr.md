@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Revue des règles de pare-feu
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour auditer un jeu de règles de pare-feu à la recherche de règles trop permissives, masquées par d'autres ou obsolètes — les scories accumulées qui élargissent discrètement ce qui est autorisé à passer.
+À utiliser pour auditer un jeu de règles de pare-feu à la recherche de règles trop permissives, masquées par d'autres ou obsolètes — les scories accumulées qui élargissent discrètement ce qui est autorisé à passer.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Reviewing A Pr For Security
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use as a repeatable, time-boxed checklist for the security pass on an everyday pull request — where to look first, what to wave through, when to block.
+Use as a repeatable, time-boxed checklist for the security pass on an everyday pull request — where to look first, what to wave through, when to block.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use as a repeatable, time-boxed checklist for the security pass on an everyday p
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

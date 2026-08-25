@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Purple teaming
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour faire travailler les équipes rouge et bleue de façon collaborative — l'équipe rouge exécute des techniques pendant que l'équipe bleue observe et ajuste la détection en temps réel, afin que l'engagement améliore directement la couverture défensive.
+À utiliser pour faire travailler les équipes rouge et bleue de façon collaborative — l'équipe rouge exécute des techniques pendant que l'équipe bleue observe et ajuste la détection en temps réel, afin que l'engagement améliore directement la couverture défensive.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

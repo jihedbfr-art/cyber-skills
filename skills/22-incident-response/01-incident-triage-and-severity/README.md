@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Incident Triage And Severity
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use at the start of a suspected security incident to decide quickly whether it's real, how bad it is, and what response it warrants — before jumping to containment.
+Use at the start of a suspected security incident to decide quickly whether it's real, how bad it is, and what response it warrants — before jumping to containment.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use at the start of a suspected security incident to decide quickly whether it's
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>
