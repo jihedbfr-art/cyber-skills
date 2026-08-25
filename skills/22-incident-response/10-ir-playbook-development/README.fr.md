@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Élaboration de playbooks de réponse à incident
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser en amont, pour rédiger des playbooks de réponse à incident avant d'en avoir besoin — en transformant un scénario en étapes concrètes et testées, pour que la réponse ne s'improvise pas à 3h du matin.
+À utiliser en amont, pour rédiger des playbooks de réponse à incident avant d'en avoir besoin — en transformant un scénario en étapes concrètes et testées, pour que la réponse ne s'improvise pas à 3h du matin.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

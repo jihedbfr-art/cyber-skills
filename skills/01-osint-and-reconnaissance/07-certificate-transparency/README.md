@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Certificate Transparency
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when discovering an organisation's hosts and subdomains through public Certificate Transparency logs — a passive source that reveals names as soon as a certificate is issued.
+Use when discovering an organisation's hosts and subdomains through public Certificate Transparency logs — a passive source that reveals names as soon as a certificate is issued.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when discovering an organisation's hosts and subdomains through public Certi
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

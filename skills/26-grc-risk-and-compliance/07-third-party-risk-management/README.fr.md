@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Gestion du risque tiers
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour faire vivre un programme de risque fournisseurs/tiers — évaluer et surveiller la sécurité des fournisseurs et prestataires dont l'accès et les services deviennent votre risque.
+À utiliser pour faire vivre un programme de risque fournisseurs/tiers — évaluer et surveiller la sécurité des fournisseurs et prestataires dont l'accès et les services deviennent votre risque.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Sast Integration
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when wiring static application security testing into the pipeline — catching code vulnerabilities on every build without drowning developers in false positives.
+Use when wiring static application security testing into the pipeline — catching code vulnerabilities on every build without drowning developers in false positives.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when wiring static application security testing into the pipeline — catchi
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

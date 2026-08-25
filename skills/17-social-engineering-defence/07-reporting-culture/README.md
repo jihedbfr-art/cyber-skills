@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Reporting Culture
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when building a culture where people report suspicious activity — making reporting easy, safe, and rewarded, so users become a detection layer instead of hiding mistakes.
+Use when building a culture where people report suspicious activity — making reporting easy, safe, and rewarded, so users become a detection layer instead of hiding mistakes.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when building a culture where people report suspicious activity — making r
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Rag Security
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when securing a retrieval-augmented generation system — stopping knowledge-base poisoning, cross-tenant leakage, and injection that rides in on retrieved documents.
+Use when securing a retrieval-augmented generation system — stopping knowledge-base poisoning, cross-tenant leakage, and injection that rides in on retrieved documents.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when securing a retrieval-augmented generation system — stopping knowledge
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

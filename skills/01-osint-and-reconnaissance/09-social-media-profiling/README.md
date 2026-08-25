@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Social Media Profiling
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when mapping an organisation's people and technology from public social and professional profiles — the human attack surface for phishing and pretexting — done within ethical and legal bounds.
+Use when mapping an organisation's people and technology from public social and professional profiles — the human attack surface for phishing and pretexting — done within ethical and legal bounds.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when mapping an organisation's people and technology from public social and 
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

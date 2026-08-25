@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Chaîne de possession
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour manipuler une preuve numérique susceptible d'être contestée — documenter qui l'a détenue, quand, et pourquoi, pour que la preuve et vos conclusions tiennent juridiquement et procéduralement.
+À utiliser pour manipuler une preuve numérique susceptible d'être contestée — documenter qui l'a détenue, quand, et pourquoi, pour que la preuve et vos conclusions tiennent juridiquement et procéduralement.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

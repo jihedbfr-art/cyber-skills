@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Confusion de dépendances
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour se protéger des attaques par confusion de dépendances, où un attaquant publie un paquet public portant le même nom qu'un paquet interne et où le build récupère le sien à la place.
+À utiliser pour se protéger des attaques par confusion de dépendances, où un attaquant publie un paquet public portant le même nom qu'un paquet interne et où le build récupère le sien à la place.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

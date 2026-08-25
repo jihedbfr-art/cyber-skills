@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Revue de la désérialisation
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser lors de la revue de code qui reconstruit des objets à partir d'octets — pour repérer les chemins de désérialisation non sûrs menant à une exécution de code à distance, en Java, Python, .NET et au-delà.
+À utiliser lors de la revue de code qui reconstruit des objets à partir d'octets — pour repérer les chemins de désérialisation non sûrs menant à une exécution de code à distance, en Java, Python, .NET et au-delà.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

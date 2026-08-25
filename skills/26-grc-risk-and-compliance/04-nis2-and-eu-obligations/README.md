@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Nis2 And Eu Obligations
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when mapping EU cybersecurity regulatory duties to controls — NIS2, GDPR security obligations, and DORA — so the organisation meets its legal requirements, not just best practice.
+Use when mapping EU cybersecurity regulatory duties to controls — NIS2, GDPR security obligations, and DORA — so the organisation meets its legal requirements, not just best practice.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when mapping EU cybersecurity regulatory duties to controls — NIS2, GDPR s
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

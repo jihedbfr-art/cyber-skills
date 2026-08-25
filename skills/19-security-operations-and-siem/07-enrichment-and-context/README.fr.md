@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Enrichissement et contexte
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour connecter le contexte actifs, identités et menaces aux données du SOC afin que chaque alerte et requête porte le contexte dont les analystes ont besoin — la colonne vertébrale opérationnelle d'un triage rapide.
+À utiliser pour connecter le contexte actifs, identités et menaces aux données du SOC afin que chaque alerte et requête porte le contexte dont les analystes ont besoin — la colonne vertébrale opérationnelle d'un triage rapide.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

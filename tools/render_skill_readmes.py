@@ -77,15 +77,11 @@ def render_readme_content(fm, lang, skill_dir):
 
     if lang == "fr":
         return f"""<!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="{logo_rel}" alt="JihedAiLabs" width="120"/>
-</div>
-
 # {title_fr}
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — {desc_fr}
+{desc_fr}
 
 <a href="./README.md">English version</a>
 
@@ -105,18 +101,22 @@ def render_readme_content(fm, lang, skill_dir):
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="{logo_rel}" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>
 """
     else:
         return f"""<!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="{logo_rel}" alt="JihedAiLabs" width="120"/>
-</div>
-
 # {title}
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — {desc}
+{desc}
 
 <a href="./README.fr.md">Version française</a>
 
@@ -136,6 +136,14 @@ Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, 
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="{logo_rel}" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>
 """
 
 def main():

@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Audit RBAC Kubernetes
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour auditer le RBAC Kubernetes à la recherche de rôles et de bindings trop permissifs — les permissions excessives qui permettent à un workload compromis ou à un utilisateur de prendre le contrôle du cluster.
+À utiliser pour auditer le RBAC Kubernetes à la recherche de rôles et de bindings trop permissifs — les permissions excessives qui permettent à un workload compromis ou à un utilisateur de prendre le contrôle du cluster.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

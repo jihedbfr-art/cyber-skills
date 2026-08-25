@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Réponse à une compromission de compte
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser quand un compte utilisateur ou de service est suspecté compromis — pour contenir l'identité volée, comprendre ce qu'elle a touché, et la restaurer sans laisser à l'attaquant un moyen de revenir.
+À utiliser quand un compte utilisateur ou de service est suspecté compromis — pour contenir l'identité volée, comprendre ce qu'elle a touché, et la restaurer sans laisser à l'attaquant un moyen de revenir.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>

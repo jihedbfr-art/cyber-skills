@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Dns Security
 
 <div align="center">
 
-**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when securing DNS infrastructure — DNSSEC, resolver filtering, and detecting tunnelling and exfiltration — because DNS is both a control point and an attacker's favourite covert channel.
+Use when securing DNS infrastructure — DNSSEC, resolver filtering, and detecting tunnelling and exfiltration — because DNS is both a control point and an attacker's favourite covert channel.
 
 <a href="./README.fr.md">Version française</a>
 
@@ -27,3 +23,11 @@ Use when securing DNS infrastructure — DNSSEC, resolver filtering, and detecti
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>A <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a> project</sub>
+</div>

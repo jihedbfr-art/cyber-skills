@@ -1,13 +1,9 @@
 <!-- GENERATED — do not edit -->
-<div align="center">
-  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
-</div>
-
 # Tests d'authentification
 
 <div align="center">
 
-**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser pour tester comment une application gère la connexion, les identifiants, le verrouillage de compte et la réinitialisation de mot de passe — les faiblesses qui permettent à un attaquant de se connecter à la place d'un autre utilisateur — et les correctifs associés.
+À utiliser pour tester comment une application gère la connexion, les identifiants, le verrouillage de compte et la réinitialisation de mot de passe — les faiblesses qui permettent à un attaquant de se connecter à la place d'un autre utilisateur — et les correctifs associés.
 
 <a href="./README.md">English version</a>
 
@@ -27,3 +23,11 @@
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).
+
+---
+
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+  <br/>
+  <sub>Un projet <a href="https://github.com/jihedbfr-art"><b>JihedAiLabs</b></a></sub>
+</div>
