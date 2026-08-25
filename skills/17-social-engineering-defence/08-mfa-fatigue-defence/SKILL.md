@@ -1,28 +1,40 @@
 ---
-name: mfa-fatigue-defence
-domain: 17-social-engineering-defence
-description: Use when defending against MFA fatigue (push bombing) — where an attacker with a stolen password spams push prompts until the user approves one, and the controls that stop it.
-difficulty: intermediate
-tags: [social-engineering, mfa, push-bombing, fatigue, authentication]
-tools: []
+format: "v2"
+name: "mfa-fatigue-defence"
+title: "Mfa Fatigue Defence"
+title_fr: "Défense contre la fatigue MFA"
+description: "Use when defending against MFA fatigue (push bombing) — where an attacker with a stolen password spams push prompts until the user approves one, and the controls that stop it."
+description_fr: "À utiliser pour se défendre contre la fatigue MFA (bombardement de notifications push) — lorsqu'un attaquant en possession d'un mot de passe volé multiplie les demandes d'approbation jusqu'à ce que l'utilisateur en valide une, et les contrôles qui permettent d'empêcher cela."
+domain: "17-social-engineering-defence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 MFA fatigue (push bombing) is a social-engineering attack on push-based MFA: an attacker who already has the user's password repeatedly triggers login attempts, spamming the user with approval prompts until — out of annoyance, confusion, or by accident — they approve one, granting the attacker access. It's been behind major breaches precisely because it defeats MFA without any technical exploit, just persistence and human error. This skill covers defending against MFA fatigue, a specific and important gap in push-based MFA.
 
-## When to use it
+### When to use it
 
 Defending push-notification MFA, and reviewing MFA implementations for this weakness. It's high-value because MFA fatigue bypasses one of the strongest common controls (MFA) through social engineering, and the defences are concrete.
 
-## How the attack works
+### How the attack works
 
 1. The attacker has the user's password (from phishing, a breach, or reuse — so credential controls alone aren't enough).
 2. They repeatedly attempt to log in, each attempt sending a push-approval prompt to the user's phone.
 3. The user, bombarded with prompts (sometimes accompanied by vishing — "this is IT, please approve" — the vishing skill), eventually approves one to make it stop, or taps approve by mistake, or is confused into thinking it's legitimate.
 4. The attacker is in — MFA "worked" but was socially defeated.
 
-## Procedure
+### Procedure
 
 1. **Use number matching — the primary technical defence.** Instead of a simple approve/deny push, require the user to enter or select a number displayed on the login screen. This defeats fatigue: the user can't approve a prompt without seeing the attacker's login screen (which they don't have), so blind/accidental approvals fail. Number matching is the single most effective control and should be enabled.
 2. **Move toward phishing-resistant MFA.** FIDO2/WebAuthn/passkeys (the IAM MFA skill) aren't push-based at all, so they're immune to push bombing — there's no prompt to spam. For high-value accounts especially, phishing-resistant factors eliminate the whole class.
@@ -32,7 +44,7 @@ Defending push-notification MFA, and reviewing MFA implementations for this weak
 6. **Address the root cause too — the password is compromised.** MFA fatigue only works because the attacker has the password; strong password hygiene, breached-password screening, and phishing-resistant auth reduce how often they get there. But assume passwords will leak and defend the MFA layer.
 7. **Respond to a suspected fatigue attack** — repeated prompts mean the password is known; force a password reset, investigate for compromise, and confirm no approval was granted.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 MFA fatigue / push bombing: attacker HAS the password -> spams push prompts -> user approves one
@@ -53,7 +65,7 @@ defend
   respond: repeated prompts -> pw reset + investigate + confirm no approval
 ```
 
-## Reading the risk
+### Reading the risk
 
 - **Push-based MFA without number matching** = vulnerable to fatigue; a simple approve/deny prompt can be spammed until the user approves. Number matching is the fix and should be enabled — its absence is the core weakness.
 - **Repeated denied/ignored MFA prompts for one account** = a strong MFA-fatigue signal *and* proof the password is already compromised (the attacker has it to trigger prompts). Alert on this and force a reset — the denials are the detection opportunity.
@@ -62,7 +74,7 @@ defend
 - **Phishing-resistant MFA (passkeys/FIDO2) in use** = immune to push bombing — there's no prompt to spam; the strongest defence, eliminating the class for those accounts.
 - **Number matching + rate limiting + detection + phishing-resistant for high-value accounts** = MFA fatigue defended across the board.
 
-## Pitfalls
+### Pitfalls
 
 - **Simple approve/deny push without number matching.** It's spammable until the user approves; number matching (requiring info only on the login screen) defeats blind/accidental approvals and is the primary fix.
 - **Not treating repeated prompts as compromise.** A flood of MFA prompts means the attacker already has the password; force a reset and investigate, don't just wait for it to stop.
@@ -71,9 +83,15 @@ defend
 - **Relying on password controls alone.** MFA fatigue works because the password leaked; assume passwords will leak and defend the MFA layer (number matching, phishing-resistant, detection).
 - **Not detecting the pattern.** Repeated denied prompts are a clear, alertable signal; missing it wastes an easy detection.
 
-## References
+### References
 
 - The IAM mfa-and-step-up (number matching, phishing-resistant) and passwordless-and-passkeys skills
 - The vishing-and-smishing-awareness and IR account-compromise-response skills
 - CISA guidance on MFA / number matching; notable MFA-fatigue breaches (Uber, etc.)
 - FIDO Alliance phishing-resistant MFA documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: persistence-techniques
-domain: 16-red-teaming-and-adversary-emulation
-description: Use when emulating persistence in an authorised engagement — how adversaries maintain access across reboots and remediation, and how defenders detect and hunt the footholds.
-difficulty: advanced
-tags: [red-team, persistence, authorized, emulation, detection]
-tools: []
+format: "v2"
+name: "persistence-techniques"
+title: "Persistence Techniques"
+title_fr: "Techniques de persistance"
+description: "Use when emulating persistence in an authorised engagement — how adversaries maintain access across reboots and remediation, and how defenders detect and hunt the footholds."
+description_fr: "À utiliser pour émuler la persistance dans un engagement autorisé — comment les adversaires conservent leur accès malgré les redémarrages et les remédiations, et comment les défenseurs détectent et traquent ces points d'ancrage."
+domain: "16-red-teaming-and-adversary-emulation"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Persistence is how an adversary keeps access — surviving reboots, credential changes, and even partial remediation. Emulating persistence tests whether the organisation can find the footholds an attacker leaves, which is exactly what incident-response eradication must do. This skill covers the persistence phase of an authorised engagement conceptually — the surfaces adversaries use — and, defensively, how each is detected and hunted. It's the offensive counterpart to the IR eradication and threat-hunting skills.
 
-## When to use it
+### When to use it
 
 During an authorised engagement (RoE) when establishing durable access, and it directly informs the blue team's ability to find and remove footholds. The defensive framing is central: persistence mechanisms are detectable and huntable, and emulating them tests that.
 
-## Procedure (authorised)
+### Procedure (authorised)
 
 1. **Operate within the RoE** — persistence modifies systems (registry, services, tasks, accounts); stay in scope, document what you establish, and clean it up afterward (the RoE should require removing all persistence at engagement end).
 2. **Understand the persistence surfaces** (conceptual) — where adversaries establish footholds:
@@ -29,7 +41,7 @@ During an authorised engagement (RoE) when establishing durable access, and it d
 6. **Understand how persistence is detected and hunted** (the valuable defensive knowledge): the surfaces change rarely, so anomalies stand out — a new Run key/service/task, an added SSH key, a rogue account are all detectable and huntable (the detection and threat-hunting endpoint/persistence skills). The blue team must hunt all these surfaces to eradicate an intrusion.
 7. **Report the persistence outcome** — "which footholds were established, whether they were detected, and whether the blue team found them all" is a critical finding that directly tests and improves eradication capability.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 persistence = keep access across reboots / credential changes / partial remediation
@@ -50,7 +62,7 @@ DEFENSIVE POINT: test DETECTION (new service/Run key/account caught?) + HUNTING 
 report: footholds established + detected? + found all? -> tests/improves eradication
 ```
 
-## Reading the phase
+### Reading the phase
 
 - **Persistence established undetected and not found when the blue team looks** = the core finding; if footholds go unnoticed and can't be hunted down, an intrusion can't be fully eradicated. Drives the detection and hunting of persistence surfaces.
 - **Persistence detected when established** (a new service/Run key/account alerted) = a defensive win; these surfaces change rarely, so an anomaly should stand out. Note what was caught.
@@ -59,7 +71,7 @@ report: footholds established + detected? + found all? -> tests/improves eradica
 - **The footholds mapping to well-known persistence surfaces** (Run keys, cron, authorized_keys) = exactly what hunting and detection should cover; the report should list each surface and whether it was detected/hunted.
 - **Which footholds established, detected, and found** = the critical finding; the phase's value is testing and improving the organisation's ability to find and eradicate persistence.
 
-## Pitfalls
+### Pitfalls
 
 - **Not cleaning up persistence.** Leaving real footholds after the engagement is dangerous; the RoE must require removing all persistence, and you must document and remove it.
 - **Establishing one foothold.** Real adversaries plant several so removing one doesn't evict them; testing only single persistence understates the eradication challenge. Establish multiple where realistic.
@@ -67,9 +79,15 @@ report: footholds established + detected? + found all? -> tests/improves eradica
 - **Missing the eradication angle.** Persistence directly tests whether the blue team can *fully* eradicate an intrusion (find all footholds); frame the findings that way.
 - **Providing operational persistence tooling.** Conceptual by design; the surfaces and their detection are the value, with detail in the domain skills.
 
-## References
+### References
 
 - MITRE ATT&CK — TA0003 (Persistence): T1547, T1053, T1543, T1546, T1098, etc.
 - The incident-response eradication-and-recovery skill, threat-hunting endpoint-hunting skill, and detection-engineering domain
 - The Active Directory (dcsync, delegation, tiering) and cloud (incident-response) domains
 - The scoping and emulation-planning skills
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

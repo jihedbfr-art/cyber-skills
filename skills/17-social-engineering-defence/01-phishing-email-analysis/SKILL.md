@@ -1,23 +1,35 @@
 ---
-name: phishing-email-analysis
-domain: 17-social-engineering-defence
-description: Use when a suspicious email needs analysing — reading headers, links, and attachments to decide if it's phishing and what to do about it, safely.
-difficulty: beginner
-tags: [social-engineering, phishing, email, headers, analysis]
-tools: [thunderbird, urlscan, virustotal]
+format: "v2"
+name: "phishing-email-analysis"
+title: "Phishing Email Analysis"
+title_fr: "Analyse d'e-mails de phishing"
+description: "Use when a suspicious email needs analysing — reading headers, links, and attachments to decide if it's phishing and what to do about it, safely."
+description_fr: "À utiliser lorsqu'un e-mail suspect doit être analysé — en-têtes, liens et pièces jointes — pour déterminer s'il s'agit de phishing et décider de la conduite à tenir, en toute sécurité."
+domain: "17-social-engineering-defence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A reported email lands on your desk: is it phishing, and if so, how bad? This skill covers dissecting a suspicious message — headers, sender authenticity, links, and attachments — without setting off whatever it's carrying. It's the practical triage a SOC or IT team runs dozens of times a week.
 
-## When to use it
+### When to use it
 
 Any time a user reports a suspicious email, or one gets flagged by a filter and needs a human verdict. Also the analysis step behind takedowns and awareness feedback.
 
 Work on the email as **data**: examine headers and URLs in tools, never click links or open attachments on your normal machine. Detonate anything live only in an isolated sandbox.
 
-## Procedure
+### Procedure
 
 1. Get the **original message with full headers** (the raw `.eml`/`.msg`, not a forwarded screenshot — forwarding strips the evidence). In most clients: "show original" / "view source".
 2. Read the **authentication results** in the headers. `Authentication-Results` shows SPF, DKIM, and DMARC verdicts. A `fail`/`softfail` on a domain that should pass is a strong spoofing signal:
@@ -38,7 +50,7 @@ Work on the email as **data**: examine headers and URLs in tools, never click li
    ```
 7. Reach a verdict and act: confirmed phishing → pull it from other mailboxes, block the sender/URL/hash, report for takedown, and feed indicators to detection. Benign → release and note why.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 header signals
@@ -60,7 +72,7 @@ content signals
   generic greeting, off-brand tone, subtle grammar errors
 ```
 
-## Reading the verdict
+### Reading the verdict
 
 - **DMARC fail on a domain that publishes DMARC** is close to conclusive spoofing — the sender isn't who the `From` claims.
 - **A credential-harvest landing page** (a login form on a lookalike domain) confirms phishing intent; capture the URL for blocking and takedown.
@@ -68,14 +80,14 @@ content signals
 - **Authentication passes but content screams phish** can be a compromised legitimate account (BEC) — pass passes because it really is sent from the real, but hijacked, mailbox. Different response (account compromise), same danger.
 - **Genuinely benign** happens — a real but unusual vendor mail. Say so, release it, and note the reasoning so the reporter is encouraged, not punished.
 
-## Turning analysis into defence (the "fix")
+### Turning analysis into defence (the "fix")
 
 - **Block and purge**: remove the message from all mailboxes, block sender/URL/hash at the gateway.
 - **Feed indicators** (sender, URLs, hashes) to detection and threat intel so the next wave is caught automatically.
 - **Fix your own spoofability**: if attackers spoof *your* domain, deploy SPF/DKIM/DMARC with an enforcing policy (see that skill).
 - **Close the loop with the user**: thank them for reporting, and use real examples (sanitised) in awareness training. A strong reporting culture catches what filters miss.
 
-## Pitfalls
+### Pitfalls
 
 - **Analysing a forwarded copy.** Forwarding destroys the original headers you need. Get the raw message.
 - **Clicking to "just check".** The link may harvest, exploit, or simply confirm your address is live. Inspect via tools in isolation.
@@ -83,9 +95,15 @@ content signals
 - **Assuming SPF/DKIM pass = safe.** A compromised legitimate account passes authentication. Read the content and context too.
 - **Punishing reporters for false alarms.** That trains people to stop reporting — the opposite of what you want.
 
-## References
+### References
 
 - OWASP — Phishing / social engineering guidance
 - M3AAWG email authentication best practices
 - urlscan.io, VirusTotal, and sandbox (any.run) documentation
 - APWG phishing reporting resources
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

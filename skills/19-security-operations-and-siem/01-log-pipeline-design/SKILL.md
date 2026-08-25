@@ -1,21 +1,33 @@
 ---
-name: log-pipeline-design
-domain: 19-security-operations-and-siem
-description: Use when designing the pipeline that gets logs into a SIEM — collection, parsing, and normalisation so the right data arrives usable, because everything downstream depends on it.
-difficulty: intermediate
-tags: [soc, siem, logging, pipeline, normalisation]
-tools: [logstash, vector, fluentd]
+format: "v2"
+name: "log-pipeline-design"
+title: "Log Pipeline Design"
+title_fr: "Conception du pipeline de logs"
+description: "Use when designing the pipeline that gets logs into a SIEM — collection, parsing, and normalisation so the right data arrives usable, because everything downstream depends on it."
+description_fr: "À utiliser pour concevoir le pipeline qui achemine les logs vers un SIEM — collecte, parsing et normalisation pour que les bonnes données arrivent exploitables, car tout le reste du SOC en dépend."
+domain: "19-security-operations-and-siem"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A SIEM is only as good as the data flowing into it, and getting that data in — collected from the right sources, parsed correctly, normalised to a common shape — is where a lot of SOCs quietly fail. Detections that assume a field exists, hunts that can't correlate across sources, and analysts fighting inconsistent data all trace back to the pipeline. This skill covers designing a log pipeline that delivers the right telemetry in a usable form, the foundation everything else in the SOC stands on.
 
-## When to use it
+### When to use it
 
 Building or overhauling a SIEM deployment, onboarding new log sources, or diagnosing why detections and hunts are unreliable (often a pipeline problem, not a rule problem). It pairs with the detection log-source-coverage skill — that decides *what* to collect, this handles *getting it in usable*.
 
-## Procedure
+### Procedure
 
 1. **Collect the right sources — driven by detection and visibility needs.** Don't collect everything or whatever's easy; collect the telemetry your detections and hunts need (from log-source-coverage): endpoint, authentication, network (DNS/proxy/firewall), cloud audit, and key application logs. Every source has a purpose or it's cost without value.
 2. **Parse into structured fields.** Raw log lines are unusable for correlation; parse each source into structured fields (a timestamp, source/dest, user, action) so detections and searches can reference them reliably. Broken or missing parsing is why a field a rule needs isn't there.
@@ -25,7 +37,7 @@ Building or overhauling a SIEM deployment, onboarding new log sources, or diagno
 6. **Design for reliability and volume.** The pipeline must handle the log volume without dropping events (buffering, backpressure), and you should monitor it — a silently-failed log source is a blind spot nobody notices until an incident. Alert on sources that stop sending.
 7. **Balance completeness against cost** (the retention/cost skill) — route high-value security logs to the SIEM and lower-value/high-volume data to cheaper storage, rather than paying premium ingest for everything.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 SIEM is only as good as the pipeline feeding it. stages:
@@ -43,7 +55,7 @@ SIEM is only as good as the pipeline feeding it. stages:
 7. COST: high-value -> SIEM ; high-volume/low-value -> cheaper storage
 ```
 
-## Reading the pipeline
+### Reading the pipeline
 
 - **Detections failing because a field is missing/inconsistent** = a parsing or normalisation problem, not a rule bug; the pipeline isn't delivering the data in the shape the rule expects. This is a common root cause mistaken for a detection issue.
 - **Hunts that can't correlate across sources** = missing normalisation; the same entity has different field names per source, so cross-source queries break. A common schema fixes it.
@@ -52,7 +64,7 @@ SIEM is only as good as the pipeline feeding it. stages:
 - **Paying premium SIEM ingest for high-volume low-value logs** = cost without security value; route by value (retention/cost skill).
 - **Right sources, parsed, normalised, time-correct, monitored, cost-tiered** = a pipeline the rest of the SOC can rely on.
 
-## Pitfalls
+### Pitfalls
 
 - **Collecting everything (or whatever's easy).** Ingesting without purpose wastes cost and buries signal; collect by detection and visibility need. Conversely, missing a needed source is a blind spot.
 - **Skipping normalisation.** The single most impactful pipeline gap — without a common schema, every cross-source detection and hunt fights inconsistent field names. Normalise.
@@ -60,9 +72,15 @@ SIEM is only as good as the pipeline feeding it. stages:
 - **Mishandling time.** Using ingest time as event time or mixing timezones corrupts correlation and timelines. Normalise to UTC, preserve true event time.
 - **Treating pipeline problems as detection problems.** Chasing rule logic when the real issue is parsing/normalisation wastes effort; check the data shape first.
 
-## References
+### References
 
 - Elastic Common Schema (ECS) and SIEM data-model documentation
 - Log-shipping/pipeline tools: Vector, Logstash, Fluentd, and SIEM-native collectors
 - The detection log-source-coverage, enrichment-and-context, and log-retention-and-cost skills
 - NIST SP 800-92 (log management)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

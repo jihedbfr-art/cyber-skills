@@ -1,21 +1,33 @@
 ---
-name: c2-frameworks
-domain: 16-red-teaming-and-adversary-emulation
-description: Use when operating command-and-control in an authorised engagement — how C2 frameworks work, using them within scope, and how the blue team detects C2 traffic and beaconing.
-difficulty: advanced
-tags: [red-team, c2, command-and-control, beaconing, authorized]
-tools: [cobalt-strike, mythic, sliver]
+format: "v2"
+name: "c2-frameworks"
+title: "C2 Frameworks"
+title_fr: "Frameworks de commande et contrôle (C2)"
+description: "Use when operating command-and-control in an authorised engagement — how C2 frameworks work, using them within scope, and how the blue team detects C2 traffic and beaconing."
+description_fr: "À utiliser pour opérer un canal de commande et contrôle (C2) dans un engagement autorisé — le fonctionnement des frameworks C2, leur usage dans le périmètre autorisé, et comment l'équipe défensive détecte le trafic C2 et le beaconing."
+domain: "16-red-teaming-and-adversary-emulation"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Command-and-control (C2) is how an operator communicates with compromised systems during an engagement — issuing commands and receiving results. C2 frameworks (Cobalt Strike, Mythic, Sliver, and others) provide this infrastructure. This skill covers understanding and operating C2 in an authorised engagement at the conceptual level, and — the defensive core — how C2 is detected, so the engagement tests the blue team's ability to catch an operator's communications. It stays conceptual, consistent with the repo's scope.
 
-## When to use it
+### When to use it
 
 The post-foothold phase of an authorised engagement (with a signed RoE), when maintaining access and operating on compromised systems. The defensive framing is central: C2 detection is a major blue-team capability, and emulating C2 tests it directly.
 
-## Procedure (authorised)
+### Procedure (authorised)
 
 1. **Operate strictly within the RoE**, using only approved C2 infrastructure and techniques, with deconfliction so the blue team can distinguish your activity from a real intrusion if needed.
 2. **Understand what C2 frameworks provide** — a server/operator interface, an implant/agent on the compromised host, and a communication channel between them. The implant beacons back to the C2 server for commands. Frameworks offer various channels (HTTP/HTTPS, DNS, others) and evasion features.
@@ -29,7 +41,7 @@ The post-foothold phase of an authorised engagement (with a signed RoE), when ma
 6. **Vary tradecraft to test detection depth** — different channels (DNS vs HTTPS), jitter, and evasion test whether the blue team catches C2 only in the obvious case or in the evasive one too.
 7. **Report the C2 detection outcome** — for the blue team, "was our C2 detected, and how could detection improve" is a high-value finding, feeding the beaconing/network detection skills.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 C2 = operator <-> compromised systems (issue commands, get results)
@@ -49,7 +61,7 @@ VARY tradecraft (DNS vs HTTPS, jitter, evasion) -> test detection DEPTH
 report the detection outcome -> improve beaconing/network detection
 ```
 
-## Reading the phase
+### Reading the phase
 
 - **C2 beaconing not detected** = a detection gap; regular-interval callbacks are a strong, catchable signature (even with jitter and over HTTPS), so missing them points to a beaconing-detection gap the blue team should close. A high-value finding.
 - **C2 detected via beaconing/network indicators** = a defensive win; the blue team caught the operator's communications, which is exactly what the engagement tests. Note how it was caught.
@@ -58,7 +70,7 @@ report the detection outcome -> improve beaconing/network detection
 - **Endpoint detection of the implant** (injection, unusual process) = the host-based catch; C2 has both network and endpoint detection angles.
 - **The C2 detection outcome documented** = the engagement's defensive value; "was our C2 caught and how to improve detection" drives the blue team's C2-detection capability.
 
-## Pitfalls
+### Pitfalls
 
 - **Operating outside the RoE or without deconfliction.** C2 emulation looks exactly like a real intrusion; use approved infrastructure within scope, with a way to deconflict from a genuine attack.
 - **Focusing on C2 functionality over detection.** The value is testing whether the blue team catches the C2, not whether the framework works. The detection outcome is the finding.
@@ -66,9 +78,15 @@ report the detection outcome -> improve beaconing/network detection
 - **Not emulating the actor's C2.** Match the C2 tradecraft to the emulated adversary so you test detection of realistic communications.
 - **Providing operational C2 tooling/configs.** This skill stays conceptual; the value is understanding C2 and its detection, not ready-to-use offensive infrastructure.
 
-## References
+### References
 
 - MITRE ATT&CK — TA0011 (Command and Control), T1071, T1573
 - The threat-hunting beaconing-detection and dns-and-proxy-hunting skills, malware c2-and-network-analysis skill
 - The scoping-and-rules-of-engagement and attack-emulation-planning skills
 - MITRE Caldera (open emulation) and C2 detection research (the defensive references)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

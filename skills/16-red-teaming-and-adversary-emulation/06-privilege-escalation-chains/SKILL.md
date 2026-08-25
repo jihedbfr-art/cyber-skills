@@ -1,21 +1,33 @@
 ---
-name: privilege-escalation-chains
-domain: 16-red-teaming-and-adversary-emulation
-description: Use when emulating privilege escalation in an authorised engagement — chaining local escalations and misconfigurations into higher privilege, and how defenders break the chains.
-difficulty: advanced
-tags: [red-team, privilege-escalation, chains, authorized, emulation]
-tools: []
+format: "v2"
+name: "privilege-escalation-chains"
+title: "Privilege Escalation Chains"
+title_fr: "Chaînes d'élévation de privilèges"
+description: "Use when emulating privilege escalation in an authorised engagement — chaining local escalations and misconfigurations into higher privilege, and how defenders break the chains."
+description_fr: "À utiliser pour émuler une élévation de privilèges dans un engagement autorisé — enchaîner des escalades locales et des mauvaises configurations pour obtenir des droits plus élevés, et comment les défenseurs brisent ces chaînes."
+domain: "16-red-teaming-and-adversary-emulation"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Adversaries rarely land with the privileges they need — they escalate, often chaining several smaller weaknesses into a path from a low-privilege foothold to domain or system administrator. Emulating privilege escalation tests whether the organisation's hardening and detection break those chains. This skill covers the privilege-escalation phase of an authorised engagement conceptually — how escalations chain together — and, defensively, how each link is closed. It ties together the escalation-specific skills across the Linux, AD, and cloud domains.
 
-## When to use it
+### When to use it
 
 During an authorised engagement (RoE) when escalating from a foothold. The defensive framing is central: escalation chains are made of individual, fixable weaknesses, and emulating them shows which links exist and which are broken.
 
-## Procedure (authorised)
+### Procedure (authorised)
 
 1. **Operate within the RoE.** Privilege escalation modifies systems and reaches sensitive access; stay in scope with deconfliction.
 2. **Enumerate escalation opportunities** (the domain-specific skills do the detail):
@@ -28,7 +40,7 @@ During an authorised engagement (RoE) when escalating from a foothold. The defen
 6. **Understand how each link is closed** (the valuable defensive knowledge): the fix for each escalation is in its domain skill — SUID/sudo hardening (Linux), tiering/gMSA/removing delegation (AD), least-privilege IAM (cloud). Breaking any link in the chain stops the escalation, so the defensive strategy is closing the individual weaknesses that compose the paths.
 7. **Report the escalation chain** — "the exact sequence of weaknesses that led to admin, and which links were closed or detected" is a highly actionable finding, because each link maps to a specific fix that breaks the whole path.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 adversaries escalate — chaining SMALL weaknesses into low-priv foothold -> admin
@@ -49,7 +61,7 @@ DEFENSIVE POINT: test which LINKS are BROKEN
 report: exact sequence to admin + which links closed/detected (each link -> a specific fix)
 ```
 
-## Reading the phase
+### Reading the phase
 
 - **A chain from low-priv foothold to admin with no links broken** = the escalation succeeded because every weakness in the path was present and undetected; a serious finding, but highly actionable — each link is a specific fix that would break the chain.
 - **The escalation stopped because a link was closed** (hardened SUID, removed delegation, scoped IAM) = the defensive win; breaking any single link stops the whole chain, so a closed link is disproportionately valuable. Note which link held.
@@ -57,7 +69,7 @@ report: exact sequence to admin + which links closed/detected (each link -> a sp
 - **A chain that maps cleanly to BloodHound-style paths** (for AD) = exactly what graph analysis shows; the report should express the chain as the sequence of edges, each a fixable permission/misconfiguration.
 - **The exact escalation sequence and which links were closed/detected** = the most actionable red-team finding, because it turns "we got domain admin" into "here are the specific weaknesses to fix to break this path."
 
-## Pitfalls
+### Pitfalls
 
 - **Operating outside RoE.** Escalation reaches sensitive access and modifies systems; stay in scope with deconfliction.
 - **Reporting "we got admin" without the chain.** The value is the *sequence* of weaknesses and which links to close; a result without the chain isn't actionable. Document each link.
@@ -65,9 +77,15 @@ report: exact sequence to admin + which links closed/detected (each link -> a sp
 - **Treating escalation as one weakness.** It's usually a chain; missing that leads to fixing one link while the path stays open through others. Map the whole chain.
 - **Providing operational exploit tooling.** Conceptual by design; the detail and fixes are in the domain-specific skills. The value is the chain concept and the defensive strategy of breaking links.
 
-## References
+### References
 
 - MITRE ATT&CK — TA0004 (Privilege Escalation)
 - The Linux (privilege-escalation, suid-sgid, sudo-hardening), Active Directory (kerberoasting, delegation, dcsync, tiering), and cloud (iam-privilege-escalation) domains — the links and their fixes
 - BloodHound (chain/path visualisation) and the scoping/emulation-planning skills
 - The detection-engineering and threat-hunting domains (escalation detection)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

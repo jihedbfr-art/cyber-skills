@@ -1,21 +1,33 @@
 ---
-name: hypothesis-driven-hunting
-domain: 20-threat-hunting
-description: Use when you want to proactively hunt for threats the alerts missed — framing a testable hypothesis, searching the telemetry to prove or kill it, and turning findings into detections.
-difficulty: intermediate
-tags: [threat-hunting, hypothesis, telemetry, attack, proactive]
-tools: []
+format: "v2"
+name: "hypothesis-driven-hunting"
+title: "Hypothesis Driven Hunting"
+title_fr: "Chasse aux menaces guidée par hypothèses"
+description: "Use when you want to proactively hunt for threats the alerts missed — framing a testable hypothesis, searching the telemetry to prove or kill it, and turning findings into detections."
+description_fr: "À utiliser pour traquer proactivement les menaces passées inaperçues par les alertes : formuler une hypothèse testable, interroger la télémétrie pour la confirmer ou l'infirmer, puis transformer les découvertes en détections."
+domain: "20-threat-hunting"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Threat hunting is the assumption that something got past the alerts, and a structured search to find it. The discipline that separates hunting from aimless log-browsing is the **hypothesis**: a specific, testable statement of what an attacker would have done and what trace it would leave. This skill covers framing that hypothesis and running the hunt to a real conclusion.
 
-## When to use it
+### When to use it
 
 When you want proactive coverage beyond what your detections catch — after a relevant threat report, when you suspect a gap, or on a regular cadence for a mature SOC. It complements detection engineering: hunts find the unknown, and repeatable findings become new detections.
 
-## Procedure
+### Procedure
 
 1. **Form a hypothesis that's specific and testable.** Not "are we breached?" but "if an attacker established persistence via a scheduled task, I'd see task creation events with suspicious command lines on these hosts." Ground it in an ATT&CK technique, a threat report, or your own environment's risk.
 2. **Decide what would prove or disprove it.** Name the data source and the signal in advance: which log, which fields, what pattern means "found it" versus "clean". Committing to this before searching stops you from rationalising whatever you happen to see.
@@ -25,7 +37,7 @@ When you want proactive coverage beyond what your detections catch — after a r
 6. **Conclude explicitly.** Every hunt ends one of three ways: found a threat (→ incident response), found nothing (hypothesis not supported, coverage confirmed), or found a **gap** (missing telemetry or a detection that should have fired). All three are valuable — a "clean" hunt with good data is real assurance.
 7. **Operationalise.** If the hunt found something repeatable, write a detection for it (Sigma skill) so you never have to hunt for that exact thing again. The point of hunting is to shrink the space of the unknown.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 the hunt loop
@@ -43,7 +55,7 @@ a good hypothesis
          wmiprvse.exe spawning cmd/powershell on the target host"
 ```
 
-## Reading the hunt
+### Reading the hunt
 
 - **A hit that survives triage** (unexplained, unauthorised, matches the technique) = escalate to incident response immediately; the hunt just became an investigation.
 - **Clean results with solid telemetry** = genuine assurance for that hypothesis. Record it — "we hunted for X, had the data, found nothing" is a real risk statement.
@@ -51,23 +63,29 @@ a good hypothesis
 - **A pattern you found by hand that recurs** = a detection waiting to be written. If you hunted it once, automate it.
 - **Beware confirmation bias**: deciding the signal after you've looked lets you explain away anything. Fix the prove/kill criteria before searching.
 
-## Making it repeatable (the "fix")
+### Making it repeatable (the "fix")
 
 - **Log the hypothesis, method, and outcome** for every hunt, so coverage is trackable and hunts aren't repeated blindly.
 - **Turn findings into detections** — the maturity signal of a hunting programme is that it feeds detection engineering, steadily converting "hunt for it" into "alert on it".
 - **Track coverage against ATT&CK** so hunts target gaps rather than well-covered techniques.
 - **Fix visibility gaps** the hunts expose; better telemetry makes every future hunt (and detection) stronger.
 
-## Pitfalls
+### Pitfalls
 
 - **Vague hypotheses.** "Find bad stuff" isn't huntable. Without a testable statement and a data source, you're browsing logs, not hunting.
 - **Deciding the criteria after looking.** Confirmation bias turns any result into "success". Commit to prove/kill up front.
 - **Hunting without the telemetry.** You can't conclude; recognise the gap and fix it instead of forcing an answer.
 - **Finding something and not detecting it.** A hunt that finds a technique but produces no lasting detection means you'll hunt the same thing forever. Operationalise it.
 
-## References
+### References
 
 - MITRE ATT&CK (technique-driven hypotheses)
 - The PEAK / TaHiTI threat hunting frameworks
 - SANS threat hunting resources
 - Atomic Red Team (to generate the activity you're learning to hunt)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

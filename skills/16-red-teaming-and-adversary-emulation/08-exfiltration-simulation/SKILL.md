@@ -1,21 +1,33 @@
 ---
-name: exfiltration-simulation
-domain: 16-red-teaming-and-adversary-emulation
-description: Use when testing data-loss controls in an authorised engagement — simulating exfiltration with dummy data to see whether the organisation detects and prevents data leaving.
-difficulty: advanced
-tags: [red-team, exfiltration, dlp, authorized, data-loss]
-tools: []
+format: "v2"
+name: "exfiltration-simulation"
+title: "Exfiltration Simulation"
+title_fr: "Simulation d'exfiltration"
+description: "Use when testing data-loss controls in an authorised engagement — simulating exfiltration with dummy data to see whether the organisation detects and prevents data leaving."
+description_fr: "À utiliser pour tester les contrôles de perte de données dans un engagement autorisé — simuler une exfiltration avec des données factices pour vérifier si l'organisation détecte et empêche leur sortie."
+domain: "16-red-teaming-and-adversary-emulation"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The objective of many intrusions is data theft, and the final phase is exfiltration — getting data out of the environment. Simulating exfiltration tests the organisation's data-loss controls and detection: can they see and stop data leaving? This skill covers the exfiltration phase of an authorised engagement, done safely with dummy data (never real sensitive data), and — the defensive core — how exfiltration is detected and prevented. It tests the last line of defence against data breaches.
 
-## When to use it
+### When to use it
 
 The objective/final phase of an authorised engagement (RoE) where testing data-loss prevention is in scope. The critical safety rule: simulate with **dummy/canary data**, never actual sensitive data — the point is testing the controls, not exfiltrating real information.
 
-## Procedure (authorised, dummy data)
+### Procedure (authorised, dummy data)
 
 1. **Use dummy/canary data — the safety rule.** Never exfiltrate real sensitive data (that would be causing the very breach you're testing against). Use marked dummy data or canary tokens that simulate sensitive data and can be tracked. This tests the controls without the risk.
 2. **Operate within the RoE**, with the data-handling terms explicit (what data is used, how it's handled and destroyed — the scoping skill covers this).
@@ -33,7 +45,7 @@ The objective/final phase of an authorised engagement (RoE) where testing data-l
 7. **Test multiple channels to gauge coverage depth** — DLP might catch email but miss DNS tunnelling; testing several reveals whether detection is comprehensive or channel-specific.
 8. **Report the exfiltration outcome** — "which channels succeeded in moving (dummy) data out undetected, and which were caught" is a critical finding that drives DLP, egress control, and network-detection improvements — the last line of defence against data breaches.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 many intrusions aim at DATA THEFT ; exfiltration = final phase (data OUT)
@@ -57,7 +69,7 @@ TEST MULTIPLE channels (DLP catches email but misses DNS tunnelling?) -> coverag
 report: which channels succeeded undetected + which caught -> improve DLP/egress/detection
 ```
 
-## Reading the phase
+### Reading the phase
 
 - **Dummy data exfiltrated undetected** = a data-loss control gap; the last line of defence didn't catch data leaving. A critical finding, since data theft is the objective of many intrusions. Drives DLP, egress, and network-detection improvements.
 - **Exfiltration detected/blocked by DLP or network monitoring** = the defensive win; the controls caught data leaving, which is exactly what the phase tests. Note which control caught it and which channel.
@@ -66,7 +78,7 @@ report: which channels succeeded undetected + which caught -> improve DLP/egress
 - **Unrestricted egress allowing exfiltration to any destination** = an egress-control gap; restricting outbound connections limits the channels available. Segmentation/egress filtering is the architectural fix.
 - **Which channels succeeded undetected and which were caught** = the critical finding; the phase's value is testing and improving the organisation's ability to detect and prevent data loss.
 
-## Pitfalls
+### Pitfalls
 
 - **Using real sensitive data.** The cardinal safety error — exfiltrating real data *is* the breach you're testing against. Use dummy/canary data only, with explicit handling/destruction terms.
 - **Testing one channel.** DLP and detection are often channel-specific (catch email, miss DNS tunnelling); test multiple channels to reveal coverage depth. A single-channel test overstates the defence.
@@ -74,9 +86,15 @@ report: which channels succeeded undetected + which caught -> improve DLP/egress
 - **Ignoring the egress-control angle.** Detection is one axis; restricting outbound connections (egress filtering, segmentation) limits the channels available and is part of the fix.
 - **Providing operational exfiltration tooling.** Conceptual by design; the value is understanding channels and their detection/prevention.
 
-## References
+### References
 
 - MITRE ATT&CK — TA0010 (Exfiltration): T1041, T1048 (alternative protocol), T1567 (web service)
 - The threat-hunting dns-and-proxy-hunting and network-security domains (detection), and DLP guidance
 - Canary tokens (canarytokens.org) for safe exfiltration simulation
 - The scoping-and-rules-of-engagement and attack-emulation-planning skills
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: attack-emulation-planning
-domain: 16-red-teaming-and-adversary-emulation
-description: Use when planning an adversary emulation — mapping a real threat actor's behaviour to a scenario grounded in MITRE ATT&CK, so the engagement tests defences against threats that actually matter.
-difficulty: intermediate
-tags: [red-team, emulation, attack, planning, scenario]
-tools: [attack-navigator, caldera]
+format: "v2"
+name: "attack-emulation-planning"
+title: "Attack Emulation Planning"
+title_fr: "Planification d'émulation d'attaque"
+description: "Use when planning an adversary emulation — mapping a real threat actor's behaviour to a scenario grounded in MITRE ATT&CK, so the engagement tests defences against threats that actually matter."
+description_fr: "À utiliser pour planifier une émulation d'adversaire — traduire le comportement d'un acteur de la menace réel en scénario ancré dans MITRE ATT&CK, afin que l'engagement teste les défenses face à des menaces qui comptent vraiment."
+domain: "16-red-teaming-and-adversary-emulation"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The difference between "run some attacks" and adversary *emulation* is planning: emulation replicates how a specific, relevant threat actor operates, so the engagement tests the organisation's defences against threats it actually faces. This skill covers planning an emulation — choosing a relevant adversary, mapping their tradecraft to a scenario grounded in MITRE ATT&CK, and defining objectives — so the offensive work produces meaningful defensive insight rather than a scattershot of techniques.
 
-## When to use it
+### When to use it
 
 After scoping/RoE (that skill — always first), when planning what the engagement will actually do. Good planning is what makes a red-team engagement valuable to the blue team; a plan grounded in a real threat produces findings the organisation can act on.
 
-## Procedure
+### Procedure
 
 1. **Choose a relevant adversary — grounded in the organisation's threat model.** Emulate a threat actor that actually targets your sector/organisation (from threat intelligence — the threat-intel domain), not a generic or arbitrary one. Emulating an actor irrelevant to the organisation tests against a threat they don't face. Relevance is what makes the engagement meaningful.
 2. **Map the adversary's TTPs to ATT&CK.** Threat intelligence and ATT&CK's group profiles describe how the actor operates — their techniques across the kill chain (initial access, execution, persistence, lateral movement, exfiltration). Build the scenario from their real tradecraft, so you're emulating *this actor*, not improvising.
@@ -25,7 +37,7 @@ After scoping/RoE (that skill — always first), when planning what the engageme
 6. **Align with the blue team's needs.** The point is improving defence, so plan to test what the organisation needs to know about its detection and response — coordinate with detection engineering on which techniques and coverage gaps to exercise (ties into threat-informed detection).
 7. **Document the plan** — objectives, the emulated actor, the ATT&CK-mapped scenario, and success criteria — so the engagement is structured and its results are comparable to the plan.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 emulation (not just "run attacks") = replicate a SPECIFIC RELEVANT actor's behaviour
@@ -43,7 +55,7 @@ plan (after scoping/RoE)
   7. DOCUMENT (objectives, actor, ATT&CK scenario, success criteria)
 ```
 
-## Reading the plan
+### Reading the plan
 
 - **A plan grounded in a relevant threat actor** = the engagement tests defences against threats the organisation actually faces; the findings are directly actionable. This relevance is what separates emulation from scattershot attacking.
 - **A generic/arbitrary "run some attacks" plan** = tests against threats that may not matter to the organisation; the results are less actionable. Ground it in the real threat model.
@@ -52,7 +64,7 @@ plan (after scoping/RoE)
 - **Alignment with blue-team detection needs** = the engagement tests what the organisation needs to learn; a red team operating in a vacuum produces less defensive value.
 - **A documented, actor-grounded, ATT&CK-mapped, objective-driven plan** = an emulation that produces meaningful defensive insight.
 
-## Pitfalls
+### Pitfalls
 
 - **"Running attacks" instead of emulating an actor.** Scattershot techniques test against no particular threat; emulate a specific, relevant adversary so the engagement tests defences that matter.
 - **Choosing an irrelevant adversary.** Emulating an actor that doesn't target your sector tests a threat you don't face; ground the choice in your threat model and intel.
@@ -60,9 +72,15 @@ plan (after scoping/RoE)
 - **Undefined objectives.** Without clear goals, engagement success is subjective and results are hard to act on. Define goal- or technique-based objectives.
 - **Operating in isolation from the blue team.** The point is improving defence; plan to test the detection and coverage the organisation needs to understand (especially in purple-team mode).
 
-## References
+### References
 
 - MITRE ATT&CK, ATT&CK Navigator, and ATT&CK group/software profiles
 - MITRE Caldera and adversary-emulation-plan resources (e.g. CTID emulation plans)
 - The scoping-and-rules-of-engagement, purple-teaming skills and the threat-intelligence domain
 - The detection threat-informed-detection skill (align on coverage)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: endpoint-hunting
-domain: 20-threat-hunting
-description: Use when hunting on endpoint telemetry — the process, persistence, and injection patterns that reveal compromise on hosts, using the richest data source available to a hunter.
-difficulty: intermediate
-tags: [threat-hunting, endpoint, edr, process, persistence]
-tools: [edr, sysmon]
+format: "v2"
+name: "endpoint-hunting"
+title: "Endpoint Hunting"
+title_fr: "Chasse sur les postes de travail (endpoint)"
+description: "Use when hunting on endpoint telemetry — the process, persistence, and injection patterns that reveal compromise on hosts, using the richest data source available to a hunter."
+description_fr: "À utiliser pour traquer les menaces dans la télémétrie des postes : les schémas de processus, de persistance et d'injection qui trahissent une compromission, à partir de la source de données la plus riche dont dispose un chasseur."
+domain: "20-threat-hunting"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The endpoint is where attackers actually execute, persist, and act — which makes endpoint telemetry (process creation, file/registry activity, module loads, network connections) the richest source for hunting. Endpoint hunting looks for the process, persistence, and injection patterns that betray compromise on hosts. This skill covers hunting that telemetry effectively, complementing the network-focused hunts with the host view where the attacker's real activity happens.
 
-## When to use it
+### When to use it
 
 Hunting for compromise on hosts, which is most hunting — the endpoint sees what actually ran, not just what crossed the network. It leans on EDR or Sysmon telemetry and pairs with the detection EDR-logic skill (same data, hunting rather than alerting).
 
-## Procedure
+### Procedure
 
 1. **Hunt process execution and lineage.** The core endpoint data. Look for anomalous process trees (Office → PowerShell, a service spawning a shell, unexpected parent-child chains), rare processes (a binary seen on one host once), processes running from unusual locations (`%TEMP%`, `%APPDATA%`, `\Users\Public`), and suspicious command lines (the LOTL skill). Process lineage is one of the highest-fidelity endpoint signals.
 2. **Hunt persistence mechanisms.** Attackers persist through predictable surfaces: registry Run keys, services, scheduled tasks, WMI subscriptions, startup folders, and (Linux) cron/systemd/authorized_keys. Hunt for new or unusual entries in these — a rarely-changing surface makes anomalies stand out (feeds IR eradication).
@@ -25,7 +37,7 @@ Hunting for compromise on hosts, which is most hunting — the endpoint sees wha
 6. **Baseline and combine signals.** Endpoints are noisy with legitimate activity; baseline normal (the baselining skill) and combine weak signals (rare process + unusual path + odd parent) into strong leads, as with LOTL hunting.
 7. **Investigate and operationalise** — a confirmed endpoint compromise is an active intrusion (escalate to IR, dump the process for the malware domain); the pattern becomes an EDR detection.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 the endpoint = where attackers execute/persist/act -> RICHEST hunting data
@@ -46,7 +58,7 @@ BASELINE (endpoints noisy) + COMBINE weak signals (rare proc + odd path + odd pa
 confirmed -> IR + dump for malware analysis ; pattern -> EDR detection
 ```
 
-## Reading the hunt
+### Reading the hunt
 
 - **An anomalous process tree** (Office spawning PowerShell, a service spawning cmd, an unexpected parent) = one of the highest-fidelity endpoint findings; the lineage betrays malicious execution regardless of the specific payload. A prime lead.
 - **A rare process/path/command across the fleet** (seen on one host of thousands) = rarity is a powerful signal; the outlier that nothing else in the environment does is worth investigating. Stacking surfaces it.
@@ -55,7 +67,7 @@ confirmed -> IR + dump for malware analysis ; pattern -> EDR detection
 - **LSASS access or credential-dumping behaviour** = credential theft, which precedes lateral movement; a high-value find that indicates the intrusion is advancing.
 - **Endpoint noise from legitimate activity** = the challenge; baseline normal and combine weak signals, since a single event is often benign. Correlation and rarity separate signal from noise.
 
-## Pitfalls
+### Pitfalls
 
 - **Not collecting rich endpoint telemetry.** Endpoint hunting depends on EDR/Sysmon process and command-line data; without it (or with default-config Sysmon), the richest hunting source is unavailable. Ensure the logging.
 - **Hunting single events without context.** One endpoint event is often benign; the findings emerge from lineage, rarity, and combining weak signals. Correlate.
@@ -63,9 +75,15 @@ confirmed -> IR + dump for malware analysis ; pattern -> EDR detection
 - **Ignoring rarity/stacking.** Across a fleet, frequency analysis is one of the most powerful ways to surface the outlier; hunting host-by-host misses the fleet-wide rare thing.
 - **Focusing only on process, missing persistence/injection/credential access.** These are where attackers hide and advance; hunt all the endpoint behaviours, not just execution.
 
-## References
+### References
 
 - The detection edr-detection-logic and log-source-coverage skills; Sysmon configs
 - The data-stacking, anomaly-baselining, and living-off-the-land skills
 - The forensics memory-forensics and AD dcsync skills
 - MITRE ATT&CK (execution, persistence, defense evasion, credential access) and Atomic Red Team
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

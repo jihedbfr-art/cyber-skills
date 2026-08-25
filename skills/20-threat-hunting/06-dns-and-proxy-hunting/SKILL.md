@@ -1,21 +1,33 @@
 ---
-name: dns-and-proxy-hunting
-domain: 20-threat-hunting
-description: Use when hunting DNS and web-proxy logs for C2, exfiltration, and malicious domains — high-value logs that reveal what hosts are really talking to.
-difficulty: intermediate
-tags: [threat-hunting, dns, proxy, c2, exfiltration]
-tools: []
+format: "v2"
+name: "dns-and-proxy-hunting"
+title: "Dns And Proxy Hunting"
+title_fr: "Chasse dans les journaux DNS et proxy"
+description: "Use when hunting DNS and web-proxy logs for C2, exfiltration, and malicious domains — high-value logs that reveal what hosts are really talking to."
+description_fr: "À utiliser pour traquer le C2, l'exfiltration et les domaines malveillants dans les journaux DNS et proxy web : des journaux à forte valeur qui révèlent à qui les machines parlent réellement."
+domain: "20-threat-hunting"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 DNS and web-proxy logs are among the richest hunting sources, because almost everything a host does on the internet passes through name resolution and web requests. Malware resolving C2 domains, data tunnelled out through DNS, connections to newly-registered or algorithmically-generated domains — it all shows here. This skill covers hunting these logs for the network signatures of compromise, a high-yield hunt available to almost any SOC.
 
-## When to use it
+### When to use it
 
 Hunting for C2, exfiltration, and malicious-domain contact, especially when you don't have specific IoCs. DNS and proxy logs are widely collected and high-signal, making this one of the most accessible and productive network hunts.
 
-## Procedure
+### Procedure
 
 1. **Get the DNS and proxy logs with enough history.** DNS query logs (what domains hosts resolve) and proxy logs (web requests, with URLs, user-agents, bytes, categories) are the data. History lets you spot patterns and rare/new domains.
 2. **Hunt DNS tunnelling / exfiltration.** Data smuggled through DNS shows as anomalous query volume from a host, abnormally long or high-entropy subdomain labels (encoded data), lots of TXT/NULL queries, and high query frequency to one domain (ties into the DNS-security skill's signatures). One host resolving thousands of long random subdomains under one domain is exfiltration.
@@ -25,7 +37,7 @@ Hunting for C2, exfiltration, and malicious-domain contact, especially when you 
 6. **Filter the enormous legitimate volume.** DNS/proxy logs are huge and mostly benign; baseline normal, allowlist the known-good (CDNs, major services), and focus on the anomalous. This filtering is the main effort.
 7. **Investigate and operationalise** — a confirmed malicious domain becomes an IoC and a DNS/proxy block; the pattern becomes a detection (feeds detection, threat-intel, and DNS-security).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 DNS + proxy logs = richest hunting sources (almost all internet activity passes through)
@@ -44,7 +56,7 @@ FILTER huge legit volume: baseline + allowlist CDNs/major services -> anomalous 
 investigate -> IoC + DNS/proxy block + detection
 ```
 
-## Reading the hunt
+### Reading the hunt
 
 - **A host resolving thousands of long, high-entropy subdomains under one domain** = DNS tunnelling/exfiltration; the volume-and-entropy signature is unmistakable and DNS is a favourite exfil channel because it's usually allowed out. A top find.
 - **Connections to newly-registered or DGA (random-looking) domains** = strong C2 indicators; legitimate traffic rarely goes to freshly-registered or algorithmic domains, so these stand out sharply.
@@ -53,7 +65,7 @@ investigate -> IoC + DNS/proxy block + detection
 - **Overwhelming legitimate volume** = the challenge; DNS/proxy logs are mostly benign (CDNs, major services), so baselining and allowlisting known-good is most of the work before the malicious surfaces.
 - **A confirmed malicious domain** = block it at the resolver/proxy, extract as an IoC, and turn the pattern into a detection.
 
-## Pitfalls
+### Pitfalls
 
 - **Not filtering the legitimate volume.** DNS/proxy logs are enormous and mostly benign; without baselining and allowlisting known-good, the malicious signal drowns. Filtering is the main effort.
 - **Ignoring DNS as an exfil/C2 channel.** DNS is almost always allowed outbound, which is exactly why attackers use it; not hunting DNS leaves a common channel unwatched.
@@ -61,9 +73,15 @@ investigate -> IoC + DNS/proxy block + detection
 - **Overlooking the user-agent and category fields.** Proxy metadata (user-agent, domain category, bytes) is high-signal for spotting non-human/malicious traffic; don't hunt on destination alone.
 - **Insufficient history.** Spotting rare domains and repeating patterns needs a time span; a short window misses slow or infrequent activity.
 
-## References
+### References
 
 - The network dns-security, beaconing-detection, and detection log-source-coverage skills
 - MITRE ATT&CK — T1071.004 (DNS), T1048 (Exfiltration Over Alternative Protocol), T1568 (Dynamic Resolution/DGA)
 - The threat-intelligence domain (domain reputation) and operationalising-a-hunt skill
 - Passive DNS and domain-age/reputation services
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

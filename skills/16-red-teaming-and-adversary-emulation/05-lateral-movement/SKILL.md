@@ -1,21 +1,33 @@
 ---
-name: lateral-movement
-domain: 16-red-teaming-and-adversary-emulation
-description: Use when emulating lateral movement in an authorised engagement — how adversaries move between systems toward their objective, and how the blue team detects and constrains it.
-difficulty: advanced
-tags: [red-team, lateral-movement, authorized, active-directory, emulation]
-tools: []
+format: "v2"
+name: "lateral-movement"
+title: "Lateral Movement"
+title_fr: "Mouvement latéral"
+description: "Use when emulating lateral movement in an authorised engagement — how adversaries move between systems toward their objective, and how the blue team detects and constrains it."
+description_fr: "À utiliser pour émuler un mouvement latéral dans un engagement autorisé — comment les adversaires se déplacent entre systèmes vers leur objectif, et comment l'équipe défensive le détecte et le contient."
+domain: "16-red-teaming-and-adversary-emulation"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 After the initial foothold, an adversary moves laterally toward their objective — the crown jewels are rarely where they land. Emulating lateral movement tests whether the organisation can detect and constrain an attacker moving through the network, which is often where there's the most opportunity to catch an intrusion. This skill covers the lateral-movement phase of an authorised engagement conceptually, and — the defensive core — how movement is detected and broken. It's the offensive counterpart to the threat-hunting lateral-movement skill.
 
-## When to use it
+### When to use it
 
 The mid-engagement phase (post-foothold, pre-objective) of an authorised engagement under RoE. The defensive framing is central: lateral movement is detectable and constrainable, and emulating it tests both.
 
-## Procedure (authorised)
+### Procedure (authorised)
 
 1. **Operate within the RoE** and maintain deconfliction — lateral movement across production systems needs care and a way to distinguish your activity from a real attack.
 2. **Understand the main movement techniques** (conceptual level) — how adversaries move:
@@ -30,7 +42,7 @@ The mid-engagement phase (post-foothold, pre-objective) of an authorised engagem
    - **Constraint** — network segmentation (limits reachability), AD tiered administration (breaks the credential-theft chain), and least privilege (limits what stolen credentials reach).
 7. **Report the movement outcome** — "how far movement got, what was detected, and what constrained it" is a critical finding that drives the segmentation, tiering, and detection improvements that break attack paths.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 after foothold -> move laterally toward the objective (crown jewels rarely where you land)
@@ -50,7 +62,7 @@ DEFENSIVE POINT: test DETECTION + CONSTRAINT
 report: how far it got + what detected + what constrained -> drives segmentation/tiering/detection
 ```
 
-## Reading the phase
+### Reading the phase
 
 - **Lateral movement reaching the objective undetected and unconstrained** = a serious finding on both axes; the blue team didn't catch the movement and the architecture didn't limit it. Drives both detection and segmentation/tiering improvements.
 - **Movement detected via anomalous authentication or remote execution** = a defensive win; the blue team caught the attacker moving, which is often the best chance to catch an intrusion mid-flight (the threat-hunting lateral-movement skill).
@@ -59,7 +71,7 @@ report: how far it got + what detected + what constrained -> drives segmentation
 - **Credential-based movement (pass-the-hash) reaching privileged systems** = the credential-theft chain working for the attacker; AD tiering is what breaks it.
 - **How far movement got, detected, and constrained** = the critical finding; the phase's value is testing and improving the organisation's ability to detect and break attack paths.
 
-## Pitfalls
+### Pitfalls
 
 - **Operating outside RoE / without deconfliction.** Lateral movement across production looks like a real attack and touches many systems; stay in scope with a deconfliction path.
 - **Focusing on reaching the objective over the defensive outcome.** The value is whether movement is detected and constrained; both are the findings, not just whether you got there.
@@ -67,9 +79,15 @@ report: how far it got + what detected + what constrained -> drives segmentation
 - **Not emulating the actor's techniques.** Move the way the emulated adversary does, per the plan, to test realistic detection.
 - **Providing operational tooling.** Conceptual by design; the value is understanding movement and its detection/constraint, not ready-to-fire lateral-movement tools.
 
-## References
+### References
 
 - MITRE ATT&CK — TA0008 (Lateral Movement), T1021, T1550
 - The threat-hunting lateral-movement-hunting skill and the Active Directory domain (ntlm-relay, dcsync, tiered-admin-model, the paths)
 - The network-segmentation skill and scoping/emulation-planning skills
 - BloodHound (attack-path mapping — both sides use it)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

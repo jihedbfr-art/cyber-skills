@@ -1,21 +1,33 @@
 ---
-name: testing-detections
-domain: 18-detection-engineering
-description: Use when validating that a detection actually works — running the technique it targets to confirm it fires, and checking it stays quiet on benign activity, before trusting it.
-difficulty: intermediate
-tags: [detection, testing, validation, atomic-red-team, emulation]
-tools: [atomic-red-team, caldera]
+format: "v2"
+name: "testing-detections"
+title: "Testing Detections"
+title_fr: "Tester les détections"
+description: "Use when validating that a detection actually works — running the technique it targets to confirm it fires, and checking it stays quiet on benign activity, before trusting it."
+description_fr: "À utiliser pour valider qu'une détection fonctionne réellement — exécuter la technique qu'elle cible pour confirmer qu'elle se déclenche, et vérifier qu'elle reste silencieuse sur une activité bénigne, avant de lui faire confiance."
+domain: "18-detection-engineering"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An untested detection is a hope, not a control. A rule can be syntactically perfect, deployed, and mapped to ATT&CK — and still never fire on the actual attack, because of a wrong field, a telemetry gap, or flawed logic. Testing detections means running the technique the rule targets and confirming the alert fires (and that benign activity doesn't trigger it). This skill covers validating detections so "covered" means "actually detects", closing the gap between assumed and real coverage.
 
-## When to use it
+### When to use it
 
 Before trusting any new detection, after tuning one (confirm it still fires), and periodically to catch detections that broke when the environment or telemetry changed. It's what makes coverage claims honest and turns detection-as-code's CI into real validation.
 
-## Procedure
+### Procedure
 
 1. **Test that the detection fires on the real technique — the essential check.** Execute the attack technique the rule targets, safely, and confirm the alert triggers. Atomic Red Team provides small, safe, per-technique tests mapped to ATT&CK — run the atomic test for the technique and watch for your alert:
    ```
@@ -29,7 +41,7 @@ Before trusting any new detection, after tuning one (confirm it still fires), an
 6. **Purple-team it.** The strongest validation is red and blue together — the red side runs techniques, the blue side confirms detection and tunes what's missing. Testing detections is a natural collaboration point (feeds the red-team purple-teaming skill).
 7. **Record results and re-test.** Track which detections are validated and when; detections rot as environments change, so validation is periodic, not one-time.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 untested detection = a HOPE, not a control.
@@ -52,7 +64,7 @@ purple team: red runs techniques, blue confirms+tunes (strongest validation)
 record + RE-TEST periodically (detections rot as environment changes)
 ```
 
-## Reading the tests
+### Reading the tests
 
 - **A detection that doesn't fire when you run its technique** = the most important catch; the rule was assumed coverage you don't actually have. The cause (wrong field, telemetry gap, flawed logic) is now fixable — before an incident, not during. This is the whole point of testing.
 - **A detection that fires on the atomic test** = validated positive coverage; you can now trust it catches that technique. Coverage claims for it are honest.
@@ -61,7 +73,7 @@ record + RE-TEST periodically (detections rot as environment changes)
 - **A previously-validated detection that now doesn't fire** = it rotted (a field renamed, a log source changed); periodic re-testing and CI catch the regression.
 - **Detections validated by purple teaming with results tracked** = the mature state; coverage is proven, not assumed.
 
-## Pitfalls
+### Pitfalls
 
 - **Trusting untested detections.** Syntactically valid and deployed doesn't mean it fires on the real attack; a wrong field or telemetry gap makes it silent. Run the technique and confirm.
 - **Testing only the positive case.** A rule that fires on the technique but also on everything benign is useless in production; check it stays quiet on benign activity too.
@@ -69,9 +81,15 @@ record + RE-TEST periodically (detections rot as environment changes)
 - **Only atomic-testing individual techniques.** Detecting each technique in isolation can still miss the attack chain; emulate sequences to find the gaps between them.
 - **One-time validation.** Detections break silently as environments change; without periodic re-testing (ideally in CI), you rediscover the breakage during an incident.
 
-## References
+### References
 
 - Atomic Red Team (atomicredteam.io) — per-technique tests
 - MITRE Caldera and adversary-emulation frameworks
 - The detection-as-code, mapping-to-attack, reducing-false-positives, and red-team purple-teaming skills
 - MITRE ATT&CK
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

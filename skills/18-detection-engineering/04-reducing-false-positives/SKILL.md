@@ -1,21 +1,33 @@
 ---
-name: reducing-false-positives
-domain: 18-detection-engineering
-description: Use when a detection is too noisy — tuning it to cut false positives without creating blind spots, so alerts stay trustworthy and the SOC doesn't learn to ignore them.
-difficulty: intermediate
-tags: [detection, false-positives, tuning, alert-fatigue, quality]
-tools: [sigma]
+format: "v2"
+name: "reducing-false-positives"
+title: "Reducing False Positives"
+title_fr: "Réduire les faux positifs"
+description: "Use when a detection is too noisy — tuning it to cut false positives without creating blind spots, so alerts stay trustworthy and the SOC doesn't learn to ignore them."
+description_fr: "À utiliser quand une détection génère trop de bruit — l'affiner pour réduire les faux positifs sans créer d'angles morts, afin que les alertes restent fiables et que le SOC n'apprenne pas à les ignorer."
+domain: "18-detection-engineering"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A detection that cries wolf is worse than no detection — the SOC learns to ignore it, and the one time it's real gets closed as noise. But the naive fix, suppressing aggressively, creates the opposite failure: blind spots where real attacks pass silently. Reducing false positives well means cutting the noise while keeping the detection's ability to catch the real thing. This skill covers that balance, the core craft of maintaining a healthy detection.
 
-## When to use it
+### When to use it
 
 When a detection generates too many false positives (revealed by SOC feedback, triage data, or the detection-metrics skill flagging noisy rules). It's ongoing maintenance — detections that were precise drift noisy as the environment changes, and the loudest rules usually generate most of the fatigue.
 
-## Procedure
+### Procedure
 
 1. **Understand *why* it false-positives before touching it.** Look at the actual false-positive alerts: what benign activity is matching? A backup job, an admin tool, a legitimate scanner, a specific application's normal behaviour. The tuning follows from the cause — blind suppression without understanding is how you create blind spots.
 2. **Tune with precision, not a blunt off-switch.** Options in order of preference:
@@ -27,7 +39,7 @@ When a detection generates too many false positives (revealed by SOC feedback, t
 5. **Prefer enrichment over suppression where possible.** Sometimes the fix isn't to silence the rule but to add context (asset criticality, user role) so the analyst can triage faster, keeping the detection while cutting the *effort* per alert (the alert-enrichment skill).
 6. **Iterate and document.** Tuning is rarely one-shot; deploy the change, watch the false-positive rate, refine. Record each exclusion and why, so the rule stays maintainable and the blind spots are known.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 FIRST: understand WHY it false-positives (read the actual FP alerts)
@@ -50,7 +62,7 @@ prefer ENRICHMENT over suppression where possible (keep rule, cut effort/alert)
 iterate: deploy -> watch FP rate -> refine ; document every exclusion + why
 ```
 
-## Reading the tuning
+### Reading the tuning
 
 - **A rule generating mostly false positives** = alert fatigue; the SOC will start ignoring it, and a real hit gets closed as noise. The most important rules to tune are the loudest. Understand the cause and narrow it.
 - **The false-positive cause identified** (a specific backup account, an admin tool) = you can tune precisely — exclude that exact source or add the distinguishing context — rather than blunt-suppressing.
@@ -59,7 +71,7 @@ iterate: deploy -> watch FP rate -> refine ; document every exclusion + why
 - **A rule where enrichment (not suppression) would help** = keep the detection and add context so triage is faster; you cut the cost without losing the coverage.
 - **A precisely-tuned rule that's quiet on benign and fires on malicious, with documented exclusions** = the healthy balance this skill aims for.
 
-## Pitfalls
+### Pitfalls
 
 - **Blind suppression.** Silencing a noisy rule without understanding what's matching creates blind spots — you may have excluded exactly where an attacker operates. Understand the cause first.
 - **Over-tuning into false negatives.** Tuning so aggressively that the rule no longer catches the real attack is worse than the noise; a missed attack beats a false positive. Re-test after tuning.
@@ -68,8 +80,14 @@ iterate: deploy -> watch FP rate -> refine ; document every exclusion + why
 - **Tuning without tracking.** Undocumented exclusions become unknown blind spots; record what you excluded and why.
 - **Suppressing when enrichment would do.** Sometimes the alert is valid but hard to triage; adding context beats silencing it.
 
-## References
+### References
 
 - The writing-sigma-rules, testing-detections, alert-enrichment, and detection-metrics skills
 - The SOC alert-triage-workflow and network ids-ips-tuning skills (same tuning discipline)
 - SANS detection engineering / SOC tuning resources
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.
