@@ -1,21 +1,33 @@
 ---
-name: memory-forensics
-domain: 23-digital-forensics
-description: Use when analysing a memory image to find what disk forensics misses — running processes, injected code, network connections, and secrets that only exist in RAM.
-difficulty: advanced
-tags: [forensics, memory, volatility, ram, incident-response]
-tools: [volatility, memprocfs]
+format: "v2"
+name: "memory-forensics"
+title: "Memory Forensics"
+title_fr: "Forensic mémoire"
+description: "Use when analysing a memory image to find what disk forensics misses — running processes, injected code, network connections, and secrets that only exist in RAM."
+description_fr: "À utiliser pour analyser une image mémoire et trouver ce que l'analyse disque manque — processus en cours, code injecté, connexions réseau et secrets qui n'existent que dans la RAM."
+domain: "23-digital-forensics"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A lot of what matters in an investigation never touches disk. Running processes, injected code, decryption keys, network connections, and fileless malware live only in memory — and vanish at power-off. Memory forensics analyses a RAM capture to recover them. This skill covers working a memory image with Volatility to surface what disk analysis can't, which is often where the answer to "what was this malware doing" actually lives.
 
-## When to use it
+### When to use it
 
 After a memory capture (taken during evidence preservation — memory is the most volatile artifact, captured first). Essential for fileless malware, process injection, and any case where you need the *live* state of the system, not just what was written to disk.
 
-## Procedure
+### Procedure
 
 1. **Start from a proper memory image.** Analysis is only as good as the capture — a full physical memory image acquired before power-off (the evidence-preservation skill covers acquisition). Work on a copy.
 2. **Identify the profile/symbols.** Volatility needs to know the OS/kernel to interpret the image. Volatility 3 largely automates symbol resolution; older workflows required picking a profile. Get this right or nothing parses correctly.
@@ -39,7 +51,7 @@ After a memory capture (taken during evidence preservation — memory is the mos
    ```
 7. **Dump suspicious processes/regions** for further analysis (feed into the malware domain) — a process dumped from memory is often the unpacked payload.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 prereq: full physical memory image (captured BEFORE power-off) — work on a copy
@@ -64,7 +76,7 @@ dump for deeper analysis
 (Linux/macOS: equivalent linux.* / mac.* plugins)
 ```
 
-## Reading the image
+### Reading the image
 
 - **A suspicious process tree** (Office spawning a shell, a process with no disk image, an unusual parent) = a strong lead; process relationships in memory reveal execution chains that disk forensics can't show. Start here.
 - **`malfind` hits** (executable private memory, injected code) = process injection or fileless malware — findings that exist *only* in memory and vanish at power-off. This is memory forensics' unique value.
@@ -73,7 +85,7 @@ dump for deeper analysis
 - **Credentials/keys recovered from memory** = how the attacker moved or what they decrypted; sometimes the key to encrypted evidence.
 - **A hidden process (in psscan but not pslist)** = active hiding; the discrepancy between listing methods is itself the finding.
 
-## Pitfalls
+### Pitfalls
 
 - **No memory capture, or captured too late.** Memory is the most volatile evidence; if it wasn't captured before power-off/reboot, it's gone. This is why evidence preservation captures RAM first — you can't do memory forensics without the image.
 - **Wrong OS profile/symbols.** Volatility misinterprets the image and produces garbage or nothing; confirm the OS/kernel resolves correctly.
@@ -81,9 +93,15 @@ dump for deeper analysis
 - **Analysing the original capture.** Work on a copy, preserving the master (chain-of-custody applies to memory images too).
 - **Stopping at process list.** The high-value findings are in malfind, cmdline, and netscan — go past enumeration to injection, actions, and network.
 
-## References
+### References
 
 - The Volatility Framework documentation (Volatility 3)
 - The Art of Memory Forensics (the reference text)
 - The evidence-preservation, disk-imaging-and-hashing, and malware domains
 - MITRE ATT&CK — T1055 (Process Injection), fileless techniques
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

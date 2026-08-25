@@ -1,21 +1,33 @@
 ---
-name: dark-web-monitoring
-domain: 21-threat-intelligence
-description: Use when monitoring criminal forums, marketplaces, and leak sites for threats to your organisation — exposed credentials, data leaks, and chatter — done legally and safely.
-difficulty: advanced
-tags: [threat-intel, dark-web, monitoring, leaks, exposure]
-tools: []
+format: "v2"
+name: "dark-web-monitoring"
+title: "Dark Web Monitoring"
+title_fr: "Surveillance du dark web"
+description: "Use when monitoring criminal forums, marketplaces, and leak sites for threats to your organisation — exposed credentials, data leaks, and chatter — done legally and safely."
+description_fr: "À utiliser pour surveiller forums criminels, marketplaces et sites de fuite pour des menaces visant votre organisation — identifiants exposés, fuites de données, rumeurs — de façon légale et sûre."
+domain: "21-threat-intelligence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Criminal marketplaces, forums, paste sites, and ransomware leak sites are where stolen data is sold, breaches are announced, and attacks are discussed — sometimes before the target knows. Monitoring these sources can give early warning of exposed credentials, a data leak, an impending attack, or your organisation being discussed as a target. This skill covers dark-web and underground monitoring for threats to your organisation, done within legal and ethical bounds — the value is early warning, not participation.
 
-## When to use it
+### When to use it
 
 Monitoring for external threats and exposure to your organisation, typically as part of a mature intel programme or via a specialist service. It complements the OSINT credential-leaks skill (public breach data) with the harder-to-reach underground sources.
 
-## Procedure
+### Procedure
 
 1. **Define what you're monitoring for.** Focus on threats to *your* organisation: exposed/for-sale credentials, mentions of your company/brand/executives, leaked data attributed to you, ransomware leak-site listings, and chatter indicating you're a target. Monitoring "the dark web" generally is unfocused; monitor for your specific exposure.
 2. **Stay within legal and ethical bounds — the critical constraint.** Monitoring and collecting intelligence is legitimate; *participating* in criminal activity is not. Don't purchase stolen data, don't engage in illegal transactions, don't hack, and don't impersonate to gain forum access in ways that cross legal lines. The line is observation vs participation — and it's easy to cross, so many organisations use specialist services or law enforcement channels rather than doing it directly.
@@ -25,7 +37,7 @@ Monitoring for external threats and exposure to your organisation, typically as 
 6. **Act on confirmed exposure.** A confirmed finding drives concrete action: exposed credentials → force resets and MFA (the credential-leaks skill), a data leak → incident response and notification, an impending-attack signal → heightened defence and hunting. Early warning is only valuable if acted on.
 7. **Handle findings sensitively.** Exposure intel is sensitive (it may reveal a breach you haven't disclosed); handle with appropriate confidentiality (TLP) and route to the right internal teams.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 underground = where stolen data is sold, breaches announced, attacks discussed
@@ -49,7 +61,7 @@ ACT on confirmed: creds -> reset+MFA | leak -> IR+notify | attack signal -> heig
 handle SENSITIVELY (TLP — may reveal undisclosed breach)
 ```
 
-## Reading the monitoring
+### Reading the monitoring
 
 - **Your organisation on a ransomware leak site** = a serious, time-sensitive finding — often the first sign of a breach, or a threat to publish stolen data. Immediate IR and decision-making; this is among the highest-value early warnings.
 - **Credentials for your domain for sale** = an exposure to act on (force resets, MFA); but vet first — combolists recycle old, already-changed credentials, so confirm they're real and current before scrambling.
@@ -58,7 +70,7 @@ handle SENSITIVELY (TLP — may reveal undisclosed breach)
 - **The observation/participation line being approached** = stop; buying data or engaging in transactions crosses into criminal activity regardless of defensive intent. Use specialist services or law enforcement for anything near the line.
 - **Confirmed, vetted exposure routed to the right teams and acted on** = the value realised; early warning that drives resets, IR, or heightened defence.
 
-## Pitfalls
+### Pitfalls
 
 - **Crossing the observation/participation line.** Buying stolen data, engaging in illegal transactions, or illegal access is criminal even with defensive intent — and easy to drift into. Stay on the observation side; use specialist services or law enforcement for direct access.
 - **Doing it in-house without opsec/legal guidance.** Direct dark-web access is operationally risky (safety, attribution, legality); most organisations should use commercial providers with lawful access rather than DIY.
@@ -67,9 +79,15 @@ handle SENSITIVELY (TLP — may reveal undisclosed breach)
 - **Not acting on confirmed findings.** Early warning is only valuable if it drives resets, IR, or defence; findings that sit unactioned waste the whole capability.
 - **Mishandling sensitive findings.** Exposure intel may reveal an undisclosed breach; handle confidentially and route appropriately.
 
-## References
+### References
 
 - The OSINT email-and-credential-leaks and IR skills
 - Commercial dark-web / digital-risk-protection services
 - Legal guidance on threat-intelligence collection boundaries (jurisdiction-specific)
 - The ioc-collection-and-vetting skill (vetting discipline) and TLP handling
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: ir-playbook-development
-domain: 22-incident-response
-description: Use when writing incident response playbooks before you need them — turning a scenario into concrete, tested steps so the response isn't improvised at 3am.
-difficulty: intermediate
-tags: [incident-response, playbook, runbook, preparation, process]
-tools: []
+format: "v2"
+name: "ir-playbook-development"
+title: "Ir Playbook Development"
+title_fr: "Élaboration de playbooks de réponse à incident"
+description: "Use when writing incident response playbooks before you need them — turning a scenario into concrete, tested steps so the response isn't improvised at 3am."
+description_fr: "À utiliser en amont, pour rédiger des playbooks de réponse à incident avant d'en avoir besoin — en transformant un scénario en étapes concrètes et testées, pour que la réponse ne s'improvise pas à 3h du matin."
+domain: "22-incident-response"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The worst time to figure out your response is during the incident. A playbook is the pre-written, agreed procedure for a specific scenario — who does what, in what order, with which decisions escalated to whom. Good playbooks turn a panicked scramble into a calm sequence. This skill covers writing playbooks that actually get used, rather than binders nobody opens.
 
-## When to use it
+### When to use it
 
 During the preparation phase — before incidents, not after. Build playbooks for the scenarios most likely to hit you or most damaging if they do: ransomware, account compromise, data breach, DDoS, a cloud key leak. Each of the response skills in this domain is the raw material; a playbook assembles them into a scenario-specific sequence.
 
-## Procedure
+### Procedure
 
 1. **Pick scenarios by likelihood and impact**, not by what's easy to write. Start with the handful you're most likely to face (phishing-led account compromise, ransomware) — a playbook for an exotic threat you'll never see is wasted effort while the common case is unwritten.
 2. **Structure each playbook around the IR lifecycle** so nothing is skipped under pressure: detection/triage → containment → eradication → recovery → post-incident. Reference the detailed skills rather than duplicating them.
@@ -26,7 +38,7 @@ During the preparation phase — before incidents, not after. Build playbooks fo
 7. **Test it.** Run the playbook in a tabletop exercise against a realistic scenario. Testing is what separates a real playbook from a document — it exposes missing steps, wrong assumptions, and access nobody actually has. Update from what the exercise reveals.
 8. **Keep them current.** Review after real incidents (feed the postmortem back in) and on a schedule, because environments and tools drift.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 playbook structure (per scenario)
@@ -50,7 +62,7 @@ pick scenarios by: likelihood x impact (ransomware, account compromise,
 data breach, key leak, DDoS) — common case first, not exotic threats.
 ```
 
-## Reading a draft playbook
+### Reading a draft playbook
 
 - **Vague steps** ("investigate", "contain") = it'll be improvised anyway. Rewrite each as a concrete action a specific role can execute cold.
 - **Steps assigned to named individuals** = brittle; the playbook breaks when that person leaves or is off-shift. Use roles.
@@ -58,7 +70,7 @@ data breach, key leak, DDoS) — common case first, not exotic threats.
 - **Contacts/prerequisites missing** = mid-incident scavenger hunt. Put them inline.
 - **Never tested** = not a playbook yet, just a wish. A tabletop exercise is what proves it works and surfaces the gaps.
 
-## Pitfalls
+### Pitfalls
 
 - **Writing for exotic threats while the common case is unwritten.** Prioritise by likelihood × impact; the phishing-to-account-compromise playbook matters more than the nation-state one.
 - **Vague, unassignable steps.** If it needs interpretation at 3am, it's not a playbook. Concrete + role-assigned.
@@ -66,9 +78,15 @@ data breach, key leak, DDoS) — common case first, not exotic threats.
 - **Never testing.** Untested playbooks fail on first contact — missing access, wrong assumptions, steps in the wrong order. Tabletop them.
 - **Set-and-forget.** Tools and environments drift; a stale playbook misleads. Review after incidents and on a cadence.
 
-## References
+### References
 
 - NIST SP 800-61r2 (preparation phase)
 - CISA incident response playbooks (federal templates, adaptable)
 - SANS Incident Handler's Handbook
 - MITRE ATT&CK (to ground scenario steps in real attacker behaviour)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

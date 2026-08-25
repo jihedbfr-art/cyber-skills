@@ -1,21 +1,33 @@
 ---
-name: containment-strategies
-domain: 22-incident-response
-description: Use once an incident is confirmed and scoped — deciding how to stop the spread without destroying evidence or tipping off the attacker prematurely.
-difficulty: intermediate
-tags: [incident-response, containment, isolation, evidence]
-tools: []
+format: "v2"
+name: "containment-strategies"
+title: "Containment Strategies"
+title_fr: "Stratégies de confinement"
+description: "Use once an incident is confirmed and scoped — deciding how to stop the spread without destroying evidence or tipping off the attacker prematurely."
+description_fr: "À utiliser une fois l'incident confirmé et son périmètre estimé, pour choisir comment stopper sa propagation sans détruire les preuves ni alerter prématurément l'attaquant."
+domain: "22-incident-response"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Containment is the hinge of incident response: the point where you stop the bleeding. Done well, it limits damage while preserving what you need to investigate and recover. Done hastily, it destroys evidence, alerts the attacker to dig in deeper, or takes down more than the incident would have. This skill covers choosing a containment approach that fits the situation.
 
-## When to use it
+### When to use it
 
 Right after triage confirms a real incident and you have a rough scope (the triage skill). Containment comes before eradication — you isolate first, then clean. It's a decision made under pressure, which is exactly why having the trade-offs straight in advance matters.
 
-## The core tension
+### The core tension
 
 Every containment choice trades three things against each other:
 
@@ -23,7 +35,7 @@ Every containment choice trades three things against each other:
 - **Containing visibly** vs **staying covert** — blocking the attacker loudly may cause them to burn what they have (deploy ransomware, wipe logs) before you're ready.
 - **Scope of impact** — isolating a segment may disrupt the business more than the incident itself; sometimes the cure must be weighed against the disease.
 
-## Procedure
+### Procedure
 
 1. **Decide short-term vs long-term containment.** Short-term = stop the immediate spread now (isolate a host, block an IP, disable an account). Long-term = the more durable holding measure while you prepare eradication (rebuild in a clean segment, apply a temporary fix). Usually you do short-term immediately, then move to long-term.
 2. **Preserve before you cut, where feasible.** If the host will be investigated, capture volatile data (memory, network state) before isolating or powering off — pulling the plug throws away RAM. Balance this against how fast the threat is spreading; a live wiper doesn't wait for your memory capture.
@@ -32,7 +44,7 @@ Every containment choice trades three things against each other:
 5. **Scope the containment to the incident.** Isolate what's affected plus a safety margin, not the whole network by reflex — but don't under-contain and let it spread past your line either.
 6. **Document every action with timestamps** — what you isolated, when, and why. Recovery and the postmortem depend on it.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 containment order of operations
@@ -53,7 +65,7 @@ weigh before acting
 always: timestamp and log every containment action
 ```
 
-## Reading the situation
+### Reading the situation
 
 - **Active, fast spread (a worm, live ransomware)** shifts the balance toward speed — isolate aggressively now, accept some evidence loss. A live wiper won't wait.
 - **A quiet, established foothold** favours careful, coordinated containment — moving loudly may push the attacker to act destructively. Plan the cut with the lead.
@@ -61,7 +73,7 @@ always: timestamp and log every containment action
 - **Containment that would disrupt critical business more than the incident** needs an explicit risk decision by the incident owner — sometimes you tolerate a contained threat briefly to avoid a self-inflicted outage.
 - **"We're not sure of full scope"** means contain conservatively but keep hunting — under-containment lets it spread, over-containment causes its own damage.
 
-## Pitfalls
+### Pitfalls
 
 - **Powering off a host you needed to investigate.** RAM and volatile artifacts are gone. Network-isolate instead where the situation allows.
 - **Tipping off the attacker piecemeal.** Blocking one thing at a time on a broadly-compromised environment invites retaliation. Coordinate the cut.
@@ -69,8 +81,14 @@ always: timestamp and log every containment action
 - **Containing the whole business by reflex.** Over-isolation can outweigh the incident's own harm; scope to the affected area plus margin, decided with the owner.
 - **No documentation.** Undocumented containment actions confuse recovery and the postmortem. Timestamp everything.
 
-## References
+### References
 
 - NIST SP 800-61r2 (Containment, Eradication, and Recovery)
 - SANS Incident Handler's Handbook
 - MITRE ATT&CK (to anticipate attacker reaction during containment)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

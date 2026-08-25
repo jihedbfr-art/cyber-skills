@@ -1,21 +1,33 @@
 ---
-name: reporting-and-dissemination
-domain: 21-threat-intelligence
-description: Use when writing and delivering threat-intel reports — producing intelligence people actually read and act on, and getting it to the right consumers in the right form and time.
-difficulty: intermediate
-tags: [threat-intel, reporting, dissemination, communication, audiences]
-tools: []
+format: "v2"
+name: "reporting-and-dissemination"
+title: "Reporting And Dissemination"
+title_fr: "Rapports et diffusion"
+description: "Use when writing and delivering threat-intel reports — producing intelligence people actually read and act on, and getting it to the right consumers in the right form and time."
+description_fr: "À utiliser pour rédiger et diffuser des rapports de renseignement sur la menace — produire du renseignement que les gens lisent et exploitent réellement, et le faire parvenir aux bons destinataires sous la bonne forme au bon moment."
+domain: "21-threat-intelligence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Intelligence that isn't communicated well is wasted, no matter how good the analysis. Reporting and dissemination is the last mile — turning analysis into reports people actually read and act on, and getting them to the right consumers in the right form and at the right time. This skill covers producing usable intelligence reporting and delivering it effectively, the closing discipline that determines whether all the collection and analysis produces value.
 
-## When to use it
+### When to use it
 
 The output side of every intel product, and whenever intel reports aren't landing (nobody reads them, or reads and doesn't act). It's the communication counterpart to intel-requirements — requirements define what to answer, this delivers the answers usably. It connects to tactical-vs-strategic (form per audience) and the vuln-mgmt reporting discipline.
 
-## Procedure
+### Procedure
 
 1. **Write for the audience and their decision.** Match the report to the consumer (tactical/operational/strategic — that skill): the SOC needs concise, actionable indicators and detection content; leadership needs business-framed risk in plain language. The same analysis becomes different reports for different audiences. A report that doesn't fit its reader doesn't get used.
 2. **Lead with the answer, not the analysis.** Open with the bottom line — what's the threat, how does it affect us, what should we do. Analysts and executives alike need the key judgement up front, with supporting analysis available below for those who want it (the BLUF — bottom line up front — discipline).
@@ -25,7 +37,7 @@ The output side of every intel product, and whenever intel reports aren't landin
 6. **Respect handling and sensitivity.** Intel reports may contain sensitive or attributable information; apply handling markings (TLP) and disseminate only to appropriate consumers. Over-dissemination of sensitive intel causes the same harms as over-sharing (the MISP/sharing skill).
 7. **Close the feedback loop.** Ask whether the intelligence was useful and acted on; feedback refines both future reporting and the requirements. A programme that never checks whether its reports land can't improve.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 good analysis + bad communication = WASTED intelligence. the last mile matters.
@@ -51,7 +63,7 @@ HANDLING (TLP): sensitive/attributable -> appropriate consumers only
 FEEDBACK loop: was it useful + acted on? -> refine reporting + requirements
 ```
 
-## Reading the reporting
+### Reading the reporting
 
 - **A report that fits its audience and their decision** = intelligence that gets used; a SOC report of actionable indicators and an executive briefing of business risk both work because each fits its reader. The same analysis in the wrong form for the reader is wasted.
 - **A report leading with analysis instead of the answer** = readers (especially busy executives) may never reach the key judgement; lead with the bottom line and put supporting analysis below.
@@ -60,7 +72,7 @@ FEEDBACK loop: was it useful + acted on? -> refine reporting + requirements
 - **Perishable tactical intel delivered as a slow PDF** = worthless by the time it lands; tactical intel needs fast, machine-consumable delivery. Match form to shelf life.
 - **A report that's useful, acted on, and fed back** = the programme working and improving; without a feedback loop, reporting can't get better and requirements drift.
 
-## Pitfalls
+### Pitfalls
 
 - **Good analysis, poor communication.** The last mile wastes otherwise-valuable intelligence; a report nobody reads or can act on is a failure regardless of the analysis behind it.
 - **Wrong form for the audience.** A technical report to executives or a strategic narrative to the SOC doesn't land; match the report to the consumer and their decision.
@@ -70,9 +82,15 @@ FEEDBACK loop: was it useful + acted on? -> refine reporting + requirements
 - **Slow delivery of perishable intel.** Tactical intel delivered too slowly or in the wrong form is worthless; match delivery to shelf life.
 - **No feedback loop.** Not checking whether intel is used means the programme can't improve or realign to real needs.
 
-## References
+### References
 
 - The tactical-vs-strategic, intel-requirements, and mapping-intel-to-detection skills
 - The vuln-mgmt reporting-to-stakeholders and GRC security-metrics-for-leadership skills
 - BLUF and structured analytic writing (intelligence-community practice)
 - TLP (Traffic Light Protocol) for handling/dissemination
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,0 +1,29 @@
+<!-- GENERATED — do not edit -->
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+</div>
+
+# Blameless Postmortem
+
+<div align="center">
+
+**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use after an incident is resolved to write a postmortem that finds the systemic causes and drives real fixes — without blaming individuals, so people stay honest.
+
+<a href="./README.fr.md">Version française</a>
+
+</div>
+
+---
+
+## Description
+Use after an incident is resolved to write a postmortem that finds the systemic causes and drives real fixes — without blaming individuals, so people stay honest.
+
+## Domain & Metadata
+- **Domain:** `22-incident-response`
+- **Maturity:** `stable`
+- **Audience:** `["backend-engineer", "security-engineer", "coding-agent"]`
+- **Requirements:** `["bash", "git"]`
+- **Last Updated:** 2026-08-08
+
+## Agent Instructions
+The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
