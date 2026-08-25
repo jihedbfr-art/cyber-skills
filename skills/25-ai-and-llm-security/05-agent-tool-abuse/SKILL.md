@@ -1,23 +1,35 @@
 ---
-name: agent-tool-abuse
-domain: 25-ai-and-llm-security
-description: Use when an LLM agent can call tools or take actions — testing whether it can be steered into misusing them, and the least-privilege and confirmation controls that bound the damage.
-difficulty: advanced
-tags: [ai, llm, agent, tools, excessive-agency, owasp-llm]
-tools: [burp]
+format: "v2"
+name: "agent-tool-abuse"
+title: "Agent Tool Abuse"
+title_fr: "Abus d'outils par un agent"
+description: "Use when an LLM agent can call tools or take actions — testing whether it can be steered into misusing them, and the least-privilege and confirmation controls that bound the damage."
+description_fr: "À utiliser quand un agent LLM peut appeler des outils ou agir — tester s'il peut être détourné pour les détourner, et les contrôles de moindre privilège et de confirmation qui bornent les dégâts."
+domain: "25-ai-and-llm-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An agent is an LLM wired to tools — send email, query a database, call an API, run code. That's also its attack surface: if the model can be steered (by a user or by injected content), the tools are what turn a bad response into a real action. This skill covers testing what an agent's tools let an attacker do, and the controls that keep a compromised prompt from becoming a compromised system.
 
-## When to use it
+### When to use it
 
 Any agent with real capabilities: an assistant that can act on a mailbox, a support bot that touches a CRM, a coding agent that runs commands, anything that calls functions with side effects. The more the tools can do, and the more untrusted text the agent reads, the more this matters.
 
 Test only agents you own or are authorised to assess, and use inert actions — an agent's tools do real things.
 
-## Procedure
+### Procedure
 
 1. **Inventory the tools.** List every function the agent can call, what each does, and its privileges. What can it read, write, send, delete, or spend? This map is the whole assessment — the risk is the union of what the tools allow.
 2. **Map the untrusted inputs** that reach the model: direct user chat, plus indirect channels (emails it reads, documents it retrieves, web pages it browses, tool outputs it feeds back). Each is a place to plant instructions.
@@ -34,7 +46,7 @@ Test only agents you own or are authorised to assess, and use inert actions — 
 6. **Test the confirmation gate.** For consequential actions, is there a real out-of-model approval, or does the agent execute autonomously? Try to make it act without a confirmation step.
 7. **Check chaining.** Can several innocuous tools combine into something harmful (read a secret with one, exfiltrate it with another)?
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 assessment axes
@@ -51,7 +63,7 @@ inert test payloads (prove capability, cause no damage)
   a canary file read instead of real secrets
 ```
 
-## Reading the output
+### Reading the output
 
 - **An agent calling a tool from injected content** = indirect prompt injection with real-world effect. Rate it by what the tool does — email/forward is serious, delete/pay/execute is critical.
 - **A tool acting across a user/tenant boundary** = broken authorisation, the agent version of BOLA.
@@ -59,7 +71,7 @@ inert test payloads (prove capability, cause no damage)
 - **A chain that reads then exfiltrates** = the tools are individually "safe" but collectively dangerous; report the combination.
 - **The agent refusing, or requiring confirmation that you can't bypass** = a working control; note it.
 
-## The fix
+### The fix
 
 You can't stop the model from being steered, so you bound what a steered model can *do*:
 
@@ -70,15 +82,21 @@ You can't stop the model from being steered, so you bound what a steered model c
 - **Isolate untrusted content.** Keep retrieved/inbound text clearly separated and labelled untrusted; don't let it silently become instructions.
 - **Log and monitor tool invocations** so misuse is visible and reversible where possible.
 
-## Pitfalls
+### Pitfalls
 
 - **Rating by the model, not the tools.** A jailbreak on a read-only bot is minor; the same on an agent that can wire money is critical. The tools set the severity.
 - **Testing direct steering only.** The dangerous path is indirect — through documents and emails the agent reads on someone else's behalf.
 - **Confirmation the model can bypass.** If the "are you sure?" is just another model turn, a steered agent answers its own prompt. The gate must be outside the model.
 - **Over-broad tool grants "for convenience".** Every capability the agent rarely needs is a capability an attacker gets for free.
 
-## References
+### References
 
 - OWASP Top 10 for LLM Applications — LLM06 Excessive Agency, LLM01 Prompt Injection
 - NIST AI 100-2 (Adversarial Machine Learning)
 - MITRE ATLAS
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: soc-2-readiness
-domain: 26-grc-risk-and-compliance
-description: Use when preparing for a SOC 2 audit — understanding the Trust Services Criteria, Type I vs Type II, and getting the controls and evidence in place to pass without last-minute panic.
-difficulty: intermediate
-tags: [grc, soc-2, compliance, audit, trust-services]
-tools: []
+format: "v2"
+name: "soc-2-readiness"
+title: "Soc 2 Readiness"
+title_fr: "Préparation à l'audit SOC 2"
+description: "Use when preparing for a SOC 2 audit — understanding the Trust Services Criteria, Type I vs Type II, and getting the controls and evidence in place to pass without last-minute panic."
+description_fr: "À utiliser pour se préparer à un audit SOC 2 — comprendre les Trust Services Criteria, Type I vs Type II, et mettre en place les contrôles et preuves nécessaires pour réussir sans panique de dernière minute."
+domain: "26-grc-risk-and-compliance"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 SOC 2 is an attestation report, produced by an auditor, on how well an organisation's controls meet the Trust Services Criteria — most commonly required by B2B/SaaS customers as proof their vendor is secure. Preparing for SOC 2 means having the right controls in place *and* the evidence to prove they operated over time. This skill covers SOC 2 readiness — understanding what it requires and preparing so the audit confirms real practice rather than a scramble to fake it.
 
-## When to use it
+### When to use it
 
 When customers or contracts require a SOC 2 report (common for SaaS/B2B vendors), or preparing for the audit. Understanding Type I vs Type II and the evidence requirement early prevents the classic last-minute panic.
 
-## Procedure
+### Procedure
 
 1. **Understand what SOC 2 is — an auditor's attestation, not a certification.** An independent auditor (CPA firm) examines your controls against the Trust Services Criteria and issues a report. It's not pass/fail like ISO certification; the report describes the controls and the auditor's opinion, and customers read it to assess your security.
 2. **Know the Trust Services Criteria (TSC).** SOC 2 covers up to five categories: **Security** (mandatory — the common criteria), **Availability**, **Processing Integrity**, **Confidentiality**, and **Privacy**. Most organisations start with Security; add others based on what customers need and what's relevant. Scope to the criteria that matter.
@@ -25,7 +37,7 @@ When customers or contracts require a SOC 2 report (common for SaaS/B2B vendors)
 6. **Do a readiness assessment / gap analysis first.** Before the real audit, assess where you stand against the TSC (the gap-analysis skill) and fix gaps — going into the audit with known gaps wastes money and produces a bad report.
 7. **Engage the auditor and manage the timeline.** For Type II, the observation period must pass with evidence before the auditor can attest; plan the timeline backward from when you need the report (customers asking now means you needed to start months ago).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 SOC 2 = an AUDITOR's attestation on controls vs Trust Services Criteria (not pass/fail cert)
@@ -48,7 +60,7 @@ prepare
   engage auditor + manage TIMELINE (Type II: observation period must pass first ; plan backward)
 ```
 
-## Reading readiness
+### Reading readiness
 
 - **Realising at audit time you have no evidence the controls operated over the period** = the classic Type II failure; the controls may exist but you can't prove they ran. Continuous evidence collection throughout the period is make-or-break — this is where readiness is won or lost.
 - **Confusing Type I and Type II** = a timeline problem; Type II needs a 3–12 month observation period with evidence *before* the auditor can attest. If customers need Type II now and you're starting now, you're months behind. Understand this early.
@@ -57,7 +69,7 @@ prepare
 - **Scoping to only the relevant Trust Services Criteria** = efficient; Security is mandatory, others by customer need. Don't over-scope.
 - **Controls implemented, evidence collected continuously, gaps closed pre-audit, timeline planned** = SOC 2 readiness that produces a clean report reflecting real practice.
 
-## Pitfalls
+### Pitfalls
 
 - **No continuous evidence for Type II.** The make-or-break failure — realising at audit time you can't prove controls operated over the period. Collect evidence as it happens throughout, not at the end.
 - **Misunderstanding Type I vs Type II timing.** Type II needs a period of evidence before attestation; if you need a Type II report now, you needed to start months ago. Plan the timeline backward.
@@ -66,9 +78,15 @@ prepare
 - **Over-scoping the criteria.** Security is mandatory; add others only as customers need. Don't attest to criteria that don't apply.
 - **Controls without evidence.** The audit examines evidence of operation; a control that isn't evidenced doesn't count for Type II.
 
-## References
+### References
 
 - AICPA Trust Services Criteria and SOC 2 guidance
 - The gap-analysis, control-mapping, and evidence-and-audit-prep skills
 - SOC 2 readiness / compliance automation tooling (evidence collection)
 - The iso-27001-isms skill (overlapping controls, different framework)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

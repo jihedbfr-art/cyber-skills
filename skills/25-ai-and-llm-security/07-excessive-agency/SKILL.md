@@ -1,21 +1,33 @@
 ---
-name: excessive-agency
-domain: 25-ai-and-llm-security
-description: Use when an LLM system can take actions with real consequences — deciding how much autonomy, permission, and functionality it should have so a bad decision can't cause serious harm.
-difficulty: intermediate
-tags: [ai, llm, agent, excessive-agency, least-privilege, owasp-llm]
-tools: []
+format: "v2"
+name: "excessive-agency"
+title: "Excessive Agency"
+title_fr: "Agentivité excessive"
+description: "Use when an LLM system can take actions with real consequences — deciding how much autonomy, permission, and functionality it should have so a bad decision can't cause serious harm."
+description_fr: "À utiliser quand un système LLM peut prendre des actions à conséquences réelles — décider du niveau d'autonomie, de permission et de fonctionnalité qu'il doit avoir pour qu'une mauvaise décision ne cause pas de dommage sérieux."
+domain: "25-ai-and-llm-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Excessive agency is what happens when an LLM system is given more capability, permission, or autonomy than the task needs — so when it does something wrong (through a hallucination, a prompt injection, or just a bad inference), the consequences are severe. This skill is the design-side control: bounding what the model is *allowed* to do, so its inevitable mistakes stay cheap. It's the mitigation the prompt-injection and agent-tool-abuse skills keep pointing back to.
 
-## When to use it
+### When to use it
 
 Designing or reviewing any LLM system that can act — call functions, trigger workflows, modify data, send messages, spend money. The more the system does automatically, the more this matters. It's a design review as much as a security test.
 
-## The three excesses
+### The three excesses
 
 OWASP frames excessive agency as too much of any of these:
 
@@ -23,7 +35,7 @@ OWASP frames excessive agency as too much of any of these:
 - **Excessive permissions** — a tool the model uses runs with more privilege than needed (a "read a record" tool whose DB account can also write and delete).
 - **Excessive autonomy** — the model executes consequential actions without human confirmation (it sends the email / makes the payment itself, no approval).
 
-## Procedure
+### Procedure
 
 1. **Inventory capabilities.** List every tool/function/integration the system can invoke and the privilege each runs with. This is the review's foundation — the risk is the sum of what it can do.
 2. **Challenge each capability against the task.** For every tool, ask "does the model actually need this to do its job?" Remove functionality that isn't required — a tool that isn't there can't be misused.
@@ -32,7 +44,7 @@ OWASP frames excessive agency as too much of any of these:
 5. **Check the confirmation is real.** A confirmation the model can generate for itself (another model turn) is not a control — the approval must be a deterministic gate or a human, so a manipulated model can't self-approve.
 6. **Bound and log.** Add rate/spend limits on actions, constrain outputs to allowed operations, and log every action so misuse is visible and reversible where possible.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 the three excesses (reduce each)
@@ -51,7 +63,7 @@ design test: if a prompt injection fully controlled the model, what's the worst
              it could do with the tools/permissions/autonomy it has? -> that's your risk.
 ```
 
-## Reading the design
+### Reading the design
 
 - **Tools the model never legitimately uses** = pure downside; they only add attack surface. Remove them.
 - **A broadly-privileged tool** (read tool on a read-write-delete DB account) = a misdirected action does far more than intended. Scope it down.
@@ -59,7 +71,7 @@ design test: if a prompt injection fully controlled the model, what's the worst
 - **A "confirmation" that's just another model turn** = not a control; a manipulated model approves itself. The gate must be deterministic or human.
 - **The worst-case-if-fully-controlled being severe** = the system has excessive agency by definition; reduce capability until that worst case is tolerable.
 
-## The fix
+### The fix
 
 - **Minimise functionality** — grant only the tools the task genuinely needs. The strongest control is simply not giving the capability.
 - **Least-privilege permissions** on every tool — read-only, scoped to the necessary data, no standing admin.
@@ -68,16 +80,22 @@ design test: if a prompt injection fully controlled the model, what's the worst
 - **Log all actions** for auditability and reversibility.
 - Design so that the answer to "what could a fully-manipulated model do here?" is "not much" — that's the goal state.
 
-## Pitfalls
+### Pitfalls
 
 - **Granting tools "just in case".** Every unused capability is free attack surface. If the task doesn't need it, don't wire it in.
 - **Broad tool permissions for convenience.** A read task on a read-write connection is an unnecessary blast-radius increase.
 - **Model-controlled confirmations.** If the "are you sure?" is answerable by the model, a manipulated model self-approves. Put the gate outside.
 - **Confusing capable with safe.** More autonomy is more useful and more dangerous; scale it to the reversibility and impact of the actions.
 
-## References
+### References
 
 - OWASP Top 10 for LLM Applications — LLM06 Excessive Agency
 - OWASP LLM — LLM01 Prompt Injection (the trigger this bounds)
 - NIST AI Risk Management Framework
 - MITRE ATLAS
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.
