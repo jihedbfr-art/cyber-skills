@@ -1,21 +1,33 @@
 ---
-name: file-upload-vulnerabilities
-domain: 03-web-application-security
-description: Use when an app accepts file uploads — testing whether the upload can lead to code execution, stored XSS, or overwrite, and how to build a safe upload.
-difficulty: intermediate
-tags: [owasp, file-upload, rce, web, validation]
-tools: [burp, curl]
+format: "v2"
+name: "file-upload-vulnerabilities"
+title: "File Upload Vulnerabilities"
+title_fr: "Vulnérabilités liées à l'upload de fichiers"
+description: "Use when an app accepts file uploads — testing whether the upload can lead to code execution, stored XSS, or overwrite, and how to build a safe upload."
+description_fr: "À utiliser quand une application accepte des uploads de fichiers — pour tester si l'upload peut mener à l'exécution de code, à un XSS stocké, ou à un écrasement de fichier, et comment construire un upload sûr."
+domain: "03-web-application-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An upload feature lets a user put a file on your server. Get the validation wrong and that file becomes a web shell, a stored XSS payload, or an overwrite of something important. This skill covers testing the upload surface for those outcomes and the layered controls that make uploads safe.
 
-## When to use it
+### When to use it
 
 Any feature that accepts files: avatars, document uploads, import tools, attachments. The worst case — uploading a script that then executes — is why this is a high-severity area worth testing thoroughly.
 
-## Procedure
+### Procedure
 
 1. Understand the upload: what types are accepted, where files are stored, and — critically — **is the storage location web-accessible and does it execute code**? An upload dir that runs `.php`/`.jsp`/`.aspx` is the dangerous setup.
 2. **Bypass type restrictions** to upload a server-executable file. Test, in order, whether the app checks only:
@@ -35,7 +47,7 @@ Any feature that accepts files: avatars, document uploads, import tools, attachm
    - **Content spoofing / malicious file hosting** on a trusted domain.
 5. Test **size and resource** handling — huge files or zip bombs (decompression DoS) if the app unpacks archives.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 extension bypass ladder
@@ -57,7 +69,7 @@ lesser impacts if no RCE
 confirm RCE:  request the uploaded file, pass a command
 ```
 
-## Reading the output
+### Reading the output
 
 - **An uploaded script executing** (your command runs, the shell responds) = remote code execution, the top-severity outcome. Report immediately.
 - **A polyglot/renamed file accepted and stored in a web-executable path** is RCE-adjacent even before you trigger it — flag the combination.
@@ -65,7 +77,7 @@ confirm RCE:  request the uploaded file, pass a command
 - **A filename with `../` landing outside the upload dir** = traversal/overwrite; impact depends on what you can clobber.
 - **Only client-side type checks** (JS blocks it but the request still works when sent directly) = no real validation; treat as vulnerable.
 
-## The fix
+### The fix
 
 Defence in depth — no single check is enough:
 
@@ -76,7 +88,7 @@ Defence in depth — no single check is enough:
 - **Limit size**, scan with AV where relevant, and guard archive extraction against zip bombs.
 - Re-encode images server-side where possible — it strips embedded payloads.
 
-## Pitfalls
+### Pitfalls
 
 - **Checking `Content-Type` or extension alone.** Both are attacker-controlled; validate the actual content and use an allowlist.
 - **Client-side validation only.** The JS check is bypassed by sending the request directly. Enforce on the server.
@@ -84,8 +96,14 @@ Defence in depth — no single check is enough:
 - **Trusting the client filename.** That's how traversal and overwrite happen. Rename server-side.
 - **Forgetting SVG/HTML.** They're "images"/"documents" that can carry script when served inline.
 
-## References
+### References
 
 - OWASP WSTG-BUSL-09 (Test Upload of Malicious Files)
 - OWASP File Upload Cheat Sheet
 - CWE-434 (Unrestricted Upload of File with Dangerous Type)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

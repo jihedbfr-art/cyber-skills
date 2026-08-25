@@ -1,21 +1,33 @@
 ---
-name: api-gateway-hardening
-domain: 04-api-security
-description: Use when deciding where and how to enforce API security controls — using the gateway as the consistent choke point for auth, rate limits, and schema instead of per-service reinvention.
-difficulty: intermediate
-tags: [api, gateway, architecture, rate-limiting, authentication]
-tools: [kong, nginx, envoy]
+format: "v2"
+name: "api-gateway-hardening"
+title: "Api Gateway Hardening"
+title_fr: "Durcissement de la passerelle API"
+description: "Use when deciding where and how to enforce API security controls — using the gateway as the consistent choke point for auth, rate limits, and schema instead of per-service reinvention."
+description_fr: "À utiliser pour décider où et comment appliquer les contrôles de sécurité d'une API — en s'appuyant sur la passerelle comme point de passage unique pour l'authentification, la limitation de débit et la validation de schéma, plutôt que de les réinventer service par service."
+domain: "04-api-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An API gateway sits in front of your services and every request passes through it — which makes it the natural place to enforce the controls that would otherwise be re-implemented (and re-forgotten) in each service. This skill covers what belongs at the gateway, what doesn't, and how to harden the gateway itself so it doesn't become the single point everyone can attack.
 
-## When to use it
+### When to use it
 
 Designing or reviewing an API platform with more than one service behind it. It's the architectural counterpart to the individual API skills: those find bugs in a service, this decides which defences should live centrally.
 
-## What belongs at the gateway (and what doesn't)
+### What belongs at the gateway (and what doesn't)
 
 **Enforce centrally at the gateway:**
 - **Authentication** — validate the token/API key once, reject the unauthenticated at the edge.
@@ -29,7 +41,7 @@ Designing or reviewing an API platform with more than one service behind it. It'
 - **Authorization on objects** — BOLA/ownership checks need the business context only the service has. The gateway can check "authenticated"; it can't check "owns this record".
 - **Business-logic validation.**
 
-## Procedure
+### Procedure
 
 1. **Put authentication at the edge.** The gateway validates the token and passes a verified identity to the service (e.g. a signed header), so services trust the gateway's assertion rather than re-validating — but ensure services only accept that identity *from* the gateway.
 2. **Apply rate limiting and quotas** at the gateway, keyed on identity and IP, with sane defaults for every route so a new endpoint is covered automatically.
@@ -39,7 +51,7 @@ Designing or reviewing an API platform with more than one service behind it. It'
 6. **Don't let the gateway become a bypass.** Ensure services aren't reachable directly, skipping the gateway's controls — network policy must force traffic through it.
 7. **Keep object-level authorization in the services** — resist the temptation to centralise what needs business context.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 GATEWAY (central choke point)          SERVICE (needs business context)
@@ -57,7 +69,7 @@ harden the gateway
   [ ] gateway access logged + monitored
 ```
 
-## Reading an architecture for this
+### Reading an architecture for this
 
 - **Auth re-implemented in every service** = drift and gaps; centralise validation at the gateway and let services trust a verified identity from it.
 - **A publicly reachable gateway admin API** = critical — it often allows reconfiguring routes and auth. Lock it to an internal network.
@@ -65,15 +77,21 @@ harden the gateway
 - **Object authorization pushed to the gateway** = usually broken, because the gateway lacks the record-level context; that check belongs in the service.
 - **No per-route default rate limit** = new endpoints ship unprotected. Defaults at the gateway fix this.
 
-## Pitfalls
+### Pitfalls
 
 - **Exposing the gateway's admin interface.** A recurring real-world breach — the management API on a public port hands over the whole platform.
 - **Centralising object-level authz.** The gateway can't make ownership decisions it has no context for; keep BOLA checks in the service.
 - **A bypass path to services.** If backends are directly reachable, the gateway's auth and rate limits mean nothing. Enforce gateway-only ingress.
 - **Trusting a gateway-set identity header without restricting its source.** If a service accepts that header from anywhere, an attacker spoofs it. Only accept it from the gateway.
 
-## References
+### References
 
 - OWASP API Security Top 10 (architecture and defence-in-depth guidance)
 - Kong / Envoy / NGINX hardening documentation
 - OWASP API Security Cheat Sheet
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

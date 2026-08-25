@@ -1,25 +1,37 @@
 ---
-name: subdomain-enumeration
-domain: 01-osint-and-reconnaissance
-description: Use when you need to map an organisation's subdomains to find hosts and services outside the obvious www — the first recon step that feeds web, API, and cloud testing.
-difficulty: beginner
-tags: [osint, recon, dns, attack-surface, passive]
-tools: [subfinder, amass, dnsx, httpx]
+format: "v2"
+name: "subdomain-enumeration"
+title: "Subdomain Enumeration"
+title_fr: "Énumération de sous-domaines"
+description: "Use when you need to map an organisation's subdomains to find hosts and services outside the obvious www — the first recon step that feeds web, API, and cloud testing."
+description_fr: "À utiliser pour cartographier les sous-domaines d'une organisation et repérer les hôtes et services au-delà du www évident — la première étape de reconnaissance qui alimente les tests web, API et cloud."
+domain: "01-osint-and-reconnaissance"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Organisations expose far more than their main site. Staging boxes, old admin panels, forgotten marketing microsites, dev APIs — they all live on subdomains, and the neglected ones are usually the soft spot. This skill gets you a deduplicated, live list of an org's subdomains so the rest of your recon has somewhere to point.
 
 It stops at "here are the hosts that answer." Fingerprinting and vulnerability testing are separate skills.
 
-## When to use it
+### When to use it
 
 At the start of almost any external assessment, right after you've confirmed the root domains are in scope. Also useful for continuous monitoring — running it weekly surfaces new hosts as an org ships them.
 
 Skip it if you were handed an explicit host list and told not to expand beyond it. Enumeration widens scope, and scope is contractual.
 
-## Procedure
+### Procedure
 
 1. Confirm the root domain(s) are inside your authorised scope. Wildcards like `*.example.com` usually cover subdomains; if you're unsure, ask before you enumerate.
 2. Passive first. Pull names from public sources (CT logs, passive DNS, search engines) without sending a packet to the target:
@@ -44,23 +56,19 @@ Skip it if you were handed an explicit host list and told not to expand beyond i
    dnsx -d example.com -w subdomains.txt -silent -o bruteforced.txt
    ```
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# fast passive sweep
 subfinder -d example.com -all -silent | dnsx -silent -a | httpx -silent -title -sc
 
-# multiple roots from a file
 subfinder -dL roots.txt -all -silent -o subs.txt
 
-# resolve + probe in one pass
 cat subs.txt | dnsx -silent | httpx -silent -status-code -title -tech-detect
 
-# find only the interesting status codes
 httpx -l resolved.txt -mc 200,401,403 -title
 ```
 
-## Reading the output
+### Reading the output
 
 A live host with a `200` and a login title is a lead. A `401`/`403` is often more interesting — something's there and it's trying to hide. Look for:
 
@@ -68,15 +76,21 @@ A live host with a `200` and a login title is a lead. A `401`/`403` is often mor
 - unexpected technologies in the `tech-detect` column (a lone WordPress box in an otherwise custom stack)
 - hosts resolving to cloud IPs or, better, to a CNAME pointing at a service that no longer exists — that's a subdomain takeover lead
 
-## Pitfalls
+### Pitfalls
 
 - **Scope creep.** CT logs return names for domains you may not be allowed to touch (shared infra, acquired companies). Filter to your authorised roots.
 - **Stale results.** A name in a CT log from 2019 may be long dead. Always resolve before you act on a list.
 - **Rate limits and API keys.** Passive sources throttle hard without keys. Configure them or you'll get a fraction of the real picture and think the surface is small.
 - **Wildcard DNS.** Some domains resolve *everything* to one IP. `dnsx` can filter wildcards; without that you'll chase hundreds of phantom hosts.
 
-## References
+### References
 
 - OWASP WSTG — Information Gathering (WSTG-INFO-04, enumerate applications on the web server)
 - ProjectDiscovery docs for subfinder, dnsx, httpx
 - OWASP Amass user guide
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

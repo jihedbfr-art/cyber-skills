@@ -1,21 +1,33 @@
 ---
-name: ios-static-analysis
-domain: 05-mobile-security
-description: Use when you have an iOS app (IPA) and want to read it statically for secrets, weak configuration, and binary protection gaps — without running it.
-difficulty: intermediate
-tags: [mobile, ios, static-analysis, ipa, reverse-engineering]
-tools: [otool, class-dump, mobsf, hopper]
+format: "v2"
+name: "ios-static-analysis"
+title: "Ios Static Analysis"
+title_fr: "Analyse statique iOS"
+description: "Use when you have an iOS app (IPA) and want to read it statically for secrets, weak configuration, and binary protection gaps — without running it."
+description_fr: "À utiliser quand vous disposez d'une application iOS (IPA) et voulez l'analyser statiquement pour trouver secrets, configuration faible et lacunes dans les protections du binaire, sans l'exécuter."
+domain: "05-mobile-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An iOS app ships as an IPA — an archive containing a compiled binary, resources, and configuration. Static analysis reads all of it without running the app: hardcoded secrets, insecure settings, exposed URLs, and whether the binary has the protections it should. iOS is more locked down than Android (encrypted binaries, stronger platform controls), which changes the analysis, but the goals are the same. This skill covers statically assessing an iOS app.
 
-## When to use it
+### When to use it
 
 The opening pass on any iOS assessment, alongside the Android equivalent. It's static and safe; dynamic analysis and traffic inspection come after. Analyse only apps you're authorised to test.
 
-## Procedure
+### Procedure
 
 1. **Unpack the IPA.** It's a zip — extract it to get the `.app` bundle (the binary, `Info.plist`, resources, embedded provisioning profile):
    ```
@@ -36,7 +48,7 @@ The opening pass on any iOS assessment, alongside the Android equivalent. It's s
 6. **Check data-storage and crypto usage** in the code/resources — insecure storage of secrets (see that skill), weak or hardcoded crypto, and disabled security features.
 7. **Run an automated pass** (MobSF) for breadth and a checklist score, then verify findings by hand.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 IPA = zip (binary + Info.plist + resources). static = read without running.
@@ -54,7 +66,7 @@ IPA = zip (binary + Info.plist + resources). static = read without running.
 7. MobSF automated pass (breadth + score) -> verify by hand
 ```
 
-## Reading the analysis
+### Reading the analysis
 
 - **`NSAllowsArbitraryLoads: true` in Info.plist** = App Transport Security is disabled, so the app can make cleartext HTTP connections — a finding, since it undermines the TLS enforcement iOS gives by default. Check it explicitly.
 - **A live secret in strings** = a direct leak the app ships to every device; the same as Android — anything in the binary is extractable. High value.
@@ -64,7 +76,7 @@ IPA = zip (binary + Info.plist + resources). static = read without running.
 - **Class/method structure recovered** = the app's logic and sensitive methods exposed, guiding deeper analysis and the dynamic phase.
 - **MobSF findings** = leads to verify, not verdicts; confirm each in the binary/resources.
 
-## Pitfalls
+### Pitfalls
 
 - **Expecting to read an encrypted App Store binary directly.** FairPlay encryption means strings/class-dump fail until the binary is decrypted (from a jailbroken device). Use a dev/test build where possible, or decrypt first.
 - **Skipping Info.plist.** It holds high-value config — ATS/TLS settings, URL schemes, permissions. The fastest findings are often here (like the Android manifest).
@@ -72,9 +84,15 @@ IPA = zip (binary + Info.plist + resources). static = read without running.
 - **Treating iOS like Android.** The binary format, encryption, and platform controls differ; the tools (otool, class-dump) and the encrypted-binary reality are iOS-specific.
 - **Trusting the automated score.** MobSF flags possibilities; verify in the actual binary and resources.
 
-## References
+### References
 
 - OWASP Mobile Application Security Testing Guide (MASTG) — iOS static analysis
 - OWASP MASVS; otool, class-dump, Hopper/Ghidra, MobSF documentation
 - The android-static-analysis, insecure-data-storage, and deep-link-and-ipc-abuse skills
 - Apple App Transport Security documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

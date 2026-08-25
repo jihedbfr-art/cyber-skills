@@ -1,21 +1,33 @@
 ---
-name: mass-assignment
-domain: 04-api-security
-description: Use when an API binds request data straight onto objects — testing whether you can set fields you shouldn't, like role or ownership, and how to bind safely.
-difficulty: intermediate
-tags: [owasp-api, mass-assignment, authorization, api]
-tools: [burp, curl]
+format: "v2"
+name: "mass-assignment"
+title: "Mass Assignment"
+title_fr: "Affectation massive de propriétés"
+description: "Use when an API binds request data straight onto objects — testing whether you can set fields you shouldn't, like role or ownership, and how to bind safely."
+description_fr: "À utiliser quand une API mappe directement les données de la requête sur ses objets — pour tester s'il est possible de modifier des champs sensibles comme le rôle ou le propriétaire, et pour sécuriser ce mapping."
+domain: "04-api-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Mass assignment happens when an API takes the JSON you send and binds it directly onto a data model, setting whatever properties are present. If the model has sensitive fields — `isAdmin`, `role`, `accountId`, `verified`, `balance` — and the binding doesn't restrict which ones the client may set, you can escalate privilege or tamper with data just by adding a field to the request. This skill covers finding it and binding safely.
 
-## When to use it
+### When to use it
 
 APIs that accept object updates or creation (`POST`/`PUT`/`PATCH`), especially those built on frameworks with convenient "bind the whole request to the model" features (Rails, Spring, Django, Laravel, Node ORMs). Common on registration, profile update, and settings endpoints.
 
-## Procedure
+### Procedure
 
 1. Learn the **object's full shape.** Read a `GET` response for the object, or the docs, to see every property — including ones the update form doesn't expose (`role`, `isAdmin`, `owner`, `verified`).
 2. Capture a legitimate update request and note which fields the client normally sends.
@@ -30,7 +42,7 @@ APIs that accept object updates or creation (`POST`/`PUT`/`PATCH`), especially t
 6. Try fields at **creation** too (`POST`), not just update — mass assignment on registration is a frequent way to self-grant a privileged role.
 7. Confirm the change actually took effect (re-fetch the object); a field being accepted in the request but ignored is not a finding.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 1. GET the object -> list every property (esp. ones the form hides)
@@ -47,14 +59,14 @@ APIs that accept object updates or creation (`POST`/`PUT`/`PATCH`), especially t
 also test on POST /register, not just PATCH /me
 ```
 
-## Reading the output
+### Reading the output
 
 - **A sensitive field you added actually changing** (role becomes admin, verified becomes true) = confirmed mass assignment, usually privilege escalation or authz bypass. High impact.
 - **An ownership field reassigning an object** = you can move records between users/tenants — a serious authorization break.
 - **A workflow field letting you skip a step** (self-verify, self-approve, mark paid) = business-logic bypass with direct impact.
 - **The field accepted in the request but not reflected on re-fetch** = the server ignored it; not exploitable, don't report it.
 
-## The fix
+### The fix
 
 Control exactly which fields the client is allowed to bind — never bind the whole request onto the model:
 
@@ -63,15 +75,21 @@ Control exactly which fields the client is allowed to bind — never bind the wh
 - **Set sensitive fields server-side only** — role, ownership, verification, and state come from server logic and the authenticated identity, never from the request body.
 - Add tests asserting that sending a forbidden field has no effect, so a future refactor to "bind everything" is caught.
 
-## Pitfalls
+### Pitfalls
 
 - **Blocklisting instead of allowlisting.** Blocking `isAdmin` misses `role`, `is_admin`, `admin`, and the next field someone adds. Allowlist what's permitted, deny the rest by default.
 - **Binding the ORM model directly.** Convenient framework auto-binding is exactly what creates this — use an input DTO.
 - **Fixing update but not create.** Registration endpoints are a favourite for self-granting privilege. Cover `POST` too.
 - **Reporting accepted-but-ignored fields.** Confirm the change persisted before calling it a finding.
 
-## References
+### References
 
 - OWASP API Security Top 10 — API6:2023 (and API3, property-level authorization)
 - CWE-915 (Improperly Controlled Modification of Dynamically-Determined Object Attributes)
 - OWASP Mass Assignment Cheat Sheet
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

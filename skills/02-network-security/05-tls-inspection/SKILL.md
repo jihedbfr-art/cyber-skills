@@ -1,21 +1,33 @@
 ---
-name: tls-inspection
-domain: 02-network-security
-description: Use when checking a service's TLS configuration on the wire — protocol versions, cipher suites, and certificate validity — to find weak crypto and misconfiguration.
-difficulty: beginner
-tags: [network, tls, ssl, ciphers, certificates]
-tools: [testssl, sslyze, nmap]
+format: "v2"
+name: "tls-inspection"
+title: "Tls Inspection"
+title_fr: "Inspection TLS"
+description: "Use when checking a service's TLS configuration on the wire — protocol versions, cipher suites, and certificate validity — to find weak crypto and misconfiguration."
+description_fr: "À utiliser pour vérifier en conditions réelles la configuration TLS d'un service — versions de protocole, suites de chiffrement et validité du certificat — afin de repérer la cryptographie faible et les erreurs de configuration."
+domain: "02-network-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 TLS protects data in transit — but only if it's configured well. Old protocol versions, weak cipher suites, and expired or misissued certificates leave connections vulnerable to downgrade, interception, and decryption. This skill covers inspecting a service's TLS from the outside to find those weaknesses, and the configuration that scores clean while staying usable. It's the wire-level check that complements the crypto domain's TLS-configuration guidance.
 
-## When to use it
+### When to use it
 
 Assessing any TLS-enabled service (HTTPS, mail, VPN, database over TLS, APIs), or verifying your own endpoints after a config change. Fast, non-intrusive, and high-signal — TLS misconfiguration is common and directly relevant to data-in-transit security.
 
-## Procedure
+### Procedure
 
 1. **Scan the endpoint's full TLS configuration.** A dedicated tool enumerates supported protocols, cipher suites, certificate details, and known vulnerabilities in one pass:
    ```
@@ -29,15 +41,13 @@ Assessing any TLS-enabled service (HTTPS, mail, VPN, database over TLS, APIs), o
 5. **Check for known TLS vulnerabilities** the scanner flags — Heartbleed, ROBOT, weak DH parameters, insecure renegotiation, BEAST/POODLE (from old protocols). These map to specific misconfigurations to fix.
 6. **Verify hardening extras** — HSTS (from the security-headers skill) for web, OCSP stapling, and secure renegotiation.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# full TLS assessment
 testssl.sh https://example.com          # thorough, human-readable, flags vulns
 sslyze example.com:443                   # fast, scriptable
 nmap --script ssl-enum-ciphers -p 443 example.com   # cipher/protocol enum
 
-# what "good" looks like
 protocols   TLS 1.2 + TLS 1.3 only  (no SSLv2/3, no TLS 1.0/1.1)
 ciphers     AEAD (AES-GCM, ChaCha20-Poly1305) + forward secrecy (ECDHE)
             NO RC4 / 3DES / DES / export / NULL / non-FS suites
@@ -48,7 +58,7 @@ known-vuln flags to act on
   Heartbleed | ROBOT | weak DH | insecure renegotiation | BEAST/POODLE (old TLS)
 ```
 
-## Reading the output
+### Reading the output
 
 - **SSLv3 / TLS 1.0 / 1.1 enabled** = deprecated protocols supporting downgrade and known attacks (POODLE, BEAST). Disable them — a clear finding.
 - **Weak ciphers offered** (RC4, 3DES, export, NULL, non-forward-secret) = decryptable or interceptable connections; disable and keep only strong AEAD+FS suites.
@@ -57,7 +67,7 @@ known-vuln flags to act on
 - **No forward secrecy** = past traffic is decryptable if the private key is ever compromised. Enable ECDHE suites.
 - **TLS 1.2+1.3 only, strong AEAD+FS ciphers, valid cert, no flagged vulns** = the clean state.
 
-## The fix
+### The fix
 
 - **Disable old protocols** — support only TLS 1.2 and 1.3; remove SSLv2/3 and TLS 1.0/1.1.
 - **Restrict to strong cipher suites** with forward secrecy and AEAD (AES-GCM, ChaCha20-Poly1305); disable RC4, 3DES, export, and NULL. Use a current recommended cipher list rather than hand-picking.
@@ -66,7 +76,7 @@ known-vuln flags to act on
 - **Add HSTS** for web services and enable OCSP stapling and secure renegotiation.
 - **Re-scan after changes** and monitor expiry continuously — TLS config drifts and certs expire on a clock.
 
-## Pitfalls
+### Pitfalls
 
 - **Chasing a perfect score at the cost of compatibility.** Disabling TLS 1.2 or all but the newest ciphers can break legitimate older clients; balance hardening against your actual client base (but old protocols like TLS 1.0/1.1 should still go).
 - **Letting certs expire.** The most common, most embarrassing TLS incident — automate renewal and monitor expiry.
@@ -74,9 +84,15 @@ known-vuln flags to act on
 - **Checking only HTTPS.** TLS protects mail, VPNs, databases, and APIs too — inspect all TLS services, not just the web server.
 - **One-time check.** Config drifts and new vulnerabilities emerge; re-scan periodically.
 
-## References
+### References
 
 - testssl.sh and SSLyze documentation
 - Mozilla SSL Configuration Generator (recommended cipher lists)
 - OWASP Transport Layer Protection Cheat Sheet
 - The crypto-and-pki TLS-configuration skill and the security-headers (HSTS) skill
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

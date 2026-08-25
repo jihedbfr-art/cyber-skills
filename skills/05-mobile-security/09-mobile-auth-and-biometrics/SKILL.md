@@ -1,21 +1,33 @@
 ---
-name: mobile-auth-and-biometrics
-domain: 05-mobile-security
-description: Use when assessing mobile authentication and biometric (Face ID / fingerprint) implementations — the local-auth mistakes that let an attacker bypass the lock without the biometric.
-difficulty: intermediate
-tags: [mobile, authentication, biometrics, faceid, local-auth]
-tools: [frida, objection]
+format: "v2"
+name: "mobile-auth-and-biometrics"
+title: "Mobile Auth And Biometrics"
+title_fr: "Authentification mobile et biométrie"
+description: "Use when assessing mobile authentication and biometric (Face ID / fingerprint) implementations — the local-auth mistakes that let an attacker bypass the lock without the biometric."
+description_fr: "À utiliser pour évaluer les implémentations d'authentification mobile et biométrique (Face ID / empreinte digitale) — les erreurs d'authentification locale qui permettent à un attaquant de contourner le verrou sans jamais présenter le biométrique."
+domain: "05-mobile-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Mobile apps use biometrics (Face ID, Touch ID, fingerprint) for convenient authentication — but implemented wrong, the biometric is decorative: an attacker with the device bypasses it without ever presenting a face or finger. The common mistake is treating biometric auth as a simple "did it succeed?" boolean that client-side code checks, rather than binding it to a cryptographic operation. This skill covers assessing mobile authentication and biometric implementations for these bypasses.
 
-## When to use it
+### When to use it
 
 Assessing any app that uses local/biometric authentication, especially for gating sensitive functionality (banking apps, secret stores). Biometric bypass is a common, high-impact mobile finding because the implementation mistakes are subtle and frequent.
 
-## Procedure
+### Procedure
 
 1. **Understand the two ways to use biometrics — one secure, one not.**
    - **Event-based (insecure):** the app calls the biometric API, gets back "success/failure", and *client-side code* decides whether to proceed. This is bypassable — hook the check to return success, and the biometric is skipped entirely (no face/finger needed). The decision is a client-side boolean an attacker controls.
@@ -30,7 +42,7 @@ Assessing any app that uses local/biometric authentication, especially for gatin
 5. **Check for local-auth-only trust.** An app that relies solely on local/biometric auth for security-critical access, without server-side enforcement, trusts the client — bypassable. Sensitive operations should be server-authenticated, not gated only by local biometrics.
 6. **Report the bypass and its impact** — a biometric bypass on a banking or secrets app grants access to sensitive functionality without the biometric, a high-severity finding.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 biometrics implemented wrong = decorative (attacker with device bypasses w/o face/finger)
@@ -53,7 +65,7 @@ also check
   LOCAL-AUTH-ONLY trust for critical access = bypassable -> server must enforce
 ```
 
-## Reading the implementation
+### Reading the implementation
 
 - **Hooking the biometric callback to "success" bypassing authentication** = event-based, insecure implementation; the biometric is a client-side boolean an attacker controls, so it grants access without any biometric. The core finding, and common.
 - **The app unable to proceed after a hooked "success"** (because it needed a key the biometric didn't unlock) = the cryptographic pattern done right; the biometric is bound to a key in secure hardware, so it can't be skipped. Note it as correct.
@@ -62,7 +74,7 @@ also check
 - **A high-value app (banking, secrets) with an event-based biometric bypass** = high-severity; access to sensitive functionality without the biometric.
 - **Cryptographically-bound biometrics unlocking a hardware key, with server-side auth for sensitive operations** = the secure state.
 
-## The fix
+### The fix
 
 - **Bind biometrics to a cryptographic operation** — use the biometric to unlock a key in the secure hardware (Android Keystore with `setUserAuthenticationRequired`, iOS Keychain with biometric access control / Secure Enclave) that's *needed* to decrypt data or complete the operation. Never a simple client-side success boolean.
 - **Don't use event-based biometric checks** for anything security-relevant — they're bypassable by hooking the result.
@@ -70,7 +82,7 @@ also check
 - **Protect the fallback** (PIN/password) and the credentials/tokens the biometric gates (the storage skill).
 - **Assume the client is compromised** — biometrics improve UX and local protection but can't be the sole gate for critical access.
 
-## Pitfalls
+### Pitfalls
 
 - **Event-based biometric checks.** A client-side "success" boolean is bypassable by hooking; the biometric is decorative. Bind it to a cryptographic key operation instead.
 - **Gating a UI screen, not data.** Showing/hiding a screen based on biometric success is bypassable; cryptographically lock the actual data.
@@ -78,9 +90,15 @@ also check
 - **Insecure fallback.** A weak PIN fallback undermines a strong biometric; secure the whole flow.
 - **Treating the biometric as identity for the backend.** It authenticates locally to unlock access/keys; the server still needs its own authentication.
 
-## References
+### References
 
 - OWASP MASTG (authentication, biometric testing) and MASVS
 - Android BiometricPrompt / Keystore (`setUserAuthenticationRequired`) and iOS LocalAuthentication / Keychain access control documentation
 - The insecure-data-storage, dynamic-instrumentation-frida, and mobile-api-traffic skills
 - OWASP mobile authentication guidance
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.
