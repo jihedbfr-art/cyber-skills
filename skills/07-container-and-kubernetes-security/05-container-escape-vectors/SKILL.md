@@ -1,21 +1,33 @@
 ---
-name: container-escape-vectors
-domain: 07-container-and-kubernetes-security
-description: Use when assessing how a compromised container could break out to the host — the privileged, host-mount, and capability misconfigurations that turn a container compromise into node compromise.
-difficulty: advanced
-tags: [containers, escape, privilege-escalation, kubernetes, host]
-tools: [kubectl, amicontained]
+format: "v2"
+name: "container-escape-vectors"
+title: "Container Escape Vectors"
+title_fr: "Vecteurs d'évasion de conteneur"
+description: "Use when assessing how a compromised container could break out to the host — the privileged, host-mount, and capability misconfigurations that turn a container compromise into node compromise."
+description_fr: "À utiliser pour évaluer comment un conteneur compromis pourrait s'échapper vers l'hôte — les mauvaises configurations de privilèges, de montages hôte et de capacités qui transforment une compromission de conteneur en compromission de nœud."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Containers isolate workloads — until a misconfiguration lets one break out to the host. A container escape turns a compromised application into a compromised node, and in Kubernetes usually the whole cluster. This skill covers the configurations and vectors that enable escape, so you can recognise and eliminate them — understanding the attack (from the defender's side) to close the paths. It's the "why" behind the pod-security and Dockerfile hardening controls.
 
-## When to use it
+### When to use it
 
 Assessing whether a container compromise could escalate to the host, hardening against escape, or in an authorised container-security assessment. Because escape is the difference between a contained incident and full node/cluster compromise, understanding these vectors is central to container security.
 
-## The escape vectors (and the misconfigurations behind them)
+### The escape vectors (and the misconfigurations behind them)
 
 Most escapes aren't kernel 0-days — they're misconfigurations that grant host access:
 
@@ -26,7 +38,7 @@ Most escapes aren't kernel 0-days — they're misconfigurations that grant host 
 - **The Docker/container-runtime socket mounted into a container** — a classic and complete escape; access to the socket lets you launch a privileged container on the host.
 - **Kernel vulnerabilities** — the harder path (a container-escape CVE in the kernel/runtime); real but far less common than misconfiguration. Keep hosts patched.
 
-## Procedure
+### Procedure
 
 1. **Enumerate the container's privileges — assess escape potential.** From inside (or from the pod spec), check: is it privileged? what capabilities does it have? what's mounted from the host? what namespaces does it share? Tools like `amicontained` report the container's security context:
    ```
@@ -39,7 +51,7 @@ Most escapes aren't kernel 0-days — they're misconfigurations that grant host 
 5. **Eliminate the misconfigurations — the fix is prevention.** These vectors are almost all closable by configuration: don't run privileged, don't mount the socket or host-sensitive paths, drop capabilities, don't share host namespaces. The pod-security-standards and Dockerfile-hardening skills enforce exactly this.
 6. **Add runtime detection** for escape attempts (the runtime-threat-detection skill) as a backstop, and keep hosts/runtime patched for the kernel-vulnerability path.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 container isolates -> UNTIL a misconfig lets it break out. escape = container -> NODE -> cluster.
@@ -62,7 +74,7 @@ FIX = PREVENTION (config): no privileged, no socket/host mounts, drop caps, no h
 + runtime detection backstop + patch hosts
 ```
 
-## Reading the assessment
+### Reading the assessment
 
 - **A privileged container** = the highest-severity escape vector; it's effectively root on the node and trivially escapable. Any privileged workload is a critical finding — challenge and remove it.
 - **The Docker/container-runtime socket mounted into a container** = a classic, complete escape; socket access lets an attacker launch a privileged container on the host. Never mount it into workloads.
@@ -72,7 +84,7 @@ FIX = PREVENTION (config): no privileged, no socket/host mounts, drop caps, no h
 - **An escape demonstrated in a test** = rate by blast radius; in Kubernetes a node escape typically reaches the cluster via kubelet credentials and co-located pods. Escapes are rarely "just one node".
 - **A container with no privileged flag, no host mounts/namespaces, minimal capabilities** = the hardened state where escape is genuinely hard.
 
-## The fix
+### The fix
 
 Prevention through configuration closes nearly all escape vectors:
 
@@ -83,7 +95,7 @@ Prevention through configuration closes nearly all escape vectors:
 - **Enforce these with Pod Security Standards / admission control** so escape-enabling pods are rejected at deployment (the pod-security and admission-control skills).
 - **Patch hosts and the container runtime** for the kernel/runtime-CVE path, and add **runtime detection** as a backstop for escape attempts.
 
-## Pitfalls
+### Pitfalls
 
 - **Running privileged "because it's easier".** It's the top escape vector and near-root on the node; the convenience is rarely worth cluster compromise risk. Find the specific capability instead.
 - **Mounting the Docker socket into containers.** A complete, classic escape — socket access is host control. Never do it for workloads; use safer alternatives for socket-needing tools.
@@ -92,9 +104,15 @@ Prevention through configuration closes nearly all escape vectors:
 - **Underrating blast radius.** A node escape in Kubernetes usually reaches the cluster; don't treat it as "just one host".
 - **Preventing without detecting.** Configuration prevention is primary, but add runtime detection for escape attempts as defence in depth.
 
-## References
+### References
 
 - MITRE ATT&CK for Containers (Escape to Host, T1611)
 - amicontained and container-security assessment tooling
 - The pod-security-standards, dockerfile-hardening, admission-control, and runtime-threat-detection skills
 - NIST SP 800-190 (Application Container Security)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: tabletop-social-engineering
-domain: 17-social-engineering-defence
-description: Use when exercising the organisation's response to a social-engineering incident through a tabletop — walking through a realistic scenario to test people, process, and decisions before a real one hits.
-difficulty: intermediate
-tags: [social-engineering, tabletop, exercise, response, preparedness]
-tools: []
+format: "v2"
+name: "tabletop-social-engineering"
+title: "Tabletop Social Engineering"
+title_fr: "Exercice de simulation sur l'ingénierie sociale (tabletop)"
+description: "Use when exercising the organisation's response to a social-engineering incident through a tabletop — walking through a realistic scenario to test people, process, and decisions before a real incident happens."
+description_fr: "À utiliser pour exercer la réponse de l'organisation à un incident d'ingénierie sociale via un tabletop — en déroulant un scénario réaliste pour tester les personnes, les processus et les décisions avant qu'un véritable incident ne survienne."
+domain: "17-social-engineering-defence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A tabletop exercise walks key people through a realistic incident scenario in a discussion format — "here's what's happening, what do we do?" — to test the organisation's response before a real incident. For social engineering specifically, tabletops exercise the human and process response (who verifies the payment, who's authorised to decide, how fast the finance team escalates) that technical controls don't cover. This skill covers running a social-engineering tabletop, the low-cost way to find response gaps before an attacker does.
 
-## When to use it
+### When to use it
 
 Testing preparedness for social-engineering incidents (BEC, a successful phish leading to account compromise, a vishing attack on the help desk) without the disruption of a live exercise. It complements phishing simulations (which test individual users) by testing the *organisational* response and decision-making.
 
-## Procedure
+### Procedure
 
 1. **Choose a realistic, relevant scenario.** Base it on a plausible social-engineering incident for your organisation — a BEC wire-fraud attempt, an executive-impersonation payment request, a help-desk vishing that reset an MFA, a phishing-led account compromise. Relevance makes the exercise reveal real gaps; a far-fetched scenario tests nothing useful.
 2. **Get the right people in the room.** Social-engineering response spans functions — security, IT, finance (for BEC/payment scenarios), HR, legal, comms, and leadership for decisions. The tabletop tests how they *coordinate*, so the people who'd actually be involved need to participate. A security-only tabletop misses the finance/decision gaps that matter most for social engineering.
@@ -25,7 +37,7 @@ Testing preparedness for social-engineering incidents (BEC, a successful phish l
 6. **Capture findings and drive improvements.** Document the gaps found (missing runbook, unclear authority, slow reporting) and turn them into concrete fixes — process changes, defined decision authority, training. A tabletop that surfaces gaps but changes nothing wasted everyone's time.
 7. **Run periodically and vary scenarios.** Preparedness decays and threats evolve; recurring tabletops with varied scenarios keep the response sharp and test different parts of the organisation.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 tabletop = discussion walk-through of a realistic incident ("what do we do?") — test response BEFORE real one
@@ -45,7 +57,7 @@ run it
   7. run periodically + vary scenarios
 ```
 
-## Reading the exercise
+### Reading the exercise
 
 - **A realistic, relevant scenario with the right cross-functional people** = the tabletop reveals real coordination and decision gaps; a security-only exercise on a far-fetched scenario finds nothing useful. Relevance and the right participants are what make it work.
 - **Finance not knowing to verify a payment out-of-band, or unclear transfer-halt authority** = exactly the process/decision gaps a social-engineering tabletop exists to find; technical controls don't cover these, and they're where BEC succeeds. High-value findings.
@@ -54,7 +66,7 @@ run it
 - **Gaps found but no changes made** = the exercise wasted everyone's time; the value is in turning findings into concrete fixes (runbooks, decision authority, training).
 - **Recurring, varied tabletops driving process improvements** = preparedness maintained and gaps closed before a real incident tests them.
 
-## Pitfalls
+### Pitfalls
 
 - **The wrong people in the room.** Social-engineering response spans finance, HR, legal, comms, and leadership — not just security. A security-only tabletop misses the finance/decision gaps that matter most for BEC and payment fraud. Get the cross-functional participants.
 - **A far-fetched scenario.** It tests nothing useful; base the exercise on a plausible, relevant incident to reveal real gaps.
@@ -63,9 +75,15 @@ run it
 - **Not acting on findings.** A tabletop that surfaces gaps but drives no changes wasted the time; turn findings into concrete fixes.
 - **Running it once.** Preparedness decays and threats change; run periodically with varied scenarios.
 
-## References
+### References
 
 - The IR incident-triage, communication-during-incidents, and ir-playbook-development skills (tabletops test the playbooks)
 - The bec-detection, vishing-and-smishing-awareness, and reporting-culture skills (the scenarios)
 - CISA tabletop exercise packages and NIST SP 800-84 (exercise guidance)
 - The blameless-postmortem skill (same non-punitive discipline)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

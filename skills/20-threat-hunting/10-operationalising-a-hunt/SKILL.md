@@ -1,21 +1,33 @@
 ---
-name: operationalising-a-hunt
-domain: 20-threat-hunting
-description: Use when turning a hunt into lasting value — converting findings into detections, documenting the hunt, and feeding results back so the programme improves instead of repeating itself.
-difficulty: intermediate
-tags: [threat-hunting, operationalising, detection, documentation, maturity]
-tools: []
+format: "v2"
+name: "operationalising-a-hunt"
+title: "Operationalising A Hunt"
+title_fr: "Opérationnalisation d'une chasse"
+description: "Use when turning a hunt into lasting value — converting findings into detections, documenting the hunt, and feeding results back so the programme improves instead of repeating itself."
+description_fr: "À utiliser pour transformer une chasse en valeur durable : convertir les découvertes en détections, documenter la chasse et réinjecter les résultats pour que le programme progresse au lieu de se répéter."
+domain: "20-threat-hunting"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A hunt that finds something and stops there is a wasted opportunity — you'll hunt the same thing again next month. The point of a mature hunting programme is that each hunt makes the *next* attack easier to catch: findings become automated detections, methods become repeatable, and results shrink the space of the unknown. This skill covers operationalising hunts — the maturity practice that turns hunting from a series of one-off searches into a compounding capability. It's the closing discipline of the domain.
 
-## When to use it
+### When to use it
 
 At the end of every hunt, whatever the outcome, and as the organising principle of a hunting programme. It's what separates ad-hoc hunting (find something, move on) from a programme that steadily improves detection coverage and visibility.
 
-## Procedure
+### Procedure
 
 1. **Turn repeatable findings into detections — the core move.** If a hunt found something by a method that could run automatically, write a detection for it (the detection-engineering domain). You should never have to *hunt* for the same thing twice — once you can describe it, automate it. This is how hunting continuously feeds and improves automated detection.
 2. **Document every hunt — including the ones that found nothing.** Record the hypothesis, the data and method, and the outcome (threat found / clean / visibility gap). A "clean" hunt with good data is a real assurance result worth recording, and documentation makes hunts repeatable and prevents re-hunting the same ground blindly.
@@ -25,7 +37,7 @@ At the end of every hunt, whatever the outcome, and as the organising principle 
 6. **Refine the hunting process itself.** What worked, what data was missing, what method was efficient — feed lessons back so the programme's *technique* improves, not just its coverage. Mature hunting gets better at hunting.
 7. **Measure the programme's value.** Detections created, visibility gaps closed, threats found, and coverage gained are the outputs that justify hunting and show it's compounding (not just activity). A hunt programme that produces no detections or coverage growth isn't maturing.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 a hunt that finds something and STOPS = wasted (you'll hunt it again next month)
@@ -45,7 +57,7 @@ operationalise every hunt (whatever the outcome)
 signature of maturity: hunting continuously FEEDS automated detection.
 ```
 
-## Reading the practice
+### Reading the practice
 
 - **A hunt that finds something and produces no detection** = the value leaked away; you'll hunt the same thing again. The defining maturity move is turning repeatable findings into automated detections — once you can describe it, you shouldn't have to hunt it. This is the biggest missed opportunity in immature programmes.
 - **Hunts that aren't documented** = they don't compound; you re-hunt the same ground, can't show coverage, and lose the "clean with good data" assurance results. Document every hunt, including empty ones.
@@ -54,7 +66,7 @@ signature of maturity: hunting continuously FEEDS automated detection.
 - **No coverage tracking** = hunts repeat and can't show progress; tracking against ATT&CK makes them cumulative and strategic.
 - **A programme producing detections, closing gaps, and growing coverage** = mature, compounding hunting — the outputs prove it's improving the defence, not just performing activity.
 
-## Pitfalls
+### Pitfalls
 
 - **Hunting without operationalising.** Finding something and moving on wastes it — you'll hunt it again. Turn repeatable findings into detections; that's the whole point of maturity.
 - **Not documenting hunts.** Undocumented hunts don't compound: you re-hunt ground, lose assurance results, and can't demonstrate coverage. Document every one.
@@ -62,9 +74,15 @@ signature of maturity: hunting continuously FEEDS automated detection.
 - **Ignoring visibility gaps.** A hunt that couldn't conclude reveals a blind spot; not routing it to telemetry improvements leaves it blocking future hunts and detections.
 - **No coverage tracking or metrics.** Without them, hunts repeat and you can't show the programme is compounding. Track coverage and measure outputs (detections, gaps closed, threats found).
 
-## References
+### References
 
 - The detection-engineering domain (turning findings into detections) and its mapping-to-attack skill
 - The hunting-with-attack, hypothesis-driven-hunting, and log-source-coverage skills
 - The incident-response domain (threat-found handoff) and threat-intelligence domain
 - SANS threat hunting maturity and MITRE hunting resources
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

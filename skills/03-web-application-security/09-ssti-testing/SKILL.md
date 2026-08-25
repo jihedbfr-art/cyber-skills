@@ -1,21 +1,33 @@
 ---
-name: ssti-testing
-domain: 03-web-application-security
-description: Use when user input reaches a server-side template engine — testing for template injection that can escalate to remote code execution, and how to render untrusted data safely.
-difficulty: advanced
-tags: [owasp, ssti, template-injection, rce, web]
-tools: [burp, tplmap]
+format: "v2"
+name: "ssti-testing"
+title: "Ssti Testing"
+title_fr: "Tests SSTI (Server-Side Template Injection)"
+description: "Use when user input reaches a server-side template engine — testing for template injection that can escalate to remote code execution, and how to render untrusted data safely."
+description_fr: "À utiliser quand une entrée utilisateur atteint un moteur de template côté serveur — pour tester l'injection de template pouvant escalader jusqu'à l'exécution de code à distance, et comment restituer des données non fiables en toute sécurité."
+domain: "03-web-application-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Server-Side Template Injection happens when user input is embedded into a template that the server then evaluates — so the input isn't just displayed, it's executed by the template engine. Depending on the engine, that ranges from information disclosure to full remote code execution. This skill covers detecting SSTI, identifying the engine, and the rendering discipline that prevents it.
 
-## When to use it
+### When to use it
 
 Wherever user input might be concatenated into a template rather than passed as data: customisable emails, templated pages, "personalised" messages, error pages that echo input, anything where the app builds output with a template engine (Jinja2, Twig, Freemarker, Velocity, ERB, Handlebars, etc.).
 
-## Procedure
+### Procedure
 
 1. Find inputs that come back rendered in the page. Inject a **mathematical probe** that only a template engine would evaluate — if `7*7` becomes `49`, the input is being executed, not just echoed:
    ```
@@ -38,7 +50,7 @@ Wherever user input might be concatenated into a template rather than passed as 
    ```
 5. Establish blast radius: SSTI with a reachable object model is usually RCE; a heavily sandboxed engine may limit you to data disclosure. Report the confirmed level, not the theoretical worst case.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 detection (does math evaluate?)
@@ -58,14 +70,14 @@ proof-of-impact (benign command, authorised targets only)
 automated:  tplmap -u 'https://app.tld/page?name=*'
 ```
 
-## Reading the output
+### Reading the output
 
 - **`49` (or `7777777`) in the response** = confirmed SSTI; the engine is evaluating your input. This is the key signal.
 - **The engine fingerprint** tells you the ceiling: a Python/Java engine with object access usually means RCE; a locked-down logic-less engine (some Handlebars configs) may cap you at data disclosure.
 - **A benign command returning output** (`id`, a config value) = proven code execution — report as critical, no need to run anything harmful.
 - **Math echoed literally (`7*7`)** = not SSTI; it's reflection, so pivot to XSS testing instead.
 
-## The fix
+### The fix
 
 The root cause is untrusted input used as part of the template, not as data passed to it.
 
@@ -74,16 +86,22 @@ The root cause is untrusted input used as part of the template, not as data pass
 - Apply normal **output encoding** for the XSS layer on top (a fixed template still needs to escape the data it renders).
 - Run the app with least privilege so a missed case yields the smallest possible foothold.
 
-## Pitfalls
+### Pitfalls
 
 - **Confusing SSTI with XSS.** If `7*7` isn't evaluated, it's not SSTI. The math probe is the discriminator.
 - **Running destructive proofs.** You don't need to do damage to prove RCE — a benign command output is sufficient and safe.
 - **Trusting a template sandbox.** Sandboxes get escaped; don't rely on one as the sole control for user-supplied templates.
 - **Fixing with output encoding alone.** Encoding stops XSS but not template *evaluation* — the input must not reach the template as code in the first place.
 
-## References
+### References
 
 - OWASP WSTG-INPV-18 (Testing for Server-Side Template Injection)
 - PortSwigger Web Security Academy — SSTI
 - CWE-1336, CWE-94
 - tplmap documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

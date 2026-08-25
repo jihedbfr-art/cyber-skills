@@ -1,21 +1,33 @@
 ---
-name: detection-as-code
-domain: 18-detection-engineering
-description: Use when managing detections like software — version control, testing, and CI/CD for detection rules so they're reviewed, tested, and deployed reliably instead of edited in a console.
-difficulty: intermediate
-tags: [detection, detection-as-code, cicd, version-control, testing]
-tools: [git, sigma, ci]
+format: "v2"
+name: "detection-as-code"
+title: "Detection As Code"
+title_fr: "Détection en tant que code"
+description: "Use when managing detections like software — version control, testing, and CI/CD for detection rules so they're reviewed, tested, and deployed reliably instead of edited in a console."
+description_fr: "À utiliser pour gérer les détections comme du logiciel — contrôle de version, tests et CI/CD pour les règles de détection, afin qu'elles soient revues, testées et déployées de façon fiable plutôt que modifiées à la main dans une console."
+domain: "18-detection-engineering"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Detections are logic that decides whether you catch an attack — too important to be edited ad hoc in a SIEM console with no history, review, or testing. Detection-as-code applies software engineering practice to detection rules: they live in version control, get reviewed, get tested automatically, and deploy through a pipeline. This skill covers running detections that way, which turns a fragile pile of console rules into a maintainable, trustworthy detection library.
 
-## When to use it
+### When to use it
 
 Building or maturing a detection-engineering practice beyond a handful of hand-edited rules. It's the operational backbone that makes the other detection skills (Sigma writing, testing, tuning) repeatable and safe at scale.
 
-## Procedure
+### Procedure
 
 1. **Put detections in version control.** Store rules (Sigma, SIEM-native, EDR) as files in a git repository — the single foundational move. Now every change has history, an author, and a diff; you can see who changed a rule, when, and why, and roll back a bad change.
 2. **Require review.** Detection changes go through pull requests reviewed by another engineer, like code. Review catches broken logic, false-positive risk, and missing coverage before a rule reaches production and pages someone at 3am.
@@ -25,7 +37,7 @@ Building or maturing a detection-engineering practice beyond a handful of hand-e
 6. **Track detections against coverage** (ATT&CK mapping in the rule metadata) so the repository doubles as your coverage map (feeds the metrics and mapping skills).
 7. **Treat the whole thing like a codebase** — issues for gaps, branches for work, releases, and documentation. The detection library becomes a managed engineering artifact, not tribal knowledge in a console.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 detections = code -> version control + review + test + pipeline
@@ -45,7 +57,7 @@ detections = code -> version control + review + test + pipeline
 vs the anti-pattern: rules hand-edited in the SIEM console, no history/review/test.
 ```
 
-## Reading the practice
+### Reading the practice
 
 - **Detections hand-edited in the console with no history** = the anti-pattern this fixes; no way to know who changed what, no review, no rollback, and rules drift silently. Move them into version control.
 - **Rules deployed straight to production without review or testing** = broken logic and false-positive floods reach the SOC directly; a bad rule pages everyone at 3am. Review and CI catch it first.
@@ -53,7 +65,7 @@ vs the anti-pattern: rules hand-edited in the SIEM console, no history/review/te
 - **Detections locked to one SIEM's syntax** = fragile and un-portable; authoring in Sigma and converting in the pipeline keeps the logic reusable and testable.
 - **A git repo of reviewed, tested, ATT&CK-mapped detections deploying through a pipeline** = a mature practice; the library is trustworthy, and coverage is visible.
 
-## Pitfalls
+### Pitfalls
 
 - **Editing rules in the console.** The default bad habit — no history, no review, no test, and untracked drift. Version control is the foundation; everything else builds on it.
 - **Deploying without review or testing.** Detection logic is as breakable as any code; unreviewed, untested rules cause false-positive floods or silent blind spots. Gate them.
@@ -61,9 +73,15 @@ vs the anti-pattern: rules hand-edited in the SIEM console, no history/review/te
 - **Platform lock-in.** Authoring only in one SIEM's language makes detections un-portable and hard to test; use a portable format where possible.
 - **No coverage mapping.** Without ATT&CK metadata the repo can't tell you what you cover; you write duplicate rules and miss gaps.
 
-## References
+### References
 
 - Sigma and pySigma / sigma-cli (portable rules + conversion)
 - SANS and industry detection-as-code / detection engineering references
 - The writing-sigma-rules, testing-detections, mapping-to-attack, and detection-metrics skills
 - Git and CI/CD practice (the DevSecOps domain)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

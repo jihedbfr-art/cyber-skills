@@ -1,21 +1,33 @@
 ---
-name: ioc-collection-and-vetting
-domain: 21-threat-intelligence
-description: Use when gathering indicators of compromise from feeds and reports — collecting them without drowning in junk, and vetting them so you don't act on false or stale data.
-difficulty: beginner
-tags: [threat-intel, iocs, feeds, vetting, quality]
-tools: [misp]
+format: "v2"
+name: "ioc-collection-and-vetting"
+title: "Ioc Collection And Vetting"
+title_fr: "Collecte et validation d'IoC"
+description: "Use when gathering indicators of compromise from feeds and reports — collecting them without drowning in junk, and vetting them so you don't act on false or stale data."
+description_fr: "À utiliser pour collecter des indicateurs de compromission depuis des flux et rapports — les rassembler sans se noyer sous le bruit, et les valider pour ne pas agir sur des données fausses ou obsolètes."
+domain: "21-threat-intelligence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Threat intelligence starts with indicators — the IPs, domains, hashes, and URLs associated with threats — but raw feeds are a firehose of variable quality, and acting on bad indicators causes false positives, wasted effort, and even outages (blocking a legitimate service). This skill covers collecting IoCs from feeds and reports and, crucially, vetting them so what reaches your detection and blocking is accurate, relevant, and current.
 
-## When to use it
+### When to use it
 
 The intake step of a threat-intel programme, and whenever ingesting a new feed or report. It feeds everything downstream (enrichment, detection mapping, blocking), so the quality gate here determines the value of the whole pipeline — garbage in, garbage out.
 
-## Procedure
+### Procedure
 
 1. **Collect from multiple, appropriate sources.** IoCs come from commercial feeds, open-source feeds (OSINT, abuse lists), ISAC/sector sharing, vendor reports, and your own incidents and hunts (the most relevant of all). Combine sources for coverage, but weight them by reliability.
 2. **Assess source reliability.** Not all feeds are equal — some are curated and accurate, others are noisy or full of expired data. Track which sources produce actionable indicators vs false positives, and weight accordingly. A feed that repeatedly causes false positives is negative value.
@@ -28,7 +40,7 @@ The intake step of a threat-intel programme, and whenever ingesting a new feed o
 6. **Prioritise by the Pyramid of Pain.** Weight indicators by durability (the pyramid-of-pain skill) — hashes/IPs are cheap and perishable, behavioural indicators are durable. Collect the low-tier for fast blocking but value the high-tier.
 7. **Feed vetted indicators onward** — into a platform (MISP), enrichment, and detection, with their context and confidence intact.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 raw feeds = firehose of VARIABLE quality ; bad IoCs = false positives / outages
@@ -50,7 +62,7 @@ CONTEXT + confidence: what threat / how sure / what action (else misapplied)
 prioritise by PYRAMID OF PAIN (hash/IP perishable ; behavioural durable)
 ```
 
-## Reading the indicators
+### Reading the indicators
 
 - **An indicator that's a shared-hosting IP, CDN, or legitimate-but-abused domain** = a false-positive/outage risk if blocked naively; vetting for this is the single most important check, because acting on it can take down access to a legitimate service. Never block without this vetting.
 - **A high-reliability source's indicators** = more trustworthy and actionable; track which sources earn this and weight them. A feed that repeatedly false-positives is worse than no feed.
@@ -59,7 +71,7 @@ prioritise by PYRAMID OF PAIN (hash/IP perishable ; behavioural durable)
 - **Indicators from your own incidents/hunts** = the most relevant of all; what actually hit you is higher-value than any generic feed. Prioritise internal sources.
 - **Vetted, contexted, aged, durability-weighted indicators** = the quality input the rest of the pipeline needs.
 
-## Pitfalls
+### Pitfalls
 
 - **Acting on unvetted indicators.** Blocking a shared IP, CDN, or legitimate abused domain from a raw feed causes outages; vetting for false-positive risk is what prevents self-inflicted damage. Never auto-block raw feed data.
 - **Treating all sources equally.** Feeds vary wildly in quality; a noisy feed generates false positives and is negative value. Assess and weight source reliability.
@@ -67,9 +79,15 @@ prioritise by PYRAMID OF PAIN (hash/IP perishable ; behavioural durable)
 - **No context or confidence.** Bare indicators get misapplied; attach the threat, confidence, and recommended action.
 - **Valuing volume over quality.** A huge feed of low-quality indicators is worse than a small vetted set; garbage in, garbage out. Vet before you value.
 
-## References
+### References
 
 - MISP documentation (indicator management, feeds, warninglists for false-positive avoidance)
 - The pyramid-of-pain, enrichment-pipelines, and mapping-intel-to-detection skills
 - STIX/TAXII (structured indicator formats)
 - The malware extracting-iocs and threat-hunting operationalising skills (internal IoC sources)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

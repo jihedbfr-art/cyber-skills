@@ -1,0 +1,29 @@
+<!-- GENERATED — do not edit -->
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+</div>
+
+# Revue des mauvais usages de la cryptographie
+
+<div align="center">
+
+**Un projet <a href="https://github.com/jihedbfr-art">JihedAiLabs</a>** — À utiliser lors de la revue de code qui chiffre, hache, signe ou génère de l'aléatoire — pour repérer les algorithmes faibles, les primitives mal utilisées et la cryptographie maison avant leur mise en production.
+
+<a href="./README.md">English version</a>
+
+</div>
+
+---
+
+## Description
+À utiliser lors de la revue de code qui chiffre, hache, signe ou génère de l'aléatoire — pour repérer les algorithmes faibles, les primitives mal utilisées et la cryptographie maison avant leur mise en production.
+
+## Domaine & Metadata
+- **Domaine :** `10-secure-code-review`
+- **Maturité :** `stable`
+- **Public visé :** `["backend-engineer", "security-engineer", "coding-agent"]`
+- **Prérequis techniques :** `["bash", "git"]`
+- **Dernière mise à jour :** 2026-08-08
+
+## Instructions Agent
+Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).

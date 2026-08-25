@@ -1,21 +1,33 @@
 ---
-name: timeline-analysis
-domain: 23-digital-forensics
-description: Use when reconstructing the sequence of an incident — building a super-timeline from all artefacts so events across sources line up chronologically and the story emerges.
-difficulty: intermediate
-tags: [forensics, timeline, plaso, super-timeline, reconstruction]
-tools: [plaso, log2timeline, timesketch]
+format: "v2"
+name: "timeline-analysis"
+title: "Timeline Analysis"
+title_fr: "Analyse de chronologie"
+description: "Use when reconstructing the sequence of an incident — building a super-timeline from all artefacts so events across sources line up chronologically and the story emerges."
+description_fr: "À utiliser pour reconstruire la séquence d'un incident — construire une super-timeline à partir de tous les artefacts pour que les événements de toutes les sources s'alignent chronologiquement et que l'histoire émerge."
+domain: "23-digital-forensics"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An investigation ultimately has to answer "what happened, in what order?" — and the evidence for that is scattered across dozens of artefacts (logs, filesystem, registry, browser, memory) each with its own timestamps. Timeline analysis pulls them into one chronological view so the sequence becomes visible: the phish arrived, the macro ran, the process spawned, the connection went out, persistence was set. This skill covers building and reading a super-timeline, the technique that turns scattered artefacts into a story.
 
-## When to use it
+### When to use it
 
 Once you have artefacts from disk/memory analysis and need to establish sequence and causality — which is most non-trivial investigations. It's the synthesis step that sits on top of the Windows/Linux artefact skills and produces the narrative IR and reports need.
 
-## Procedure
+### Procedure
 
 1. **Collect timestamped data from all sources.** The power of a *super*-timeline is breadth — filesystem timestamps ($MFT), event logs, registry, browser history, shell history, and more, unified. `log2timeline`/plaso parses many artefact types into one timeline:
    ```
@@ -29,7 +41,7 @@ Once you have artefacts from disk/memory analysis and need to establish sequence
 6. **Mind timestamp pitfalls** — time zones (normalise to UTC), clock skew between systems, and the different timestamp types (creation vs modification vs access vs metadata-change). Getting these wrong corrupts the sequence.
 7. **Produce the narrative** — the ordered sequence of events with times becomes the backbone of the investigation report and the IR scoping.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 goal: scattered artefacts -> ONE chronological view -> the story/sequence
@@ -50,7 +62,7 @@ pitfalls to control: TIME ZONES (normalise UTC) | clock skew | timestamp TYPES
   ($SI vs $FN, create vs modify vs access vs ctime)
 ```
 
-## Reading the timeline
+### Reading the timeline
 
 - **A tight cluster of events around the anchor** = usually the incident unfolding; events close in time to a known-malicious action are typically related. This clustering is how the story surfaces.
 - **A clean causal chain** (download → execute → spawn → connect → persist) = the reconstructed attack sequence — the deliverable timeline analysis exists to produce.
@@ -59,7 +71,7 @@ pitfalls to control: TIME ZONES (normalise UTC) | clock skew | timestamp TYPES
 - **Events that don't line up across time zones** = a normalisation error (or genuine clock skew); fix the time handling before trusting the sequence, or you'll misread causality.
 - **Corroborating artefacts agreeing on order** = high-confidence sequence; the multi-source agreement is what makes the reconstruction defensible.
 
-## Pitfalls
+### Pitfalls
 
 - **Time-zone and skew errors.** The most damaging timeline mistake — mixed time zones or clock skew scrambles the order and can reverse cause and effect. Normalise to UTC and account for skew.
 - **Drowning in the full super-timeline.** Millions of events are unusable raw; narrow to the window, systems, and users, and anchor on a known event.
@@ -67,9 +79,15 @@ pitfalls to control: TIME ZONES (normalise UTC) | clock skew | timestamp TYPES
 - **Confusing timestamp types.** Creation vs modification vs access vs metadata-change mean different things; misreading which is which corrupts the sequence.
 - **Building a timeline without a question/anchor.** Aimlessly scrolling a timeline finds nothing; anchor on something known and expand.
 
-## References
+### References
 
 - Plaso / log2timeline and Timesketch documentation
 - SANS timeline analysis resources (FOR508)
 - The windows-artefacts, linux-artefacts, memory-forensics, and anti-forensics-awareness skills
 - MITRE ATT&CK — T1070.006 (Timestomp)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

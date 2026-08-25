@@ -1,21 +1,33 @@
 ---
-name: firewall-rule-review
-domain: 02-network-security
-description: Use when auditing a firewall rule set for overly-permissive, shadowed, or stale rules — the accumulated cruft that quietly widens what's allowed through.
-difficulty: intermediate
-tags: [network, firewall, rules, audit, hardening]
-tools: [nipper, pfsense]
+format: "v2"
+name: "firewall-rule-review"
+title: "Firewall Rule Review"
+title_fr: "Revue des règles de pare-feu"
+description: "Use when auditing a firewall rule set for overly-permissive, shadowed, or stale rules — the accumulated cruft that quietly widens what's allowed through."
+description_fr: "À utiliser pour auditer un jeu de règles de pare-feu à la recherche de règles trop permissives, masquées par d'autres ou obsolètes — les scories accumulées qui élargissent discrètement ce qui est autorisé à passer."
+domain: "02-network-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Firewall rule sets rot. Rules get added for a project and never removed, "temporary" any-any rules become permanent, and new rules quietly shadow old ones. Over time the effective policy allows far more than anyone intended. This skill covers reviewing a rule set to find the permissive, redundant, shadowed, and stale rules, and tightening it back toward least access.
 
-## When to use it
+### When to use it
 
 Periodic firewall audits, after an assessment, during a migration, or when nobody can confidently answer "what does this firewall actually allow?". It pairs with the segmentation skill — the firewall is often where segmentation boundaries are enforced (or quietly aren't).
 
-## Procedure
+### Procedure
 
 1. **Get the full rule set and read it in order.** Firewalls evaluate rules top-down, first match wins — so order matters as much as the rules themselves. Export the config for offline analysis.
 2. **Hunt overly-permissive rules** — the biggest risk. `any` in source, destination, service, or port is where exposure hides. An `any-any allow` is effectively no firewall for that path:
@@ -29,7 +41,7 @@ Periodic firewall audits, after an assessment, during a migration, or when nobod
 6. **Check the default action** — the rule set should end in an explicit deny-all with logging. If the default is allow, or the final deny isn't logged, that's a finding.
 7. **Automate where possible** — tools like Nipper analyse configs for these issues across vendors; use them to scale the review, then verify by hand.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 review order: rules evaluate TOP-DOWN, first match wins — read in sequence
@@ -47,7 +59,7 @@ questions per rule
   is this rule still needed?  who owns it?  is it logged?
 ```
 
-## Reading the review
+### Reading the review
 
 - **An `any-any allow` (or any-any on a sensitive path)** = effectively no firewall there; the top-severity finding. Every path it covers is open.
 - **Broad source allowed to a sensitive host** (DB, DC, admin interface) = a direct exposure; tighten the source to the minimum, or move the host behind segmentation.
@@ -56,7 +68,7 @@ questions per rule
 - **No final deny-all, or deny not logged** = traffic may fall through to a permissive default, and denied attempts go unseen. Add explicit logged deny-all.
 - **A lean, ordered, least-privilege set ending in logged deny-all** = the good state.
 
-## The fix
+### The fix
 
 - **Remove or narrow overly-permissive rules** — replace `any` with the specific sources, destinations, and ports actually needed. Least access, per rule.
 - **Reorder to eliminate shadowing** and remove redundant rules so the effective policy is legible and matches intent.
@@ -65,7 +77,7 @@ questions per rule
 - **Log allowed sensitive flows too**, and establish a change process (owner, review date per rule) so the set doesn't rot again.
 - **Re-review periodically** — rule sets accumulate cruft continuously.
 
-## Pitfalls
+### Pitfalls
 
 - **Missing shadowed rules.** The written policy and the effective policy diverge when a broad rule sits above a specific one; you have to read in evaluation order to catch it.
 - **Leaving "temporary" any-any rules.** They're the most dangerous and the most likely to be forgotten. Hunt them specifically.
@@ -73,9 +85,15 @@ questions per rule
 - **No logging on deny.** Without it, you can't see attacks or troubleshoot — and you lose a detection source.
 - **One-time audit.** Rule sets rot continuously; schedule the review.
 
-## References
+### References
 
 - NIST SP 800-41 (Guidelines on Firewalls and Firewall Policy)
 - Nipper / vendor config-audit tooling
 - CIS benchmarks for firewall/router configuration
 - The network-segmentation skill (firewalls enforce segment boundaries)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

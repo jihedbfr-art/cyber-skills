@@ -1,21 +1,33 @@
 ---
-name: browser-and-app-forensics
-domain: 23-digital-forensics
-description: Use when reconstructing user activity from browser and application data — history, downloads, cached data, and app databases that reveal what a user did and when.
-difficulty: intermediate
-tags: [forensics, browser, applications, user-activity, sqlite]
-tools: [hindsight, sqlite]
+format: "v2"
+name: "browser-and-app-forensics"
+title: "Browser And App Forensics"
+title_fr: "Forensic navigateur et applications"
+description: "Use when reconstructing user activity from browser and application data — history, downloads, cached data, and app databases that reveal what a user did and when."
+description_fr: "À utiliser pour reconstruire l'activité d'un utilisateur à partir des données de navigateur et d'applications — historique, téléchargements, données en cache et bases de données d'applications qui révèlent ce qu'un utilisateur a fait et quand."
+domain: "23-digital-forensics"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A huge amount of user activity lives in browser and application data — sites visited, files downloaded, searches typed, messages, and cached content. When an investigation needs to establish what a *user* did (insider cases, phishing victims, policy violations, or an attacker using a browser), this is where the evidence is. This skill covers recovering activity from browsers and application stores, much of which is SQLite databases waiting to be read.
 
-## When to use it
+### When to use it
 
 Investigations centred on user behaviour — how a phishing victim reached a malicious site, what an insider accessed or exfiltrated, what an attacker did through a browser session. It complements host-artefact analysis with the user-activity layer.
 
-## Procedure
+### Procedure
 
 1. **Locate the browser profile data.** Chrome/Edge/Firefox store history, downloads, cookies, and cache in per-user profile directories — mostly **SQLite databases** (`History`, `Cookies`, `Login Data`, etc.) plus cache files. Collect these from the image.
 2. **Parse browser history and downloads — the core.** History shows URLs visited with timestamps and visit counts; downloads show what was fetched and from where. A tool like Hindsight parses Chromium browsers comprehensively; otherwise query the SQLite directly:
@@ -30,7 +42,7 @@ Investigations centred on user behaviour — how a phishing victim reached a mal
 6. **Account for private browsing and sync** — incognito/private mode leaves less on disk (but may still leave traces in memory or DNS), and browser sync means activity may exist across the user's other devices/account.
 7. **Build into the timeline** and handle as evidence (work from the image, preserve, document) — browser timestamps feed the super-timeline for correlation with system events.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 where: per-user browser profile dirs — mostly SQLite databases + cache
@@ -53,7 +65,7 @@ caveats: private mode = less on disk (check memory/DNS) ; SYNC = data on other d
 feed the super-timeline ; work from the image; preserve
 ```
 
-## Reading the data
+### Reading the data
 
 - **Browser history + downloads around the incident** = how a user reached a malicious site and what they downloaded (the dropper/payload source) — central for phishing-victim and drive-by cases.
 - **Search terms / typed URLs** = user intent, which pages alone don't show; "how to exfiltrate data" or a deliberately-typed malicious URL is strong evidence of intent.
@@ -62,7 +74,7 @@ feed the super-timeline ; work from the image; preserve
 - **App SQLite databases** (messaging, cloud clients) = communications and file transfers — often the evidence in insider and data-exfiltration cases.
 - **Sparse on-disk history where you expected activity** = possible private browsing or clearing; check memory, DNS, and synced devices rather than concluding nothing happened.
 
-## Pitfalls
+### Pitfalls
 
 - **Forgetting most of it is SQLite.** Browser and app data are readable databases; you don't need special magic, just to know where they are and to parse timestamps correctly (browser time formats vary — WebKit/Chrome epoch differs from Unix).
 - **Ignoring sync.** Cleared local history doesn't mean the activity is gone — it may be synced to the account and recoverable from other devices. Consider the whole account.
@@ -70,9 +82,15 @@ feed the super-timeline ; work from the image; preserve
 - **Mishandling timestamps.** Browsers use different epoch formats; a mis-converted time corrupts the timeline. Use tools that handle it or convert carefully.
 - **Working on the live profile.** Opening the browser or the live profile changes the data; parse from the forensic image.
 
-## References
+### References
 
 - Hindsight (Chromium browser forensics) and browser SQLite schema references
 - SANS browser forensics resources
 - The windows-artefacts, timeline-analysis, and chain-of-custody skills
 - SQLite documentation (for direct database queries)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

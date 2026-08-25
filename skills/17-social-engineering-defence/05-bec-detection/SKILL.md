@@ -1,27 +1,39 @@
 ---
-name: bec-detection
-domain: 17-social-engineering-defence
-description: Use when defending against business email compromise — the high-value fraud where an attacker impersonates an executive or vendor to redirect payments, and why it evades normal filters.
-difficulty: intermediate
-tags: [social-engineering, bec, fraud, email, payments]
-tools: []
+format: "v2"
+name: "bec-detection"
+title: "Bec Detection"
+title_fr: "Détection de la fraude au président (BEC)"
+description: "Use when defending against business email compromise — the high-value fraud where an attacker impersonates an executive or vendor to redirect payments, and why it evades normal filters."
+description_fr: "À utiliser pour se défendre contre la fraude au président (Business Email Compromise) — cette escroquerie à fort enjeu où un attaquant usurpe l'identité d'un dirigeant ou d'un fournisseur pour détourner des paiements, et pourquoi elle échappe aux filtres classiques."
+domain: "17-social-engineering-defence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Business Email Compromise is among the costliest cybercrimes — an attacker impersonates a trusted party (an executive, a vendor, a lawyer) to trick someone into wiring money or changing payment details. What makes BEC dangerous is that it often carries no malware and no malicious link, so it sails past technical filters; it's pure social engineering exploiting trust and process. This skill covers detecting and preventing BEC, which requires process controls as much as technical ones.
 
-## When to use it
+### When to use it
 
 Defending against payment fraud and executive/vendor impersonation, especially in organisations that handle wire transfers, vendor payments, or payroll changes. BEC's high financial impact and its evasion of normal email security make it a priority distinct from malware-based phishing.
 
-## Why BEC evades normal defences
+### Why BEC evades normal defences
 
 - **No payload** — BEC emails often have no malware, no attachment, no malicious link; they're plain text asking for a wire transfer or a payment-detail change. So attachment/link scanning and malware detonation catch nothing.
 - **Exploits trust and urgency** — the email impersonates authority (the CEO) or a trusted relationship (a vendor) and adds urgency ("wire this today, I'm in a meeting"), pressuring the target to bypass normal process.
 - **Often uses legitimate-looking channels** — a lookalike domain, a compromised real account (from account takeover), or a reply-to redirect. It can even come from a genuinely compromised mailbox, passing all email authentication.
 
-## Procedure
+### Procedure
 
 1. **Recognise BEC needs process controls, not just technical ones — the key insight.** Because BEC carries no payload, technical email security alone can't stop it; the primary defence is *process*. The single most effective control: **out-of-band verification** for payment changes and unusual transfers — confirm any request to move money or change payment details via a separate, known channel (a phone call to a known number), never by replying to the email.
 2. **Apply technical controls where they help** — email authentication (SPF/DKIM/DMARC) stops domain spoofing (a partial defence — it doesn't stop lookalike domains or compromised accounts), and detection can flag lookalike sender domains, new-domain senders, reply-to mismatches, and unusual language/urgency. These reduce but don't eliminate BEC.
@@ -31,7 +43,7 @@ Defending against payment fraud and executive/vendor impersonation, especially i
 6. **Train finance/payment staff specifically** — they're the targets; awareness that a CEO/vendor payment request needs out-of-band verification regardless of how legitimate it looks is the human defence.
 7. **Respond to a suspected BEC** — if a transfer was made, act fast (contact the bank to attempt recall — speed matters), and investigate for account compromise (was a mailbox taken over?).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 BEC = impersonate a trusted party (exec/vendor/lawyer) -> redirect payments. among costliest cybercrimes.
@@ -56,7 +68,7 @@ train FINANCE/payment staff (the targets)
 respond: transfer made? -> bank recall FAST + investigate account compromise
 ```
 
-## Reading the risk
+### Reading the risk
 
 - **A payment/wire request with urgency and secrecy from an "executive"** = a classic BEC pattern; the urgency and "handle this directly, don't tell anyone" are designed to bypass normal process. Out-of-band verification is the defence, regardless of how legitimate it looks.
 - **A request to change vendor payment details** = a top BEC vector (redirecting legitimate payments to the attacker); must be confirmed out-of-band via a known channel, never by replying. Payment-detail changes are the highest-risk requests.
@@ -65,7 +77,7 @@ respond: transfer made? -> bank recall FAST + investigate account compromise
 - **`Reply-To` differing from `From`, or a lookalike sender domain** = detectable BEC signals; flag them, though they don't cover the compromised-account case.
 - **Out-of-band verification and dual authorisation for money movement** = the controls that actually stop BEC when the email looks legitimate; the process defence is the real protection.
 
-## Pitfalls
+### Pitfalls
 
 - **Relying on technical email security alone.** BEC carries no payload, so scanning and detonation catch nothing; the primary defence is process (out-of-band verification), not technical controls. This is the core mistake.
 - **Verifying by replying to the email or calling a number in it.** The attacker controls both; verification must be via a *separately-known* channel (a known phone number). Out-of-band means genuinely out of band.
@@ -73,9 +85,15 @@ respond: transfer made? -> bank recall FAST + investigate account compromise
 - **Not training finance/payment staff.** They're the targets; without awareness that payment requests need out-of-band verification regardless of apparent legitimacy, the human defence is absent.
 - **Slow response to a completed transfer.** Recall attempts are time-sensitive; contact the bank fast, and investigate whether a mailbox was compromised.
 
-## References
+### References
 
 - FBI/IC3 Business Email Compromise reports and guidance
 - The spf-dkim-dmarc, phishing-email-analysis, and IR account-compromise-response skills
 - CISA BEC prevention guidance (out-of-band verification, dual authorisation)
 - MITRE ATT&CK — social engineering / phishing techniques
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

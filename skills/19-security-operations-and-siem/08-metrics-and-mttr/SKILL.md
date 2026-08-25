@@ -1,21 +1,33 @@
 ---
-name: metrics-and-mttr
-domain: 19-security-operations-and-siem
-description: Use when measuring SOC performance honestly — the metrics that show whether the SOC is effective and where it's struggling, avoiding the vanity numbers that look good and mean nothing.
-difficulty: intermediate
-tags: [soc, metrics, mttr, performance, measurement]
-tools: []
+format: "v2"
+name: "metrics-and-mttr"
+title: "Metrics And Mttr"
+title_fr: "Métriques et MTTR"
+description: "Use when measuring SOC performance honestly — the metrics that show whether the SOC is effective and where it's struggling, avoiding the vanity numbers that look good and mean nothing."
+description_fr: "À utiliser pour mesurer honnêtement la performance du SOC — les métriques qui montrent si le SOC est efficace et où il peine, en évitant les chiffres vanité qui rassurent sans rien signifier."
+domain: "19-security-operations-and-siem"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 SOC metrics are easy to game and easy to misread — "we closed 10,000 alerts this month" says nothing about whether the SOC caught the attacks that mattered. Measuring a SOC honestly means tracking speed, effectiveness, and health in ways that reveal real performance and point at what to fix. This skill covers the metrics that matter — chiefly the mean-time-to-X measures — and how to read them without being fooled by vanity numbers or perverse incentives.
 
-## When to use it
+### When to use it
 
 Assessing and improving SOC performance, and reporting it to leadership. Good metrics drive the right improvements (faster detection, better triage, less noise) and justify resourcing; bad metrics drive gaming (closing alerts fast regardless of quality) and misplaced confidence.
 
-## The metrics that matter
+### The metrics that matter
 
 - **MTTD (mean time to detect)** — how long from an attack starting to it being detected. The headline effectiveness measure; long MTTD means attackers operate undetected for too long.
 - **MTTR (mean time to respond/resolve)** — how long from detection to containment/resolution. Measures response speed once something's caught.
@@ -24,7 +36,7 @@ Assessing and improving SOC performance, and reporting it to leadership. Good me
 - **Escalation accuracy** — are alerts escalated correctly (true incidents escalated, false positives not)? Measures triage quality.
 - **Coverage** — what the SOC can actually detect (from the detection metrics/mapping skills).
 
-## Procedure
+### Procedure
 
 1. **Anchor on the mean-time-to-X metrics.** MTTD and MTTR are the core because they measure what the SOC exists to do — catch and respond to attacks quickly. Track them, trend them, and drive them down. A SOC that detects and responds fast is effective regardless of how many alerts it closes.
 2. **Avoid vanity and perverse-incentive metrics.** "Alerts closed" and "tickets handled" are the trap — they reward volume and speed of *closing*, which incentivises closing alerts without proper investigation (including real ones as false positives). Never make closure rate the goal; it corrupts triage quality.
@@ -34,7 +46,7 @@ Assessing and improving SOC performance, and reporting it to leadership. Good me
 6. **Report honestly to leadership** in terms of effectiveness and gaps (MTTD/MTTR trends, coverage, capacity) — not vanity counts — to justify investment and show trajectory. Beware presenting closure rates as success.
 7. **Beware gaming.** Any metric becomes a target people optimise for; watch for optimisation that games the number without improving security (closing alerts fast, tuning out inconvenient detections).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 "we closed 10,000 alerts" = says NOTHING about catching what mattered.
@@ -60,7 +72,7 @@ use DIAGNOSTICALLY (each -> a fix)
 report EFFECTIVENESS + gaps to leadership (not counts) ; beware gaming (any metric = target)
 ```
 
-## Reading the metrics
+### Reading the metrics
 
 - **Closure rate / alerts-handled presented as success** = the vanity trap; it rewards fast closing regardless of correctness, which incentivises closing real alerts as false positives to hit the number. Never optimise for it. This is the most damaging SOC metric mistake.
 - **High MTTD** = attackers operate undetected too long; the SOC's core effectiveness measure is failing, pointing at detection coverage or telemetry gaps. The metric that matters most.
@@ -70,7 +82,7 @@ report EFFECTIVENESS + gaps to leadership (not counts) ; beware gaming (any metr
 - **A metric being gamed** (detections tuned out to improve numbers, alerts closed without investigation) = the metric became a target; watch for optimisation that improves the number, not security.
 - **MTTD/MTTR trended, paired with quality and health, driving fixes** = honest, useful SOC measurement.
 
-## Pitfalls
+### Pitfalls
 
 - **Vanity/closure metrics.** "Alerts closed" rewards volume and speed of closing, incentivising closing real alerts as false positives. The single most corrosive SOC metric — never make it the goal.
 - **Speed without quality.** Fast MTTR means nothing if the SOC misses real attacks; pair speed metrics with escalation accuracy and false-negative signals.
@@ -79,9 +91,15 @@ report EFFECTIVENESS + gaps to leadership (not counts) ; beware gaming (any metr
 - **Reporting counts to leadership.** It looks like progress but misleads; report MTTD/MTTR trends, coverage, and gaps.
 - **Ignoring gaming.** Any metric becomes a target; watch for optimisation that games the number (tuning out detections, closing without investigating) rather than improving security.
 
-## References
+### References
 
 - The detection detection-metrics, alert-triage-workflow, and on-call-and-escalation skills
 - The vuln-mgmt reporting-to-stakeholders skill (same anti-vanity-metric discipline)
 - SANS SOC metrics and MITRE detection maturity resources
 - Goodhart's Law (any metric that becomes a target ceases to be a good measure)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

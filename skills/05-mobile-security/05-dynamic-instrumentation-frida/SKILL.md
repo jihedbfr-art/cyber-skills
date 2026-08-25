@@ -1,21 +1,33 @@
 ---
-name: dynamic-instrumentation-frida
-domain: 05-mobile-security
-description: Use when analysing a running mobile app by hooking its functions with Frida — observing and modifying behaviour at runtime to test logic, bypass checks, and inspect data.
-difficulty: advanced
-tags: [mobile, frida, instrumentation, dynamic-analysis, hooking]
-tools: [frida, objection]
+format: "v2"
+name: "dynamic-instrumentation-frida"
+title: "Dynamic Instrumentation Frida"
+title_fr: "Instrumentation dynamique avec Frida"
+description: "Use when analysing a running mobile app by hooking its functions with Frida — observing and modifying behaviour at runtime to test logic, bypass checks, and inspect data."
+description_fr: "À utiliser pour analyser une application mobile en cours d'exécution en hookant ses fonctions avec Frida — observer et modifier son comportement à l'exécution pour tester la logique métier, contourner des contrôles et inspecter les données manipulées."
+domain: "05-mobile-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Static analysis reads the app; dynamic instrumentation lets you reach into it while it runs — hooking functions to see their arguments and return values, and modifying behaviour to test how the app responds. Frida is the standard tool: it injects into a running app and lets you intercept and change any function call. This skill covers using Frida to analyse mobile app behaviour at runtime, the technique behind pinning bypass, security-control bypass, and observing what the app actually does with data.
 
-## When to use it
+### When to use it
 
 The dynamic phase of a mobile assessment, when static analysis has shown you the app's structure and you want to observe or manipulate runtime behaviour. It requires a device you control (rooted/jailbroken is easiest) and an app you're authorised to test.
 
-## Procedure
+### Procedure
 
 1. **Set up Frida.** Install the Frida server on the test device (rooted/jailbroken) and the Frida client on your machine; confirm it can attach to the target app:
    ```
@@ -42,7 +54,7 @@ The dynamic phase of a mobile assessment, when static analysis has shown you the
 6. **Combine with the other techniques.** Frida is the engine behind pinning bypass and RE-protection bypass; use it to enable traffic inspection and to test the anti-tampering controls.
 7. **Recognise when the app fights back.** Anti-instrumentation and Frida-detection (part of RE protections) may detect or block Frida; robust apps require bypassing those first.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 static = read the app ; Frida = reach INTO it while running (hook functions -> observe + MODIFY)
@@ -62,7 +74,7 @@ core techniques
 app fights back: anti-instrumentation / Frida-detection (RE-protections) -> bypass first
 ```
 
-## Reading the analysis
+### Reading the analysis
 
 - **A hooked function revealing its arguments and return** = you see what the app actually does with data at runtime — the input to a crypto call, the token it sends, the value of a check. This is Frida's core value: observing behaviour static analysis can only guess at.
 - **A security control bypassed by modifying a return value** (root detection → false, pinning → success) = demonstrates the control is bypassable by an attacker with device control; important for judging whether client-side controls are relied upon inappropriately (they shouldn't be the only defence).
@@ -71,7 +83,7 @@ app fights back: anti-instrumentation / Frida-detection (RE-protections) -> bypa
 - **The app detecting/blocking Frida** = anti-instrumentation is present (an RE protection); robust apps require bypassing that before Frida works. Recognise the resistance.
 - **Frida enabling traffic inspection and control testing** = the dynamic phase working; it's the enabler for much of mobile assessment.
 
-## Pitfalls
+### Pitfalls
 
 - **Instrumenting an app you're not authorised to test.** Frida modifies a running app; do it only on authorised apps on your own test device.
 - **Expecting Frida to just work on hardened apps.** Anti-instrumentation and Frida-detection block it; robust apps require bypassing those first (RE-protections skill).
@@ -79,9 +91,15 @@ app fights back: anti-instrumentation / Frida-detection (RE-protections) -> bypa
 - **Concluding a client-side control is "secure" because it's there.** Frida shows client-side controls (root detection, license checks, even pinning) can be bypassed by an attacker with device control; they shouldn't be the sole defence. That's a finding, not a Frida limitation.
 - **Missing runtime-only data.** Static and storage analysis can't see decrypted values and in-memory keys; Frida is how you reach them — don't stop at static.
 
-## References
+### References
 
 - Frida documentation (frida.re) and Objection (github.com/sensepost/objection)
 - OWASP MASTG (dynamic analysis, runtime instrumentation) and MASVS
 - The ssl-pinning-bypass, reverse-engineering-protections, and insecure-data-storage skills
 - Frida script repositories (codeshare.frida.re)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

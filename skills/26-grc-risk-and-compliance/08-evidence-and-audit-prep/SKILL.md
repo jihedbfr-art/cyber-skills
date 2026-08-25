@@ -1,21 +1,33 @@
 ---
-name: evidence-and-audit-prep
-domain: 26-grc-risk-and-compliance
-description: Use when collecting compliance evidence and preparing for audits — gathering proof that controls operate continuously, so audits are routine instead of a last-minute scramble.
-difficulty: intermediate
-tags: [grc, evidence, audit, compliance, automation]
-tools: []
+format: "v2"
+name: "evidence-and-audit-prep"
+title: "Evidence And Audit Prep"
+title_fr: "Preuves et préparation d'audit"
+description: "Use when collecting compliance evidence and preparing for audits — gathering proof that controls operate continuously, so audits are routine instead of a last-minute scramble."
+description_fr: "À utiliser pour collecter des preuves de conformité et se préparer aux audits — rassembler la preuve que les contrôles fonctionnent en continu, pour que les audits soient une routine plutôt qu'une course de dernière minute."
+domain: "26-grc-risk-and-compliance"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Audits examine *evidence* that controls actually operate — not just that they're documented. The difference between a smooth audit and a painful one is whether that evidence was collected continuously as controls ran, or scrambled together at the last minute (often reconstructed, sometimes fabricated, always stressful). This skill covers collecting compliance evidence and preparing for audits so they're routine confirmations of real practice, not a crisis.
 
-## When to use it
+### When to use it
 
 Preparing for any audit (SOC 2, ISO 27001, PCI), and — more importantly — building the ongoing evidence collection that makes audits painless. It's central to SOC 2 Type II (which requires evidence over a period) and to any framework where auditors check that controls operate.
 
-## Procedure
+### Procedure
 
 1. **Understand what auditors want: evidence controls *operate*, not just exist.** A documented policy isn't evidence the control ran; auditors want proof — the access review was actually performed (with the record), changes were actually approved (with the tickets), alerts were actually triaged (with the logs). Design your evidence around demonstrating *operation over time*, not just design.
 2. **Collect evidence continuously — the make-or-break practice.** The single biggest determinant of audit pain: is evidence gathered as controls run, or reconstructed at audit time? Continuous collection (as the access review happens, save the record) makes audits routine; last-minute reconstruction is stressful, error-prone, and for period-based audits (SOC 2 Type II) sometimes impossible (you can't recreate six months of evidence you never captured). Collect as you go.
@@ -25,7 +37,7 @@ Preparing for any audit (SOC 2, ISO 27001, PCI), and — more importantly — bu
 6. **Do a readiness check before the audit.** Verify you have the evidence for each control the audit will examine (the gap-analysis skill); finding missing evidence before the auditor does lets you fix it. Going in with evidence gaps produces findings/exceptions.
 7. **Never fabricate evidence.** Under audit pressure, the temptation to backdate or fabricate evidence is real and disqualifying — it's fraud, destroys the audit's (and your) credibility, and often gets caught. If a control didn't operate or evidence wasn't collected, that's a finding to address honestly, not to fake. Continuous collection removes the temptation.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 audits examine EVIDENCE that controls OPERATE (not just are documented)
@@ -45,7 +57,7 @@ do
      continuous collection removes the temptation
 ```
 
-## Reading audit readiness
+### Reading audit readiness
 
 - **Evidence scrambled together at audit time** = the painful-audit path; reconstructed evidence is stressful, error-prone, and for period-based audits (SOC 2 Type II) sometimes impossible. Continuous collection is what makes audits routine — this is where audit pain is won or lost.
 - **Documented controls without evidence of operation** = insufficient; auditors want proof the control *ran* (the performed review, the approved change), not just that a policy exists. Design evidence around operation over time.
@@ -54,7 +66,7 @@ do
 - **The temptation to fabricate/backdate evidence under pressure** = a serious red flag; it's fraud, disqualifying, and often caught. Missing evidence is an honest finding to address, not to fake — and continuous collection removes the temptation.
 - **Continuously-collected, automated, control-mapped, well-organised, readiness-checked evidence** = audits as routine confirmations of real practice, not a crisis.
 
-## Pitfalls
+### Pitfalls
 
 - **Last-minute evidence scrambling.** The biggest source of audit pain; reconstructed evidence is stressful and error-prone, and for period-based audits sometimes impossible. Collect continuously as controls run.
 - **Confusing documentation with evidence.** A policy isn't proof the control operated; auditors want records of actual operation. Design evidence around demonstrating operation over time.
@@ -63,9 +75,15 @@ do
 - **Fabricating or backdating evidence.** It's fraud, disqualifying, and often caught; a missing control/evidence is an honest finding, not something to fake. Continuous collection removes the temptation.
 - **No readiness check.** Going into the audit without verifying evidence exists produces avoidable findings; check before the auditor does.
 
-## References
+### References
 
 - The control-mapping, gap-analysis, and soc-2-readiness / iso-27001-isms skills
 - Compliance-automation platforms (Vanta, Drata, Secureframe) for continuous evidence
 - AICPA SOC 2 and ISO 27001 audit-evidence guidance
 - The vulnerability-management remediation-verification discipline (evidence of operation)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

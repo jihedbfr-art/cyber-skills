@@ -1,21 +1,33 @@
 ---
-name: mapping-to-attack
-domain: 18-detection-engineering
-description: Use when tying detections to the MITRE ATT&CK framework — mapping each rule to a technique so you can measure coverage, find gaps, and prioritise what to build next.
-difficulty: intermediate
-tags: [detection, attack, coverage, mitre, prioritisation]
-tools: [attack-navigator]
+format: "v2"
+name: "mapping-to-attack"
+title: "Mapping To Attack"
+title_fr: "Cartographie vers ATT&CK"
+description: "Use when tying detections to the MITRE ATT&CK framework — mapping each rule to a technique so you can measure coverage, find gaps, and prioritise what to build next."
+description_fr: "À utiliser pour relier les détections au framework MITRE ATT&CK — associer chaque règle à une technique afin de mesurer la couverture, repérer les angles morts et prioriser les prochaines règles à écrire."
+domain: "18-detection-engineering"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Writing detections without a framework leaves you unable to answer the most important question: *what can't we detect?* Mapping every detection to MITRE ATT&CK — the standard catalogue of attacker tactics and techniques — turns your rule set into a coverage map. You can see which techniques you catch, where the gaps are, and build the next rule where it matters instead of adding another detection for something already covered. This skill covers mapping to ATT&CK and using the coverage view to drive detection priorities.
 
-## When to use it
+### When to use it
 
 Continuously as you build detections (tag each with its technique) and periodically to assess and prioritise coverage. It's what makes a detection programme strategic rather than a random accumulation of rules, and it feeds metrics, threat-informed detection, and threat hunting.
 
-## Procedure
+### Procedure
 
 1. **Tag every detection with its ATT&CK technique(s)** in the rule metadata (Sigma has a `tags` field for this). A rule detecting Kerberoasting maps to T1558.003; a rule for scheduled-task persistence to T1053.005. This tagging is the raw material for the whole coverage view.
 2. **Build a coverage map.** Aggregate the technique tags across all detections onto the ATT&CK matrix — the ATT&CK Navigator visualises this, colouring techniques by whether (and how well) you detect them. Now "what do we cover?" is a picture, not a guess.
@@ -25,7 +37,7 @@ Continuously as you build detections (tag each with its technique) and periodica
 6. **Avoid coverage theatre.** A green matrix can be misleading if the detections are weak or untested. Coverage is a means (finding gaps) not an end (a pretty chart); pair it with detection testing so "covered" means "actually detects".
 7. **Track coverage over time** as a programme metric and communicate it — it shows progress and justifies detection investment (feeds the metrics skill).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 tag every detection with its ATT&CK technique (Sigma `tags:` field)
@@ -49,7 +61,7 @@ avoid coverage THEATRE: green matrix + weak/untested rules = false comfort
 track over time -> programme metric
 ```
 
-## Reading the coverage map
+### Reading the coverage map
 
 - **A clear gap in a technique relevant to your threat model** = a priority detection to build; the map's main value is surfacing exactly this. An uncovered technique that attackers targeting you actually use is where the next rule goes.
 - **A "covered" technique with only a narrow, untested rule** = coverage theatre; the checkmark overstates reality. Weight by quality — partial coverage is partial, and untested coverage is unproven.
@@ -58,7 +70,7 @@ track over time -> programme metric
 - **Duplicate detections for already-covered techniques** = effort that could have gone to a gap; the map prevents this by showing what's already handled.
 - **A quality-weighted, threat-prioritised coverage map driving the backlog** = mapping working as intended — strategic detection development.
 
-## Pitfalls
+### Pitfalls
 
 - **Not mapping at all.** Without ATT&CK tags you can't see coverage or gaps; the programme becomes a random pile of rules and you can't answer "what can't we detect?".
 - **Treating presence as coverage.** A checkmark for "has a detection" hides weak, narrow, or untested rules. Weight by quality and confidence, not just existence.
@@ -66,9 +78,15 @@ track over time -> programme metric
 - **Treating all gaps equally.** Chasing every uncovered technique wastes effort on irrelevant ones; prioritise by your threat model and environment.
 - **Mapping without threat intel.** Coverage tells you the gaps; threat intel tells you which matter. Combine them to prioritise (threat-informed detection).
 
-## References
+### References
 
 - MITRE ATT&CK and the ATT&CK Navigator
 - Sigma rule `tags` (ATT&CK mapping convention)
 - The writing-sigma-rules, testing-detections, threat-informed-detection, and detection-metrics skills
 - MITRE's guidance on ATT&CK-based coverage assessment
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

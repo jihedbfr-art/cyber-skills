@@ -1,21 +1,33 @@
 ---
-name: jailbreak-resistance-testing
-domain: 25-ai-and-llm-security
-description: Use when evaluating how well an LLM app's guardrails hold under adversarial pressure — testing jailbreaks honestly and interpreting the results without overclaiming safety.
-difficulty: intermediate
-tags: [ai, llm, jailbreak, guardrails, red-teaming, evaluation]
-tools: []
+format: "v2"
+name: "jailbreak-resistance-testing"
+title: "Jailbreak Resistance Testing"
+title_fr: "Tests de résistance au jailbreak"
+description: "Use when evaluating how well an LLM app's guardrails hold under adversarial pressure — testing jailbreaks honestly and interpreting the results without overclaiming safety."
+description_fr: "À utiliser pour évaluer la tenue des garde-fous d'une application LLM sous pression adverse — tester les jailbreaks honnêtement et interpréter les résultats sans surestimer la sécurité obtenue."
+domain: "25-ai-and-llm-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A jailbreak is an input that gets a model to bypass its own guardrails — to produce content or take actions it was configured to refuse. Testing jailbreak resistance tells you how much your safety layer is actually worth under pressure. This skill covers running that evaluation honestly, and the crucial framing: guardrails are probabilistic, so the goal is measuring and raising resistance, not certifying that jailbreaks are impossible.
 
-## When to use it
+### When to use it
 
 Any LLM app that relies on the model refusing certain requests — a customer bot that shouldn't give harmful instructions, an assistant with content policies, a system where a jailbreak leads to a worse outcome (leaking the system prompt, misusing a tool). It complements prompt-injection testing: injection targets the app's trust of external content; jailbreaking targets the model's own guardrails.
 
-## Procedure
+### Procedure
 
 1. **Define what "broken" means for this app.** A jailbreak only matters relative to a boundary. What is the model supposed to refuse or protect here — harmful content, the system prompt, a tool action, policy-violating output? Test against that specific boundary, not a generic notion of "unsafe".
 2. **Try the known jailbreak families** as your baseline — these are the patterns that recur across models:
@@ -30,7 +42,7 @@ Any LLM app that relies on the model refusing certain requests — a customer bo
 5. **Interpret without overclaiming.** "It refused my ten attempts" is not "it's jailbreak-proof". Report the resistance you observed and the patterns that got closest, and treat remaining risk as reduced, not eliminated.
 6. **Feed results into defence** — the framings that succeeded inform guardrail tuning and, more importantly, the architectural controls that make a jailbreak's consequences small.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 define the boundary first: what must this app REFUSE or PROTECT?
@@ -51,7 +63,7 @@ measure, don't certify
 test the REAL boundary: tool actions + system-prompt leak, not just text
 ```
 
-## Reading the output
+### Reading the output
 
 - **A jailbreak that produces a forbidden tool action or leaks the system prompt** = the serious result; rate it by consequence, not by how "clever" the prompt was. This is where architecture, not the guardrail, has to save you.
 - **A measurable success rate across attempts** = the honest picture. A guardrail that fails 1 in 20 tries is not "working" for a determined attacker — report the rate.
@@ -59,7 +71,7 @@ test the REAL boundary: tool actions + system-prompt leak, not just text
 - **Obfuscation/splitting succeeding where direct requests failed** = the filter is pattern-matching surface form, not intent — a known weakness to note.
 - **The consequence of a successful jailbreak being small** (no tools, no sensitive data, bounded output) = the best outcome, and the real goal — it means the design limits the damage regardless of the guardrail.
 
-## The mitigation
+### The mitigation
 
 You can't make a model unjailbreakable, so you reduce both likelihood and consequence:
 
@@ -69,16 +81,22 @@ You can't make a model unjailbreakable, so you reduce both likelihood and conseq
 - **Monitor and rate-limit** repeated jailbreak attempts, and log them.
 - **Re-test after model or prompt changes** — resistance shifts with every update.
 
-## Pitfalls
+### Pitfalls
 
 - **Declaring a model "safe" after a few refusals.** Guardrails are probabilistic; a small test says little. Measure a rate across many attempts.
 - **Testing only content refusals.** The high-impact jailbreaks are the ones that trigger a tool action or leak the prompt. Test the app's real boundary.
 - **Relying on the guardrail alone.** If a jailbreak's consequence is severe, the fix is architectural (limit capability), not a better refusal. Reduce the blast radius.
 - **One-time evaluation.** Every model/prompt change can reopen a jailbreak. Resistance testing is ongoing, not a launch checkbox.
 
-## References
+### References
 
 - OWASP Top 10 for LLM Applications — LLM01 (prompt injection / jailbreaking)
 - NIST AI 100-2 (adversarial machine learning)
 - MITRE ATLAS
 - Published LLM red-teaming methodologies and jailbreak taxonomies
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

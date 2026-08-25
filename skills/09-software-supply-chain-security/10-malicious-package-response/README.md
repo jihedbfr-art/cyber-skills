@@ -1,0 +1,29 @@
+<!-- GENERATED — do not edit -->
+<div align="center">
+  <img src="../../../assets/brand/jihedailabs-logo.svg" alt="JihedAiLabs" width="120"/>
+</div>
+
+# Malicious Package Response
+
+<div align="center">
+
+**A <a href="https://github.com/jihedbfr-art">JihedAiLabs</a> project** — Use when a dependency you use turns out to be malicious or compromised — the response to a supply-chain incident where the threat is inside a package you already trusted and installed.
+
+<a href="./README.fr.md">Version française</a>
+
+</div>
+
+---
+
+## Description
+Use when a dependency you use turns out to be malicious or compromised — the response to a supply-chain incident where the threat is inside a package you already trusted and installed.
+
+## Domain & Metadata
+- **Domain:** `09-software-supply-chain-security`
+- **Maturity:** `stable`
+- **Audience:** `["backend-engineer", "security-engineer", "coding-agent"]`
+- **Requirements:** `["bash", "git"]`
+- **Last Updated:** 2026-08-08
+
+## Agent Instructions
+The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).

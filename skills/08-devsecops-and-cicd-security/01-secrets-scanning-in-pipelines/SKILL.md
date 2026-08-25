@@ -1,23 +1,35 @@
 ---
-name: secrets-scanning-in-pipelines
-domain: 08-devsecops-and-cicd-security
-description: Use when you want to stop credentials from being committed or built into artifacts — wiring secret scanning into pre-commit and CI so leaks are caught before they ship.
-difficulty: beginner
-tags: [devsecops, cicd, secrets, pipeline, prevention]
-tools: [gitleaks, trufflehog, pre-commit]
+format: "v2"
+name: "secrets-scanning-in-pipelines"
+title: "Secrets Scanning In Pipelines"
+title_fr: "Détection de secrets dans les pipelines"
+description: "Use when you want to stop credentials from being committed or built into artifacts — wiring secret scanning into pre-commit and CI so leaks are caught before they ship."
+description_fr: "À utiliser pour empêcher que des identifiants soient commités ou embarqués dans des artefacts — en intégrant la détection de secrets au pre-commit et à la CI pour intercepter les fuites avant qu'elles ne partent en production."
+domain: "08-devsecops-and-cicd-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Secrets leak into repos constantly — a key pasted for a quick test, a `.env` committed by accident. Once pushed, the credential is compromised even after you delete it, because history and mirrors keep the copy. This skill covers catching them at two chokepoints (before the commit, and in CI) so they never reach a shared branch.
 
 It's the preventive counterpart to the OSINT github-secret-recon skill: that one finds leaks after the fact, this one stops them happening.
 
-## When to use it
+### When to use it
 
 Setting up a new repo, or hardening an existing one that's had a leak scare. High value for low effort — a pre-commit hook plus a CI job blocks the overwhelming majority of accidental secret commits.
 
-## Procedure
+### Procedure
 
 1. Add a **pre-commit hook** so the scan runs on the developer's machine before the secret ever leaves it — the earliest and cheapest catch:
    ```yaml
@@ -44,45 +56,46 @@ Setting up a new repo, or hardening an existing one that's had a leak scare. Hig
 5. Turn on the platform's native **push protection** (GitHub/GitLab secret scanning) as a third layer that blocks at the server regardless of local setup.
 6. Define the response for a real hit (see below) so a caught secret is actually remediated, not just un-committed.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# local, staged changes (pre-commit does this automatically)
 gitleaks protect --staged --redact
 
-# whole working tree
 gitleaks detect --source . --redact
 
-# full history (adoption audit)
 gitleaks detect --source . --log-opts="--all"
 
-# CI: fail the build on any finding
 gitleaks detect --source . --exit-code 1 --report-format sarif --report-path gl.sarif
 
-# second scanner for coverage
 trufflehog git file://. --only-verified
 ```
 
-## Reading the output
+### Reading the output
 
 - **A verified live credential** (trufflehog's `--only-verified` confirms it still works) is the top priority — treat as an active exposure.
 - **A hit in history but not the current tree** still counts: the secret must be rotated, deletion isn't remediation.
 - **Repeated false positives on the same fixture** mean it's time for a scoped allowlist entry — don't let noise train the team to ignore the scanner.
 - **A clean CI run** is only as good as the ruleset; periodically confirm the scanner still detects a planted test secret.
 
-## The response when a real secret is caught
+### The response when a real secret is caught
 
 Rotate first — the credential is burned the moment it was committed, so revoke and reissue immediately. Then purge it from history (`git filter-repo`/BFG) and force-push, understanding that mirrors and forks may still hold the old commit (rotation is what actually protects you). Move the secret into a proper secret manager and inject it at runtime so it never lives in the repo again.
 
-## Pitfalls
+### Pitfalls
 
 - **CI-only, no pre-commit.** Catching it in CI means it's already pushed — rotation required. The hook stops it before that.
 - **Deleting the commit and calling it done.** Without rotation, the leaked key is still valid to anyone who saw the push.
 - **Over-broad allowlists.** One sloppy ignore rule and real secrets slip through silently.
 - **No response plan.** A scanner that finds secrets nobody rotates is theatre. Wire the rotation step in.
 
-## References
+### References
 
 - gitleaks and trufflehog documentation
 - OWASP DevSecOps Guideline — secrets management
 - GitHub/GitLab secret scanning and push protection docs
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: actor-tracking
-domain: 21-threat-intelligence
-description: Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning "who and how" into defensive advantage.
-difficulty: advanced
-tags: [threat-intel, actors, attribution, tradecraft, tracking]
-tools: [misp]
+format: "v2"
+name: "actor-tracking"
+title: "Actor Tracking"
+title_fr: "Suivi d'acteurs de la menace"
+description: "Use when tracking a threat actor over time — attributing activity, following their evolving tradecraft, and turning \"who and how\" into defensive advantage."
+description_fr: "À utiliser pour suivre un acteur de la menace dans le temps — attribuer son activité, suivre l'évolution de son mode opératoire, et transformer le "qui et comment" en avantage défensif."
+domain: "21-threat-intelligence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Beyond individual indicators lies the actor — the group behind the activity, with characteristic tools, techniques, targets, and infrastructure. Tracking an actor over time lets you anticipate their moves, recognise their activity from behaviour even when indicators change, and prioritise defences against the adversaries who actually target you. This skill covers following threat actors and turning that knowledge into defence — higher up the intelligence value chain than IoCs, and far more durable.
 
-## When to use it
+### When to use it
 
 When your programme matures beyond indicator management to understanding adversaries, and when specific actors are relevant to your organisation (your sector is targeted by known groups). It connects to the Pyramid of Pain — tracking an actor's TTPs is the most painful thing you can do to them.
 
-## Procedure
+### Procedure
 
 1. **Understand what defines an actor.** A threat actor (APT group, criminal crew) is characterised by their **TTPs** (how they operate), **tools** (custom and commodity), **infrastructure** (C2 patterns, hosting preferences), **targets** (sectors, geographies), and **motivation** (espionage, financial, hacktivism). This profile, not any single indicator, is the actor.
 2. **Track by behaviour, not just indicators.** Infrastructure and hashes change; TTPs are far more stable. Following an actor means tracking *how they operate* — their characteristic techniques and tradecraft — so you recognise them even on new infrastructure. This behavioural tracking is what makes actor intelligence durable (Pyramid of Pain).
@@ -25,7 +37,7 @@ When your programme matures beyond indicator management to understanding adversa
 6. **Prioritise actors relevant to you.** You can't track every group; focus on the actors known to target your sector, geography, and technology (from sector reporting and ISACs). Tracking an irrelevant actor is effort spent on a threat you don't face.
 7. **Turn tracking into defence.** The payoff: use actor knowledge to prioritise detections for their techniques (threat-informed detection), anticipate their next moves, hunt for their tradecraft, and brief leadership on the specific threats you face (strategic intel).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 above IoCs = the ACTOR (the group behind the activity) — durable, higher-value
@@ -47,7 +59,7 @@ PRIORITISE actors relevant to YOU (sector/geo/tech) — can't track everyone
 payoff -> DEFENCE: prioritise detections for their techniques, anticipate, hunt, brief leadership
 ```
 
-## Reading actor intelligence
+### Reading actor intelligence
 
 - **An actor's TTP profile** (their characteristic techniques and tradecraft) = the durable, high-value intelligence; because TTPs are stable while infrastructure rotates, tracking behaviour lets you recognise the actor even when their indicators are all new. This is the point of actor tracking.
 - **Attribution based on a single indicator** = unreliable; actors share tools and plant false flags. Attribution needs a preponderance of evidence and a stated confidence level — overconfident attribution misleads decisions and can even be the adversary's goal (false flags).
@@ -56,7 +68,7 @@ payoff -> DEFENCE: prioritise detections for their techniques, anticipate, hunt,
 - **Tracking an actor irrelevant to your sector** = effort on a threat you don't face; prioritise the groups actually targeting your organisation.
 - **Actor knowledge driving detection priorities, hunts, and leadership briefings** = tracking turned into defence — the reason it's worth doing.
 
-## Pitfalls
+### Pitfalls
 
 - **Tracking indicators instead of behaviour.** Infrastructure and hashes change constantly; following an actor by TTPs is what stays valid across their infrastructure changes. Track behaviour.
 - **Overconfident attribution.** Actors share tools and plant false flags deliberately; single-indicator attribution is unreliable and can be exactly what the adversary wants you to conclude. Use confidence levels and multiple evidence types.
@@ -64,9 +76,15 @@ payoff -> DEFENCE: prioritise detections for their techniques, anticipate, hunt,
 - **Tracking irrelevant actors.** You can't follow every group; effort on actors that don't target your sector is wasted. Prioritise by relevance.
 - **Tracking without operationalising.** Actor knowledge that doesn't drive detection priorities, hunts, and defensive decisions is trivia; turn it into defence.
 
-## References
+### References
 
 - MITRE ATT&CK Groups (actor-to-technique profiles) and the Pyramid of Pain
 - The threat-informed-detection, mapping-intel-to-detection, and tactical-vs-strategic skills
 - Diamond Model of Intrusion Analysis (adversary/infrastructure/capability/victim)
 - Sector ISAC reporting and vendor actor-tracking research
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

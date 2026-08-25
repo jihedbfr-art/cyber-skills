@@ -1,21 +1,33 @@
 ---
-name: account-compromise-response
-domain: 22-incident-response
-description: Use when a user or service account is suspected compromised — containing the stolen identity, understanding what it touched, and restoring it without leaving the attacker a way back.
-difficulty: intermediate
-tags: [incident-response, account-compromise, identity, credentials]
-tools: []
+format: "v2"
+name: "account-compromise-response"
+title: "Account Compromise Response"
+title_fr: "Réponse à une compromission de compte"
+description: "Use when a user or service account is suspected compromised — containing the stolen identity, understanding what it touched, and restoring it without leaving the attacker a way back."
+description_fr: "À utiliser quand un compte utilisateur ou de service est suspecté compromis — pour contenir l'identité volée, comprendre ce qu'elle a touché, et la restaurer sans laisser à l'attaquant un moyen de revenir."
+domain: "22-incident-response"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A compromised account is the most common incident type — a phished user, a leaked key, a stolen session. The attacker isn't exploiting anything; they're logged in as a legitimate identity, which makes their actions blend in. This skill covers responding to account compromise: cutting off the access, working out what the identity did, and closing the door — including the persistence attackers add so a password reset alone doesn't evict them.
 
-## When to use it
+### When to use it
 
 When triage points to a compromised identity: impossible-travel logins, activity the real user disowns, a leaked credential found, mailbox rules nobody set. It applies to user accounts, admin accounts, and service accounts/API keys alike.
 
-## Procedure
+### Procedure
 
 1. **Contain the identity fast.** Disable the account or force a session revocation — and note that a password reset **alone does not** kill active sessions or tokens. You must invalidate existing sessions, refresh tokens, and API keys too, or the attacker stays logged in through the reset.
 2. **Reset credentials and rotate secrets** the identity holds — password, API keys, app passwords, and any secrets the account could access.
@@ -29,7 +41,7 @@ When triage points to a compromised identity: impossible-travel logins, activity
 6. **Restore and re-enable** the account with fresh credentials and MFA, and **monitor** it closely afterward for signs the attacker returns.
 7. **Notify** as required — the user, and anyone affected by what the account did (especially if it sent phishing or accessed others' data).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 contain (fast)
@@ -51,7 +63,7 @@ scope
 restore: fresh creds + MFA, then heightened monitoring for return
 ```
 
-## Reading the situation
+### Reading the situation
 
 - **A password reset done without revoking sessions/tokens** = the attacker likely still has access; the reset gave false closure. Revoke everything.
 - **A mailbox auto-forward rule** = business email compromise; the attacker is siphoning mail and may have hidden their tracks. High-signal, commonly overlooked.
@@ -59,15 +71,21 @@ restore: fresh creds + MFA, then heightened monitoring for return
 - **A compromised admin or service account** = treat as a potential wider intrusion; it can create footholds a user account can't (escalate to eradication).
 - **Emails sent or data accessed during the window** = downstream impact (further phishing, a data breach) that needs its own response and notification.
 
-## Pitfalls
+### Pitfalls
 
 - **Password reset as the whole response.** It doesn't revoke live sessions, tokens, or attacker-added persistence. The account can still be owned after it.
 - **Missing mailbox rules and OAuth grants.** These are how attackers stay in after a reset; skipping the persistence hunt means the "fixed" account is still compromised.
 - **Not scoping activity.** A compromised account is a pivot; ignoring what it did misses lateral movement and downstream harm.
 - **Under-rating service/admin accounts.** Their compromise is often a wider incident, not a single-account cleanup.
 
-## References
+### References
 
 - NIST SP 800-61r2 (incident handling)
 - CISA and Microsoft guidance on business email compromise / account compromise
 - MITRE ATT&CK — Valid Accounts (T1078), Account Manipulation (T1098)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

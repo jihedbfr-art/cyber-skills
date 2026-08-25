@@ -1,21 +1,33 @@
 ---
-name: supply-chain-for-images
-domain: 07-container-and-kubernetes-security
-description: Use when securing the container image supply chain — signing and verifying images so only trusted, unmodified images run, closing the gap between building and deploying.
-difficulty: intermediate
-tags: [containers, supply-chain, signing, cosign, provenance]
-tools: [cosign, sigstore, kyverno]
+format: "v2"
+name: "supply-chain-for-images"
+title: "Supply Chain For Images"
+title_fr: "Chaîne d'approvisionnement des images"
+description: "Use when securing the container image supply chain — signing and verifying images so only trusted, unmodified images run, closing the gap between building and deploying."
+description_fr: "À utiliser pour sécuriser la chaîne d'approvisionnement des images de conteneurs — signer et vérifier les images pour que seules des images fiables et non modifiées s'exécutent, en comblant l'écart entre build et déploiement."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Between building an image and running it in production, a lot can go wrong: a malicious image pushed to your registry under a trusted name, a tampered image, or simply an unvetted image from an untrusted source deployed by mistake. Container image supply-chain security ensures only trusted, unmodified images run — through signing and verification. This skill covers signing images and enforcing that only signed, trusted images deploy, closing the build-to-deploy gap. It's the container-specific application of the software supply-chain domain.
 
-## When to use it
+### When to use it
 
 Hardening the path from image build to production deployment, especially where images come from multiple sources or the registry is a trust boundary. It pairs with admission control (which enforces the verification) and image scanning (which vets contents).
 
-## Procedure
+### Procedure
 
 1. **Understand the trust gap.** An image tag (`myapp:latest`) is just a pointer; without verification, you're trusting that whatever's behind that tag is what you think — but a compromised registry, a typosquatted image, or a supply-chain attack can put a malicious image there. Signing and verification close this gap by proving an image's origin and integrity.
 2. **Sign your images.** Use Sigstore/cosign to cryptographically sign images at build time, so their origin and integrity can be verified. Signing produces a signature tied to your identity/key that verification checks against:
@@ -33,7 +45,7 @@ Hardening the path from image build to production deployment, especially where i
 6. **Generate and check provenance/SBOM.** Attach build provenance (how and where the image was built — SLSA) and an SBOM (what's inside — the supply-chain domain) so you can verify the build's integrity and inventory its contents, and check both at admission where possible.
 7. **Automate the whole chain in CI/CD.** Build → scan → sign → push → (at deploy) verify. Each step automated and enforced so a human can't skip it. This is the container application of the DevSecOps pipeline discipline.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 build-to-deploy trust gap: a TAG is just a pointer -> compromised registry / typosquat /
@@ -51,7 +63,7 @@ build-to-deploy trust gap: a TAG is just a pointer -> compromised registry / typ
 6. AUTOMATE in CI/CD: build -> scan -> sign -> push -> (deploy) verify. enforced, unskippable.
 ```
 
-## Reading the chain
+### Reading the chain
 
 - **Deploying images with no signature verification** = you're trusting the tag blindly; a compromised registry or a malicious image pushed under a trusted name runs unchecked. Signing plus admission-enforced verification closes this — a high-value control.
 - **An admission policy requiring signed images from approved registries** = only trusted, verified images can run; an unsigned, tampered, or untrusted-source image is blocked at deploy. The enforcement that makes signing meaningful.
@@ -60,7 +72,7 @@ build-to-deploy trust gap: a TAG is just a pointer -> compromised registry / typ
 - **Provenance and SBOM attached and checked** = you can verify how the image was built and what's inside, catching build tampering and known-vulnerable contents.
 - **A fully automated build→scan→sign→push→verify pipeline** = the strong state; only trusted, signed, vetted images reach production, and no step can be skipped.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Sign images at build** with Sigstore/cosign, signing the immutable digest.
 - **Enforce signature verification at admission** — reject unsigned images cluster-wide (admission-control skill), so signing actually gates deployment.
@@ -69,7 +81,7 @@ build-to-deploy trust gap: a TAG is just a pointer -> compromised registry / typ
 - **Attach and check provenance (SLSA) and SBOM** for build integrity and content inventory.
 - **Automate the whole chain in CI/CD** so build, scan, sign, and verify are enforced and unskippable.
 
-## Pitfalls
+### Pitfalls
 
 - **No verification at deploy.** Signing without admission-enforced verification is pointless — signatures nobody checks protect nothing. Enforce verification.
 - **Trusting tags.** Mutable tags can be repointed to malicious images after vetting; deploy by immutable digest.
@@ -77,9 +89,15 @@ build-to-deploy trust gap: a TAG is just a pointer -> compromised registry / typ
 - **Manual, skippable steps.** If signing/verification isn't automated and enforced in the pipeline, someone skips it. Bake it into CI/CD as a hard gate.
 - **Ignoring provenance/SBOM.** Signing proves origin but not that the build wasn't tampered or that contents are safe; add provenance and SBOM checks.
 
-## References
+### References
 
 - Sigstore / cosign documentation and the SLSA framework
 - The software-supply-chain-security domain (sbom-generation, artifact-signing) — the general case
 - The admission-control and container-image-scanning skills
 - Kyverno/OPA image verification policies; NIST SP 800-190
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

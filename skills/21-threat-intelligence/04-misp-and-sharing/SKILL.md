@@ -1,21 +1,33 @@
 ---
-name: misp-and-sharing
-domain: 21-threat-intelligence
-description: Use when running a threat-intel sharing platform and exchanging intelligence — using MISP and STIX/TAXII to manage, share, and consume intel with the wider community.
-difficulty: intermediate
-tags: [threat-intel, misp, sharing, stix, taxii]
-tools: [misp, stix, taxii]
+format: "v2"
+name: "misp-and-sharing"
+title: "Misp And Sharing"
+title_fr: "MISP et partage de renseignement"
+description: "Use when running a threat-intel sharing platform and exchanging intelligence — using MISP and STIX/TAXII to manage, share, and consume intel with the wider community."
+description_fr: "À utiliser pour exploiter une plateforme de partage de renseignement sur la menace — utiliser MISP et STIX/TAXII pour gérer, partager et consommer du renseignement avec la communauté élargie."
+domain: "21-threat-intelligence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Threat intelligence is more valuable shared — an indicator one organisation sees today warns the community tomorrow. But sharing needs structure: a platform to manage intel, standard formats so tools interoperate, and trust/handling rules so sensitive intel isn't over-shared. This skill covers running a threat-intel platform (MISP is the open standard) and exchanging intelligence via STIX/TAXII, the plumbing that turns a collection of indicators into a collaborative defence.
 
-## When to use it
+### When to use it
 
 Standing up a threat-intel capability, joining a sharing community (ISAC, sector group), or integrating intel feeds into your tools. It's the operational backbone that makes intel manageable and interoperable, connecting collection (IoC vetting) to consumption (detection, enrichment).
 
-## Procedure
+### Procedure
 
 1. **Use a platform to manage intel — don't do it in spreadsheets.** A Threat Intelligence Platform (MISP is the widely-used open-source standard) stores indicators and events, tracks their context and relationships, handles sharing, and integrates with your tools. It's the central store the whole programme organises around.
 2. **Structure intel as events with context.** In MISP, related indicators group into events (an incident, a campaign, an actor's activity) with attributes, context, and relationships — not a flat indicator list. This structure is what makes intel usable rather than a pile of IoCs.
@@ -25,7 +37,7 @@ Standing up a threat-intel capability, joining a sharing community (ISAC, sector
 6. **Automate consumption into defence.** Intel in the platform should flow automatically into detection and blocking (feeds the enrichment and detection-mapping skills) — vetted indicators become alerts and blocks, actor TTPs become detection priorities. Intel that stays in the platform helps no one.
 7. **Contribute back.** Sharing is reciprocal; contributing your vetted indicators and observations (respecting handling rules) strengthens the community and your standing in it.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 intel is more valuable SHARED (your indicator today = community's warning tomorrow)
@@ -48,7 +60,7 @@ automate CONSUMPTION into detection+blocking (intel in the platform helps no one
 CONTRIBUTE back (reciprocal ; respect handling rules)
 ```
 
-## Reading the practice
+### Reading the practice
 
 - **Intel managed in a real platform (MISP) with structured events and context** = usable, shareable, integrable intelligence; the alternative (spreadsheets of indicators) doesn't scale, lacks context, and can't share automatically.
 - **STIX/TAXII in use** = intel flows automatically between organisations and into your tools; without standard formats, exchange is manual reformatting that doesn't scale.
@@ -57,7 +69,7 @@ CONTRIBUTE back (reciprocal ; respect handling rules)
 - **Intel sitting in the platform, not flowing to defence** = collection without value; the point is automated consumption into detection and blocking.
 - **A structured platform, standard formats, respected handling, automated consumption, and reciprocal contribution** = a functioning intel-sharing capability.
 
-## Pitfalls
+### Pitfalls
 
 - **Managing intel in spreadsheets.** It doesn't scale, lacks context and relationships, and can't share or integrate automatically. Use a platform (MISP).
 - **Ignoring standard formats.** Without STIX/TAXII, intel exchange is manual and doesn't flow into tools; adopt the standards for interoperability.
@@ -66,9 +78,15 @@ CONTRIBUTE back (reciprocal ; respect handling rules)
 - **Collecting/sharing without consuming.** Intel that doesn't flow into detection and blocking is inert; automate consumption into defence.
 - **Not contributing back.** Sharing is reciprocal; consuming without contributing weakens the community and your position in it.
 
-## References
+### References
 
 - MISP documentation (misp-project.org) — events, sharing, feeds, warninglists
 - STIX/TAXII specifications (OASIS) and the Traffic Light Protocol (TLP) standard
 - The ioc-collection-and-vetting, enrichment-pipelines, and mapping-intel-to-detection skills
 - FIRST and sector ISAC sharing guidance
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

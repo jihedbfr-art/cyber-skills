@@ -1,21 +1,33 @@
 ---
-name: pod-security-standards
-domain: 07-container-and-kubernetes-security
-description: Use when enforcing secure pod configurations in Kubernetes — the Pod Security Standards that stop privileged, host-accessing pods that lead to container escape and node compromise.
-difficulty: intermediate
-tags: [kubernetes, pod-security, hardening, container-escape, admission]
-tools: [kubectl]
+format: "v2"
+name: "pod-security-standards"
+title: "Pod Security Standards"
+title_fr: "Normes de sécurité des pods"
+description: "Use when enforcing secure pod configurations in Kubernetes — the Pod Security Standards that stop privileged, host-accessing pods that lead to container escape and node compromise."
+description_fr: "À utiliser pour imposer des configurations de pods sécurisées dans Kubernetes — les Pod Security Standards qui bloquent les pods privilégiés ou accédant à l'hôte, à l'origine des évasions de conteneur et des compromissions de nœud."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A pod can be configured to do almost anything to its node — run privileged, mount the host filesystem, use the host network, or run as root — and each of those is a path from a compromised container to a compromised node and cluster. Kubernetes Pod Security Standards define levels of restriction that block these dangerous configurations. This skill covers enforcing them so pods can't be deployed with the settings that enable container escape.
 
-## When to use it
+### When to use it
 
 Hardening a Kubernetes cluster, and as a baseline control alongside RBAC. Restricting pod configuration is one of the most important cluster hardening steps because it directly closes the container-escape vectors (that skill covers the vectors; this closes them at the configuration gate).
 
-## The Pod Security Standards
+### The Pod Security Standards
 
 Kubernetes defines three levels, enforced via Pod Security Admission:
 
@@ -23,7 +35,7 @@ Kubernetes defines three levels, enforced via Pod Security Admission:
 - **Baseline** — blocks the most dangerous settings (privileged containers, host namespaces, most host mounts) while staying broadly compatible. A reasonable minimum.
 - **Restricted** — heavily restricted, following hardening best practice: non-root, no privilege escalation, dropped capabilities, restricted volumes, read-only where possible. The target for security-sensitive workloads.
 
-## Procedure
+### Procedure
 
 1. **Understand the dangerous pod settings you're restricting** — these are the container-escape enablers:
    - `privileged: true` — near-total host access; a privileged container is effectively root on the node.
@@ -41,7 +53,7 @@ Kubernetes defines three levels, enforced via Pod Security Admission:
 6. **Combine with admission control for custom policy** where Pod Security Standards aren't granular enough (the admission-control skill with OPA/Kyverno).
 7. **Verify** that dangerous pods are actually rejected — deploy a test privileged pod and confirm it's blocked; an unenforced standard is no control.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 a pod can do almost anything to its NODE (privileged, host mount, host net, root)
@@ -64,7 +76,7 @@ securityContext: runAsNonRoot, allowPrivilegeEscalation:false, drop ALL caps,
 VERIFY: test privileged pod is REJECTED (unenforced standard = no control)
 ```
 
-## Reading the posture
+### Reading the posture
 
 - **Namespaces at `privileged` (or no Pod Security enforcement)** = pods can be deployed with any dangerous setting, so container escape to the node is wide open. Enforcing baseline/restricted is the fix and a top priority.
 - **A workload running `privileged: true`** = effectively root on the node; a compromise of that container is a compromise of the node and likely the cluster. Rarely justified — challenge every one.
@@ -73,7 +85,7 @@ VERIFY: test privileged pod is REJECTED (unenforced standard = no control)
 - **An enforced standard that a test privileged pod slips past** = the enforcement isn't actually applied (wrong label, wrong mode); verify rejection, since an unenforced standard protects nothing.
 - **Namespaces enforcing restricted with hardened securityContexts** = the strong state; dangerous pod configs are blocked at admission.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Enforce a Pod Security Standard** — restricted for workloads that can meet it, baseline as the floor; reserve privileged for the rare genuine system need in an isolated namespace.
 - **Set hardened securityContexts** — non-root, no privilege escalation, dropped capabilities, read-only root filesystem — so pods meet the restricted level.
@@ -82,7 +94,7 @@ VERIFY: test privileged pod is REJECTED (unenforced standard = no control)
 - **Use admission control (OPA/Kyverno)** for policy beyond what Pod Security Standards express.
 - Combine with the RBAC audit and network policies for defence in depth.
 
-## Pitfalls
+### Pitfalls
 
 - **No enforcement.** Without a Pod Security Standard enforced, pods can use any dangerous setting; the escape vectors are wide open. Enforce baseline/restricted.
 - **Allowing privileged workloads.** `privileged: true` is near-root on the node and rarely justified; challenge every use and isolate the exceptions.
@@ -90,9 +102,15 @@ VERIFY: test privileged pod is REJECTED (unenforced standard = no control)
 - **Not verifying.** A mislabeled namespace or wrong mode means the standard isn't enforced; confirm a dangerous test pod is actually rejected.
 - **Relying on Pod Security Standards alone.** They're coarse; use admission control for granular policy and combine with RBAC and network policy.
 
-## References
+### References
 
 - Kubernetes Pod Security Standards and Pod Security Admission documentation
 - CIS Kubernetes Benchmark (pod security controls)
 - The container-escape-vectors, admission-control, and kubernetes-rbac-audit skills
 - MITRE ATT&CK for Containers (escape to host)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

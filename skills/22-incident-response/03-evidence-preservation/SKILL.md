@@ -1,23 +1,35 @@
 ---
-name: evidence-preservation
-domain: 22-incident-response
-description: Use during an incident to capture volatile and persistent evidence in the right order, without contaminating it — so the investigation (and any legal case) holds up.
-difficulty: intermediate
-tags: [incident-response, evidence, forensics, order-of-volatility, chain-of-custody]
-tools: []
+format: "v2"
+name: "evidence-preservation"
+title: "Evidence Preservation"
+title_fr: "Préservation des preuves"
+description: "Use during an incident to capture volatile and persistent evidence in the right order, without contaminating it — so the investigation (and any legal case) holds up."
+description_fr: "À utiliser pendant un incident pour capturer les preuves volatiles et persistantes dans le bon ordre, sans les contaminer, afin que l'investigation — et un éventuel dossier judiciaire — tienne la route."
+domain: "22-incident-response"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 An incident investigation is only as good as the evidence you preserved while responding. Move carelessly and you overwrite the memory that held the malware, or reboot away the network connections that showed the C2. This skill covers capturing evidence in the correct order, without contaminating it, so you can actually reconstruct what happened — and defend it later if the case goes legal.
 
 It's the IR-side companion to the forensics domain: this is the fast, in-the-moment preservation; deep analysis comes later, on the copies you took here.
 
-## When to use it
+### When to use it
 
 During active incident response, in parallel with containment — often the two are the same moment (isolate the host, but capture its volatile state first). Whenever findings might be challenged (legal, HR, insurance), preservation discipline is what makes them stand up.
 
-## The order of volatility
+### The order of volatility
 
 Capture from most fleeting to most durable — the volatile stuff disappears on reboot or power-off, so it goes first:
 
@@ -27,7 +39,7 @@ Capture from most fleeting to most durable — the volatile stuff disappears on 
 4. **Disk** — persistent; survives reboot, so it can wait until after the volatile captures.
 5. **Logs and archived data** — the most durable, and often already centralised.
 
-## Procedure
+### Procedure
 
 1. **Decide what needs preserving** based on the incident and whether it may become a legal matter. If in doubt, preserve more — you can't go back for volatile data.
 2. **Capture volatile evidence first, in order of volatility.** Take a **memory image** before powering off or isolating in a way that reboots. Then capture network state and process lists. Do this with minimal footprint — every action on the host changes it, so record what you run.
@@ -37,7 +49,7 @@ Capture from most fleeting to most durable — the volatile stuff disappears on 
 6. **Maintain chain of custody**: for each item, who collected it, when, from where, and every handoff since — an unbroken log. Store originals read-only; work on copies.
 7. **Minimise contamination**: don't install tools onto the evidence system if avoidable, don't browse the filesystem casually (it changes access times), and record any action you do take on it.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 ORDER OF VOLATILITY (capture top-first, before power-off)
@@ -59,7 +71,7 @@ contamination rules
   don't casually browse the FS (changes timestamps)
 ```
 
-## Reading the situation
+### Reading the situation
 
 - **A host that will be investigated** must have its **memory captured before** any power-off or reboot — that's the single most common irrecoverable loss.
 - **A fast-moving threat** forces a judgement: sometimes you must contain before a full memory capture. Record the decision and preserve what you can — a partial, documented capture beats none.
@@ -67,7 +79,7 @@ contamination rules
 - **Logs with short retention** are evidence on a timer — pull and protect them early before they roll off or get tampered with.
 - **A gap in the custody log** is what gets evidence thrown out later; an unexplained handoff can undo otherwise clean work.
 
-## Pitfalls
+### Pitfalls
 
 - **Rebooting or powering off before capturing memory.** The most damaging preservation mistake — volatile evidence is gone for good.
 - **Working on the original.** Analyse copies; keep originals read-only and hashed, or you contaminate the evidence you're trying to use.
@@ -75,9 +87,15 @@ contamination rules
 - **Broken chain of custody.** One undocumented handoff can invalidate everything. Log every touch.
 - **Contaminating the host.** Installing tools and browsing the filesystem changes it; minimise footprint and record what you do.
 
-## References
+### References
 
 - NIST SP 800-86 (Integrating Forensic Techniques into Incident Response)
 - RFC 3227 (Guidelines for Evidence Collection and Archiving — order of volatility)
 - SANS incident response and forensics resources
 - ISO/IEC 27037 (handling digital evidence)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

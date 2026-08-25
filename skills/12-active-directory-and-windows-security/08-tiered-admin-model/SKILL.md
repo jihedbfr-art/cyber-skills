@@ -1,21 +1,33 @@
 ---
-name: tiered-admin-model
-domain: 12-active-directory-and-windows-security
-description: Use when designing AD administration to break credential-theft attack paths — the tiered model that stops a phished laptop from becoming Domain Admin.
-difficulty: advanced
-tags: [active-directory, tiering, privileged-access, hardening, design]
-tools: []
+format: "v2"
+name: "tiered-admin-model"
+title: "Tiered Admin Model"
+title_fr: "Modèle d'administration par niveaux"
+description: "Use when designing AD administration to break credential-theft attack paths — the tiered model that stops a phished laptop from becoming Domain Admin."
+description_fr: "À utiliser pour concevoir l'administration AD de façon à casser les chemins de vol d'identifiants — le modèle par niveaux (tiering) qui empêche un poste phishé de mener jusqu'à Domain Admin."
+domain: "12-active-directory-and-windows-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Most AD compromises follow the same shape: an attacker phishes a workstation, dumps credentials from memory, finds an admin who logged into that workstation, steals *their* credentials, and climbs. The tiered administration model breaks that chain by rule: privileged credentials are never exposed on lower-trust systems, so there's no admin token on the phished laptop to steal. This skill covers designing that model — the single most effective structural defence against AD credential-theft escalation.
 
-## When to use it
+### When to use it
 
 Designing or hardening AD administration, or after an assessment (BloodHound) shows short paths from workstations to Domain Admins that run through admin sessions on low-trust machines. It's the architectural fix behind many of the specific findings in the credential-dumping, delegation, and enumeration skills.
 
-## The model
+### The model
 
 Split administration into tiers by what a credential controls, and forbid credentials from crossing downward:
 
@@ -25,7 +37,7 @@ Split administration into tiers by what a credential controls, and forbid creden
 
 **The core rule: a higher-tier credential is never used on a lower-tier system.** A Domain Admin (Tier 0) never logs into a server (Tier 1) or a workstation (Tier 2). Because the credential is never present there, an attacker who owns a workstation can't steal a Tier 0 token from it. Admins use separate accounts per tier, and administer each tier only from systems of that tier (privileged access workstations for Tier 0).
 
-## Procedure
+### Procedure
 
 1. **Classify assets into tiers** — identify Tier 0 precisely (DCs, AD, PKI, and anything that can gain control of them; this last part is often missed and is where tiering leaks). Then Tier 1 servers and Tier 2 workstations.
 2. **Separate admin accounts per tier.** A person who administers all three uses three distinct accounts, and each account is only ever used on its own tier's systems. No shared "does everything" admin account.
@@ -34,7 +46,7 @@ Split administration into tiers by what a credential controls, and forbid creden
 5. **Clean up existing violations** — the model only works if there are no current paths that break it. Use BloodHound to find where high-tier credentials are (or have been) exposed on lower-tier systems, and remediate those sessions and rights.
 6. **Protect the enablers** — GPO edit rights, delegation, and ACLs that reach Tier 0 must themselves be Tier 0 (whoever can edit a DC-linked GPO is effectively Tier 0). Tiering has to include the indirect control paths, not just direct logons.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 tiers (by what the credential controls)
@@ -54,7 +66,7 @@ don't forget indirect Tier 0: GPO edit rights / delegation / ACLs that
   reach a DC ARE Tier 0, whoever holds them.
 ```
 
-## Reading an environment
+### Reading an environment
 
 - **Domain Admins logging into workstations/servers** = the core rule is broken; every such session is a Tier 0 token sitting on a lower-trust machine, waiting to be dumped. The finding that tiering exists to eliminate.
 - **Shared admin accounts used across tiers** = one stolen credential crosses tier boundaries; defeats the model. Separate per tier.
@@ -62,7 +74,7 @@ don't forget indirect Tier 0: GPO edit rights / delegation / ACLs that
 - **Indirect Tier 0 held by lower tiers** (GPO edit rights, delegation, ACLs reaching DCs) = a hidden tier violation; the model must include these control paths, not just interactive logons.
 - **Enforced logon restrictions + PAWs + no cross-tier sessions** = the model working; credential theft on a workstation no longer escalates.
 
-## Pitfalls
+### Pitfalls
 
 - **Policy without technical enforcement.** "Admins shouldn't log into workstations" as a guideline gets violated. Enforce it with logon restrictions so the credential physically can't land there.
 - **Missing indirect Tier 0.** Focusing on direct DC logons while ignoring GPO/delegation/ACL paths that control DCs — those holders are Tier 0 too, and attackers use exactly those paths.
@@ -70,9 +82,15 @@ don't forget indirect Tier 0: GPO edit rights / delegation / ACLs that
 - **Shared admin accounts.** One account used across tiers is a single credential that crosses every boundary. One account per tier.
 - **Treating it as all-or-nothing.** Even partial tiering (protecting Tier 0 first) meaningfully raises the bar; scope it, but start with the domain controllers.
 
-## References
+### References
 
 - Microsoft — Securing Privileged Access / Enterprise Access Model (the tiered model and PAWs)
 - BloodHound (to find and verify tier violations)
 - MITRE ATT&CK — Credential Access and Lateral Movement tactics (what tiering breaks)
 - Microsoft Protected Users group and authentication policies
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

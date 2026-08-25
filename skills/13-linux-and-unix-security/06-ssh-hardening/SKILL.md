@@ -1,21 +1,33 @@
 ---
-name: ssh-hardening
-domain: 13-linux-and-unix-security
-description: Use when securing SSH access to Linux hosts — key-based auth, disabling weak options, and cutting the exposure of the most-attacked service on the internet.
-difficulty: beginner
-tags: [linux, ssh, hardening, authentication, remote-access]
-tools: [sshd, ssh-keygen]
+format: "v2"
+name: "ssh-hardening"
+title: "Ssh Hardening"
+title_fr: "Durcissement SSH"
+description: "Use when securing SSH access to Linux hosts — key-based auth, disabling weak options, and cutting the exposure of the most-attacked service on the internet."
+description_fr: "À utiliser pour sécuriser l'accès SSH aux hôtes Linux — authentification par clé, désactivation des options faibles, et réduction de l'exposition du service le plus attaqué sur internet."
+domain: "13-linux-and-unix-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 SSH is how you administer Linux hosts, and any SSH port exposed to the internet is brute-forced continuously. A hardened SSH config — keys instead of passwords, root login off, weak algorithms disabled — turns the most-attacked service on your hosts into a non-event. This skill covers the SSH server settings that matter and the exposure reduction around them.
 
-## When to use it
+### When to use it
 
 Hardening any Linux host that runs SSH (nearly all of them), especially internet-facing ones. It's a quick, high-impact win — SSH brute-forcing and credential attacks are constant, and good config defeats them.
 
-## Procedure
+### Procedure
 
 1. **Switch to key-based authentication and disable passwords — the core change.** Password auth invites brute-forcing; SSH keys don't. Generate a strong key, install the public key, confirm key login works, *then* disable password auth:
    ```
@@ -38,7 +50,7 @@ Hardening any Linux host that runs SSH (nearly all of them), especially internet
    systemctl reload sshd
    ```
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 core sshd_config hardening
@@ -61,7 +73,7 @@ exposure reduction
 safety: sshd -t (validate) ; keep a session open when reloading (avoid lockout)
 ```
 
-## Reading the config
+### Reading the config
 
 - **`PasswordAuthentication yes` on an internet-facing host** = open to continuous brute-forcing and credential stuffing; the top finding. Move to keys and disable passwords.
 - **`PermitRootLogin yes`** = the most-targeted account is directly loginable; disable it and escalate via sudo instead.
@@ -70,7 +82,7 @@ safety: sshd -t (validate) ; keep a session open when reloading (avoid lockout)
 - **No login restriction** (`AllowUsers`/`AllowGroups` unset) = every account with a shell can SSH; scope it to those that need it.
 - **Keys-only, no root login, strong algorithms, source-restricted, login-scoped** = the hardened state; SSH brute-forcing becomes a non-issue.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Key-based auth, passwords disabled** — the single highest-impact SSH change. Ed25519 keys, password auth off after confirming key login works.
 - **No direct root login** (`PermitRootLogin no`); admins log in as users and escalate.
@@ -79,7 +91,7 @@ safety: sshd -t (validate) ; keep a session open when reloading (avoid lockout)
 - **Cut network exposure** — SSH reachable only from a bastion/VPN/management range at the firewall, not the open internet; add rate limiting.
 - **Validate before reload and keep a session open** to avoid locking yourself out; consider MFA for SSH on high-value hosts.
 
-## Pitfalls
+### Pitfalls
 
 - **Disabling passwords before confirming key login.** You'll lock yourself out. Test the key first, keep a session open, `sshd -t` before reload.
 - **Relying on port-changing as security.** Moving off 22 cuts log noise but not real risk — attackers scan all ports. Do the real hardening.
@@ -87,9 +99,15 @@ safety: sshd -t (validate) ; keep a session open when reloading (avoid lockout)
 - **Keys only, but exposed to the whole internet with weak algorithms.** Keys defeat brute-forcing, but restrict source IPs and algorithms too — defence in depth.
 - **Forgetting to restrict who can SSH.** Every shell account being SSH-capable widens the surface; scope it.
 
-## References
+### References
 
 - sshd_config(5) manual
 - Mozilla OpenSSH security guidelines (recommended algorithms)
 - CIS Linux Benchmarks (SSH server configuration)
 - MITRE ATT&CK — T1021.004 (Remote Services: SSH)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

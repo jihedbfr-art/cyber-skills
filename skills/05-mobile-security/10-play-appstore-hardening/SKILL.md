@@ -1,21 +1,33 @@
 ---
-name: play-appstore-hardening
-domain: 05-mobile-security
-description: Use when hardening a mobile app for release — the ship-side controls, store security requirements, and configuration that reduce risk before and after publishing to the app stores.
-difficulty: intermediate
-tags: [mobile, hardening, play-store, app-store, release]
-tools: [mobsf]
+format: "v2"
+name: "play-appstore-hardening"
+title: "Play Appstore Hardening"
+title_fr: "Durcissement pour Play Store et App Store"
+description: "Use when hardening a mobile app for release — the ship-side controls, store security requirements, and configuration that reduce risk before and after publishing to the app stores."
+description_fr: "À utiliser pour durcir une application mobile avant sa mise en production — les contrôles à appliquer côté publication, les exigences de sécurité des stores et la configuration qui réduisent le risque avant et après la publication sur les stores."
+domain: "05-mobile-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The other mobile skills find and exploit weaknesses; this one is the defensive summary — the controls to apply *before* shipping an app, and the store requirements to meet. It pulls together the ship-side hardening (secure configuration, protecting data and traffic, meeting Play/App Store security requirements) into a release checklist, so an app is hardened by the time it's published rather than assessed as vulnerable afterward. It's the "make it secure before release" counterpart to the domain's testing skills.
 
-## When to use it
+### When to use it
 
 Preparing a mobile app for release, or reviewing an app's security posture holistically. It ties the domain together — each earlier skill's fix becomes a line in this hardening checklist.
 
-## Procedure
+### Procedure
 
 1. **Protect data at rest and in transit** (the storage and traffic skills):
    - Secrets in the secure store (Keystore/Keychain), not plain preferences/plists; minimise stored sensitive data; exclude it from backups.
@@ -29,7 +41,7 @@ Preparing a mobile app for release, or reviewing an app's security posture holis
 7. **Test before shipping.** Run the app through the assessment skills (static, storage, traffic, IPC, auth) and an automated pass (MobSF) as a pre-release gate, so vulnerabilities are fixed before publishing, not found by users or attackers after.
 8. **Plan for post-release.** Have an update mechanism to push fixes, monitor for issues, and watch for repackaged/malicious clones of your app in stores.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 ship-side hardening checklist (each = an earlier skill's fix)
@@ -52,7 +64,7 @@ TEST before ship: assessment skills + MobSF as pre-release GATE (fix before publ
 POST-RELEASE: update mechanism, monitor, watch for repackaged/clone apps
 ```
 
-## Reading the readiness
+### Reading the readiness
 
 - **Secrets in the secure store, TLS enforced, no hardcoded secrets, minimal exported surface** = the data/config baseline met; the most common mobile findings pre-empted before release.
 - **Security enforced server-side** = the app doesn't trust the client; even a fully bypassed app (root, hooked, repackaged) can't reach what the backend independently gates. The single most important principle — client-side controls are bypassable.
@@ -61,7 +73,7 @@ POST-RELEASE: update mechanism, monitor, watch for repackaged/clone apps
 - **Resilience controls proportionate to a high-value app** = appropriate defense-in-depth; but not a substitute for server-side security. Don't over-rely on them.
 - **A pre-release assessment (static/storage/traffic/IPC/auth + MobSF) passed** = vulnerabilities fixed before users/attackers find them — the point of ship-side hardening.
 
-## Pitfalls
+### Pitfalls
 
 - **Assessing security after release, not before.** The point is to ship hardened; run the assessment skills as a pre-release gate so users and attackers don't find the vulnerabilities first.
 - **Trusting the client.** The recurring mobile mistake — client-side controls (biometrics, validation, anti-tampering) are bypassable, so auth/authz/sensitive logic must be server-side. Never rely on the client for security.
@@ -70,9 +82,15 @@ POST-RELEASE: update mechanism, monitor, watch for repackaged/clone apps
 - **Over-permissioning and unvetted SDKs.** Both are risk (and store flags); minimise permissions and vet third-party SDKs, which are your app's supply chain.
 - **Over-relying on resilience controls.** Root detection and obfuscation raise cost but are bypassable; they complement server-side security, not replace it.
 
-## References
+### References
 
 - OWASP MASVS (the mobile security verification standard — the hardening checklist) and MASTG
 - Google Play and Apple App Store security/policy requirements
 - The other mobile skills (each fix is a hardening item) and MobSF (pre-release scanning)
 - Android network security config and iOS App Transport Security documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

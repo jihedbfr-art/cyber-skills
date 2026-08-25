@@ -1,21 +1,33 @@
 ---
-name: artifact-integrity
-domain: 08-devsecops-and-cicd-security
-description: Use when ensuring build artifacts aren't tampered with between build and deploy — signing outputs and verifying them before deployment so only trusted builds run.
-difficulty: intermediate
-tags: [devsecops, artifacts, signing, integrity, supply-chain]
-tools: [cosign, sigstore, in-toto]
+format: "v2"
+name: "artifact-integrity"
+title: "Artifact Integrity"
+title_fr: "Intégrité des artefacts"
+description: "Use when ensuring build artifacts aren't tampered with between build and deploy — signing outputs and verifying them before deployment so only trusted builds run."
+description_fr: "À utiliser pour garantir que les artefacts de build ne sont pas altérés entre la construction et le déploiement — en signant les sorties et en les vérifiant avant déploiement pour que seuls des builds de confiance s'exécutent."
+domain: "08-devsecops-and-cicd-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A build produces an artifact — a binary, a container image, a package — that travels from the build system through a registry to production. Anywhere along that path, the artifact could be swapped or tampered with, and without verification you'd deploy the malicious version trusting it's yours. Artifact integrity ensures only genuine, unmodified build outputs get deployed, through signing and verification. This skill covers protecting the artifact between build and deploy, the general case of the container image-signing skill.
 
-## When to use it
+### When to use it
 
 Securing the build-to-deploy path for any artifact type (binaries, packages, images). It's a core supply-chain control — the SolarWinds attack was fundamentally an artifact-integrity failure (malicious code injected into signed builds). It pairs with pipeline hardening and build provenance.
 
-## Procedure
+### Procedure
 
 1. **Understand the threat: tampering between build and deploy.** After the build, the artifact sits in a registry/repository and travels to production. An attacker who compromises the registry, the transport, or the build itself can substitute a malicious artifact. Without integrity verification, you deploy whatever's there, trusting the name. Signing and verification break this.
 2. **Sign artifacts at build time.** Cryptographically sign each build output (Sigstore/cosign for images and blobs, or language/package signing) so its integrity and origin can be verified. Sign the immutable artifact (by digest/hash), tying the signature to your build identity.
@@ -25,7 +37,7 @@ Securing the build-to-deploy path for any artifact type (binaries, packages, ima
 6. **Attach attestations.** Beyond a signature, attach attestations about the artifact (in-toto, SLSA provenance — the build-provenance skill): how it was built, what went in, that it passed the pipeline's checks. Verification can then check not just "is it signed" but "was it built the way it should be".
 7. **Automate the full chain.** Build → sign → (registry) → verify → deploy, all automated and enforced so no unsigned or unverified artifact can reach production. Manual signing/verification gets skipped.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 artifact travels build -> registry -> production ; can be SWAPPED/tampered anywhere
@@ -42,7 +54,7 @@ artifact travels build -> registry -> production ; can be SWAPPED/tampered anywh
 6. AUTOMATE build->sign->verify->deploy (manual = skipped)
 ```
 
-## Reading the setup
+### Reading the setup
 
 - **Artifacts deployed with no integrity verification** = you're trusting that whatever's in the registry is your genuine build; a compromised registry or tampered artifact deploys unchecked. Signing plus verification closes this — the control that would have mattered in SolarWinds-class attacks.
 - **Signing without a verification gate** = signatures nobody checks; the value is entirely in the deploy-time verification that rejects unsigned/tampered artifacts. They must go together.
@@ -51,7 +63,7 @@ artifact travels build -> registry -> production ; can be SWAPPED/tampered anywh
 - **Signature-only verification** (no attestation) = confirms origin but not that the build wasn't subverted; attestations verify it was built correctly. The stronger check.
 - **Automated build→sign→verify→deploy with protected keys and attestations** = artifact integrity assured; only genuine, correctly-built artifacts run.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Sign artifacts at build** (Sigstore/cosign or package signing), signing the immutable digest.
 - **Enforce signature verification before deploy** — reject unsigned/tampered artifacts at the deploy gate or admission controller.
@@ -60,7 +72,7 @@ artifact travels build -> registry -> production ; can be SWAPPED/tampered anywh
 - **Attach and verify attestations** (SLSA provenance, in-toto) so verification checks the build's integrity, not just the signature.
 - **Automate the whole chain** so no unsigned/unverified artifact can deploy.
 
-## Pitfalls
+### Pitfalls
 
 - **No verification.** Signing without a deploy-time verification gate protects nothing; the enforcement is what rejects tampered artifacts. Verify before deploy.
 - **Exposed signing keys.** A stolen key lets attackers sign malicious artifacts that pass verification — the whole scheme collapses. Use keyless/HSM and isolate keys.
@@ -68,9 +80,15 @@ artifact travels build -> registry -> production ; can be SWAPPED/tampered anywh
 - **Signature without attestation.** It confirms origin but not that the build wasn't subverted (SolarWinds signed its malicious builds); add provenance attestations.
 - **Manual signing/verification.** It gets skipped; automate and enforce the chain.
 
-## References
+### References
 
 - Sigstore/cosign, in-toto, and SLSA framework documentation
 - The container supply-chain-for-images skill (the container-specific case) and pipeline-hardening skill
 - The software-supply-chain-security domain (artifact-signing, build-provenance)
 - The SolarWinds attack (canonical artifact-integrity failure)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

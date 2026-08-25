@@ -1,21 +1,33 @@
 ---
-name: serverless-security
-domain: 06-cloud-security
-description: Use when securing serverless functions (Lambda, Cloud Functions, Azure Functions) — over-privileged roles, event-data injection, and the risks that differ from securing servers.
-difficulty: intermediate
-tags: [cloud, serverless, lambda, functions, iam, injection]
-tools: [aws-cli]
+format: "v2"
+name: "serverless-security"
+title: "Serverless Security"
+title_fr: "Sécurité du serverless"
+description: "Use when securing serverless functions (Lambda, Cloud Functions, Azure Functions) — over-privileged roles, event-data injection, and the risks that differ from securing servers."
+description_fr: "À utiliser pour sécuriser des fonctions serverless (Lambda, Cloud Functions, Azure Functions) — rôles d'exécution trop permissifs, injection via les données d'événement, et les risques propres au serverless qui diffèrent de ceux des serveurs classiques."
+domain: "06-cloud-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Serverless removes the server you'd normally harden, but it doesn't remove the security work — it moves it. The function's IAM role becomes the main attack surface, event data from many sources becomes untrusted input, and short-lived execution changes how you monitor. This skill covers securing serverless functions on their own terms, using AWS Lambda as the concrete example (Cloud Functions and Azure Functions follow the same shape).
 
-## When to use it
+### When to use it
 
 Any serverless workload — event-driven functions, API backends on Lambda, glue code triggered by queues/storage events. Especially where functions have broad permissions or process input from external sources.
 
-## Procedure
+### Procedure
 
 1. **Right-size the function's execution role — the priority.** Each function runs with an IAM role, and the common failure is one over-broad role shared across functions or granting far more than the function needs. A compromised function is only as dangerous as its role; scope each to the specific actions and resources it uses:
    ```
@@ -28,10 +40,9 @@ Any serverless workload — event-driven functions, API backends on Lambda, glue
 5. **Bound resource use.** Set sensible timeouts, memory, and concurrency limits — an unbounded or highly-concurrent function is a cost/DoS vector (an attacker floods the trigger), and reserved concurrency caps the blast radius.
 6. **Monitor despite ephemerality.** Functions vanish after running, so logging and tracing (to CloudWatch/X-Ray or equivalent) are how you get any visibility — ensure functions log enough to investigate, since there's no host to inspect afterward.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# the #1 issue: over-privileged execution role
 aws lambda get-function-configuration --function-name F --query Role
 aws iam list-attached-role-policies --role-name ROLE
 aws iam list-role-policies --role-name ROLE          # inline policies too
@@ -45,7 +56,7 @@ what's different from servers
   monitoring      = ephemeral -> logging/tracing is your only forensics
 ```
 
-## Reading the review
+### Reading the review
 
 - **A broad or wildcard execution role** = a compromised function becomes a wide breach; the role, not the code, defines the damage. The highest-value fix. Scope it per function.
 - **A shared role across many functions** = compromise of the least-trusted function grants the union of all their permissions. Separate roles.
@@ -53,7 +64,7 @@ what's different from servers
 - **Secrets in environment variables** = readable by anyone who can view the function config; a leak vector. Move to a secret manager.
 - **No timeout/concurrency limits** = an attacker who controls the trigger runs up cost or exhausts concurrency — a serverless DoS/wallet issue.
 
-## The fix
+### The fix
 
 - **Least-privilege execution roles, one per function**, scoped to exact actions and resources — this single practice bounds most serverless risk.
 - **Validate and sanitise event data** as untrusted input; apply the injection defences per sink regardless of which trigger delivered it.
@@ -62,7 +73,7 @@ what's different from servers
 - **Set timeouts, memory, and reserved concurrency** to bound cost and blast radius.
 - **Log and trace** enough to investigate after the function is gone; alert on anomalies (unusual invocation spikes, errors).
 
-## Pitfalls
+### Pitfalls
 
 - **Over-privileged / shared execution roles.** The dominant serverless mistake — the role is the real attack surface, and a broad one turns a small compromise into a big one. Least privilege, per function.
 - **Trusting event data.** "It's just a queue message / storage event" — an attacker who can influence the source injects through it. Treat all event input as untrusted.
@@ -70,9 +81,15 @@ what's different from servers
 - **Ignoring dependencies.** The function bundles them; their vulnerabilities are yours.
 - **No monitoring.** Ephemeral execution means no host to inspect later — without logging, an incident is invisible.
 
-## References
+### References
 
 - OWASP Serverless Top 10
 - AWS Lambda security best practices / Well-Architected serverless
 - CWE-269 (privilege management), CWE-74 (injection)
 - Cloud provider function security documentation (Lambda, Cloud Functions, Azure Functions)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

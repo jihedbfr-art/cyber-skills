@@ -1,23 +1,35 @@
 ---
-name: choosing-the-right-primitive
-domain: 14-cryptography-and-pki
-description: Use when you need to pick a cryptographic primitive for a task — hashing, encryption, signing, password storage — and want the safe modern default instead of a broken one.
-difficulty: beginner
-tags: [cryptography, primitives, hashing, encryption, best-practice]
-tools: []
+format: "v2"
+name: "choosing-the-right-primitive"
+title: "Choosing The Right Primitive"
+title_fr: "Choisir la bonne primitive cryptographique"
+description: "Use when you need to pick a cryptographic primitive for a task — hashing, encryption, signing, password storage — and want the safe modern default instead of a broken one."
+description_fr: "À utiliser pour choisir la primitive cryptographique adaptée à une tâche — hachage, chiffrement, signature, stockage de mots de passe — et privilégier l'option moderne sûre plutôt qu'un choix obsolète."
+domain: "14-cryptography-and-pki"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Most crypto bugs aren't broken algorithms — they're the wrong tool for the job. MD5 for passwords, ECB mode, a hash where you needed a KDF, encryption where you needed a signature. This skill is a decision guide: match the task to the right primitive and the current safe default, so you don't reach for something that was fine in 2010 and is a finding today.
 
 The rule underneath all of it: don't invent crypto, and don't configure it from a decade-old tutorial. Use a vetted library with modern defaults.
 
-## When to use it
+### When to use it
 
 Any time you're about to hash, encrypt, sign, or store a secret and aren't certain which primitive fits — or when reviewing code that makes one of those choices. Pair it with the code-review crypto-misuse skill when auditing existing code.
 
-## Match the task to the primitive
+### Match the task to the primitive
 
 **Integrity / fingerprinting (not passwords):**
 Use **SHA-256** (or SHA-3/BLAKE2). Avoid MD5 and SHA-1 — both are broken for collision resistance.
@@ -40,7 +52,7 @@ Use **HKDF** for deriving keys from high-entropy material; a password KDF (Argon
 **Randomness (keys, tokens, nonces, salts):**
 Use a **cryptographically secure RNG** (`/dev/urandom`, `secrets` in Python, `crypto.randomBytes` in Node). Never `rand()`/`Math.random()`/`java.util.Random` for anything security-relevant.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 task                        use                          avoid
@@ -55,7 +67,7 @@ key derivation (password)   Argon2id / scrypt            HKDF on a password
 random values               CSPRNG (secrets/urandom)     rand(), Math.random()
 ```
 
-## Reading a design/codebase for this
+### Reading a design/codebase for this
 
 - **A fast hash on passwords** (`sha256(password)`, `md5(...)`) is a finding — cracking is trivial at scale. Move to Argon2id.
 - **ECB mode** anywhere shows as repeating ciphertext blocks and leaks structure — replace with AEAD.
@@ -63,7 +75,7 @@ random values               CSPRNG (secrets/urandom)     rand(), Math.random()
 - **`Math.random()`/`rand()` generating a token, key, or salt** is predictable — swap to a CSPRNG.
 - **A hand-rolled MAC** (`hash(secret + msg)`) is length-extension-prone — use HMAC.
 
-## The safe defaults (the "fix")
+### The safe defaults (the "fix")
 
 When in doubt, these are the modern choices to standardise on:
 
@@ -77,16 +89,22 @@ When in doubt, these are the modern choices to standardise on:
 
 Use a maintained library that implements these with safe defaults (libsodium/NaCl is hard to misuse), keep the library updated, and let it manage nonces/IVs where it can.
 
-## Pitfalls
+### Pitfalls
 
 - **Encryption when you needed a signature (or vice versa).** Confidentiality and authenticity are different goals; AEAD covers both for symmetric, signatures for asymmetric.
 - **A hash where a KDF belongs.** Passwords need slowness; fingerprints need speed. Don't swap them.
 - **Reusing a nonce/IV with GCM.** Catastrophic for GCM — let the library handle nonce generation, never reuse one with the same key.
 - **Copying config from an old tutorial.** Yesterday's "secure" (SHA-1, RSA-1024, CBC) is today's finding. Check the default is current.
 
-## References
+### References
 
 - OWASP Cryptographic Storage Cheat Sheet
 - NIST SP 800-175B / SP 800-131A (approved algorithms and transitions)
 - libsodium documentation
 - CWE-327 (Broken/Risky Crypto Algorithm), CWE-326 (Inadequate Encryption Strength)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

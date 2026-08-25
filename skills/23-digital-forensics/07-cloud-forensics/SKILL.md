@@ -1,21 +1,33 @@
 ---
-name: cloud-forensics
-domain: 23-digital-forensics
-description: Use when investigating in the cloud where there's no disk to image — reconstructing events from audit logs, snapshots, and provider APIs instead of traditional acquisition.
-difficulty: advanced
-tags: [forensics, cloud, audit-logs, snapshots, aws]
-tools: [aws-cli]
+format: "v2"
+name: "cloud-forensics"
+title: "Cloud Forensics"
+title_fr: "Forensic cloud"
+description: "Use when investigating in the cloud where there's no disk to image — reconstructing events from audit logs, snapshots, and provider APIs instead of traditional acquisition."
+description_fr: "À utiliser pour investiguer dans le cloud là où il n'y a pas de disque à imager — reconstruire les événements à partir des logs d'audit, des snapshots et des API du fournisseur plutôt que par acquisition traditionnelle."
+domain: "23-digital-forensics"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Traditional forensics assumes you can seize and image a machine. In the cloud, you often can't — the "host" is ephemeral, you don't control the hardware, and an instance may be gone before you look. But the cloud gives you something powerful in exchange: a detailed API audit log of nearly everything that happened, plus the ability to snapshot storage on demand. This skill covers investigating cloud environments on their terms — logs and snapshots over disk imaging. It's the forensics counterpart to the cloud-incident-response skill.
 
-## When to use it
+### When to use it
 
 Investigating incidents involving cloud resources — a compromised instance, an abused IAM identity, a data-exposure event. The approach differs enough from traditional forensics that applying host-forensics habits directly will miss the evidence, which lives in the control plane.
 
-## Procedure
+### Procedure
 
 1. **The audit log is the primary evidence — preserve it first.** CloudTrail / Activity Log / Cloud Audit Logs record API calls: who did what, when, from where. This is the cloud equivalent of the crime scene, and reconstruction depends on it (which is why the cloudtrail-and-audit-logging skill's setup is a prerequisite — you can only investigate what was being logged). Export and protect the relevant logs before anything changes them:
    ```
@@ -28,7 +40,7 @@ Investigating incidents involving cloud resources — a compromised instance, an
 6. **Mind the shared-responsibility boundary.** You can investigate your workloads and your account's logs, but not the provider's underlying infrastructure. Some evidence (hypervisor-level) is only obtainable via the provider, sometimes through legal process.
 7. **Preserve chain of custody for cloud evidence** — logs exported, snapshots taken, hashes recorded, and API actions documented, exactly as for physical evidence.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 cloud forensics != disk imaging. two pillars:
@@ -49,7 +61,7 @@ shared responsibility: your workloads+logs yes ; provider infra = via provider/l
 chain of custody: export logs, snapshot, HASH, document API actions
 ```
 
-## Reading the investigation
+### Reading the investigation
 
 - **A complete, intact audit log** = you can reconstruct the incident precisely from the control plane — the cloud's big advantage over on-prem. Preserve it before the attacker (or a cleanup) alters it.
 - **`StopLogging`/`DeleteTrail` in the history** = the attacker tried to blind the investigation; treat activity after that point as unlogged, and widen the scope. The tampering itself is evidence.
@@ -58,7 +70,7 @@ chain of custody: export logs, snapshot, HASH, document API actions
 - **Logging that wasn't configured beforehand** = a serious evidence gap; you can't retroactively log past events. The investigation is constrained by what was captured, underscoring the prerequisite.
 - **Snapshot analysed + control-plane timeline built + custody preserved** = a sound cloud investigation.
 
-## Pitfalls
+### Pitfalls
 
 - **Applying host-forensics habits.** Waiting to "image the machine" while the ephemeral instance terminates loses the disk. Snapshot immediately and lean on the audit log — the evidence model is different.
 - **Assuming logging was on.** If CloudTrail/audit logging wasn't configured before the incident, control-plane reconstruction may be impossible. This is why the logging setup is a prerequisite, not an afterthought.
@@ -66,9 +78,15 @@ chain of custody: export logs, snapshot, HASH, document API actions
 - **Terminating instead of snapshotting.** Deleting a compromised instance destroys its disk evidence; snapshot and isolate, don't delete.
 - **Overstepping the shared-responsibility boundary.** You can't image the provider's hardware; some evidence requires the provider or legal process — know the limit.
 
-## References
+### References
 
 - AWS/Azure/GCP incident response and forensics guidance; cloud provider audit-log docs
 - The cloudtrail-and-audit-logging (prerequisite), cloud-incident-response, and disk-imaging-and-hashing skills
 - SANS cloud forensics resources; MITRE ATT&CK for Cloud
 - Shared responsibility model documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

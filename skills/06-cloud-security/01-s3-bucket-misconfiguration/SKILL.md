@@ -1,23 +1,35 @@
 ---
-name: s3-bucket-misconfiguration
-domain: 06-cloud-security
-description: Use when checking AWS S3 (or S3-compatible) buckets for public read/write exposure — the classic cloud data leak — and locking them down.
-difficulty: beginner
-tags: [cloud, aws, s3, storage, misconfiguration, data-exposure]
-tools: [aws-cli, curl]
+format: "v2"
+name: "s3-bucket-misconfiguration"
+title: "S3 Bucket Misconfiguration"
+title_fr: "Mauvaise configuration des buckets S3"
+description: "Use when checking AWS S3 (or S3-compatible) buckets for public read/write exposure — the classic cloud data leak — and locking them down."
+description_fr: "À utiliser pour vérifier si des buckets AWS S3 (ou compatibles S3) sont exposés en lecture ou en écriture publique — la fuite de données cloud classique — et pour les verrouiller correctement."
+domain: "06-cloud-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A huge share of "cloud breaches" are just object storage left open. No exploit, no CVE — a bucket set to public, or writable by anyone, holding backups, PII, or credentials. This skill covers checking whether a bucket is exposed, and the settings that close it for good.
 
-## When to use it
+### When to use it
 
 Auditing your own AWS account, or an authorised assessment where S3 is in scope. Also whenever you find a bucket name in a page's source, a mobile app, or a subdomain (`assets.example.com` pointing at a bucket) — that's a lead worth checking against your scope.
 
 Only test buckets you own or are authorised to test. Reading a stranger's bucket, even an open one, is unauthorised access.
 
-## Procedure
+### Procedure
 
 1. Identify the bucket name. It shows up in URLs (`https://bucket-name.s3.amazonaws.com`), app configs, and CNAMEs.
 2. Check anonymous read on the bucket listing. A returned XML key list means public listing is on:
@@ -40,24 +52,21 @@ Only test buckets you own or are authorised to test. Reading a stranger's bucket
    ```
 6. Record what you found with the exact ACL/policy that caused it — "public" isn't actionable; "the bucket policy allows `s3:GetObject` for `Principal: *`" is.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# anonymous listing / object read
 curl -s "https://BUCKET.s3.amazonaws.com/"
 curl -s "https://BUCKET.s3.amazonaws.com/path/file"
 
-# authenticated inspection (your own account)
 aws s3api get-bucket-acl --bucket BUCKET
 aws s3api get-public-access-block --bucket BUCKET
 aws s3api get-bucket-policy --bucket BUCKET
 aws s3 ls s3://BUCKET --no-sign-request       # test anonymous list via CLI
 
-# account-wide: find buckets without the public-access block
 aws s3api list-buckets --query 'Buckets[].Name' --output text
 ```
 
-## Reading the output
+### Reading the output
 
 - **A key listing (XML `<ListBucketResult>` with `<Contents>`)** from an unauthenticated request = public listing. Anyone can inventory the bucket.
 - **An object body returned to `--no-sign-request`** = public read, even if listing is off. Attackers guess or find key names.
@@ -65,7 +74,7 @@ aws s3api list-buckets --query 'Buckets[].Name' --output text
 - **A bucket policy with `"Principal": "*"` and `"Effect": "Allow"`** on `s3:GetObject` (or worse, `s3:PutObject`) = the exposure, in the exact words for your report.
 - **`AccessDenied` on the write test** = good, writes are blocked.
 
-## The fix
+### The fix
 
 1. **Turn on Block Public Access**, ideally at the account level so no single bucket can be made public by mistake:
    ```
@@ -78,16 +87,22 @@ aws s3api list-buckets --query 'Buckets[].Name' --output text
 4. **Enable default encryption and access logging** so you can encrypt at rest and see who touched what.
 5. **Detect drift.** Have Config or a scheduled check flag any bucket where public access gets re-enabled — the fix has to survive the next deploy.
 
-## Pitfalls
+### Pitfalls
 
 - **"It's just static assets."** Public read is defensible for genuinely public content — but confirm the bucket doesn't also hold backups or logs under another prefix. Buckets get reused.
 - **Fixing one bucket, ignoring the account.** Without account-level Block Public Access, the next bucket someone creates can repeat the mistake.
 - **Reading data to prove exposure.** Confirm access is possible; don't download the contents. For someone else's data that's a real breach, on you.
 - **Assuming private = safe.** A bucket private to the internet can still be over-shared internally via an over-broad IAM policy. Check both edges.
 
-## References
+### References
 
 - AWS S3 — Blocking public access documentation
 - AWS S3 Security Best Practices whitepaper
 - OWASP Cloud Security guidance
 - CWE-732 (Incorrect Permission Assignment)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

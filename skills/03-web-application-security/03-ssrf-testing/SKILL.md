@@ -1,21 +1,33 @@
 ---
-name: ssrf-testing
-domain: 03-web-application-security
-description: Use when an app fetches a URL you can influence — testing whether you can make the server request internal services, cloud metadata, or arbitrary hosts, and the fix.
-difficulty: intermediate
-tags: [owasp, ssrf, web, cloud, injection]
-tools: [burp, curl]
+format: "v2"
+name: "ssrf-testing"
+title: "Ssrf Testing"
+title_fr: "Tests SSRF (Server-Side Request Forgery)"
+description: "Use when an app fetches a URL you can influence — testing whether you can make the server request internal services, cloud metadata, or arbitrary hosts, and the fix."
+description_fr: "À utiliser quand une application récupère une URL que vous pouvez influencer — pour tester si le serveur peut être forcé à requêter des services internes, le service de métadonnées cloud, ou des hôtes arbitraires, et pour corriger le problème."
+domain: "03-web-application-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Server-Side Request Forgery is making the server fetch a URL of your choosing. Because the request comes *from the server*, it reaches things you can't: internal admin panels, databases, and — the big one in cloud — the metadata service that hands out credentials. This skill covers finding SSRF and shutting it down.
 
-## When to use it
+### When to use it
 
 Any feature where the server fetches something on your behalf: URL preview/unfurling, webhook configuration, "import from URL", PDF/screenshot generators, image proxies, XML/SVG parsers, anything taking a URL, hostname, or IP as input.
 
-## Procedure
+### Procedure
 
 1. Find the fetch. Look for parameters holding URLs or hostnames, and features that clearly reach out (link previews, avatar-from-URL, webhook tests).
 2. Point it at a listener you control and confirm the server actually calls out. Use a request-catcher (Burp Collaborator, or a simple server you own):
@@ -41,34 +53,30 @@ Any feature where the server fetches something on your behalf: URL preview/unfur
    ```
 6. Note whether responses come back to you (in-band) or not (blind). Blind SSRF is still serious — the metadata pivot doesn't need the response echoed if the app uses the fetched content.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
-# confirm outbound fetch
 url=https://COLLAB-ID.oastify.com/x
 
-# internal pivot
 http://127.0.0.1:PORT/     http://localhost/     http://[::1]/
 
-# cloud metadata (credential theft target)
 http://169.254.169.254/latest/meta-data/iam/security-credentials/   # AWS
 http://metadata.google.internal/computeMetadata/v1/                 # GCP
 http://169.254.169.254/metadata/instance?api-version=2021-02-01      # Azure
 
-# filter bypasses
 http://127.1/    http://2130706433/    http://0x7f000001/
 http://localtest.me/    (public name -> 127.0.0.1)
 gopher:// file:// dict://   (non-http schemes, if the fetcher allows)
 ```
 
-## Reading the output
+### Reading the output
 
 - **A callback on your listener** confirms SSRF, even if nothing comes back in the response — that's blind SSRF and still exploitable.
 - **An internal service's response** (a title, a redirect, a JSON body from a port you can't reach directly) proves you're reaching the internal network.
 - **Metadata credentials returned** is critical — that's cloud account access, the worst SSRF outcome.
 - **A filter that blocks `127.0.0.1` but not `127.1` or the decimal form** is a broken filter — report it as vulnerable, not mitigated.
 
-## The fix
+### The fix
 
 Deny by default. Validate the destination against an **allowlist** of exact hosts the feature legitimately needs, not a blocklist of bad ones (blocklists lose to encoding tricks every time). Then:
 
@@ -78,16 +86,22 @@ Deny by default. Validate the destination against an **allowlist** of exact host
 - Don't return the raw fetched response to the user, and give the fetcher its own restricted network egress.
 - On AWS specifically, enforce **IMDSv2** so a bare SSRF can't read the metadata endpoint — defence in depth for when the app-layer check fails.
 
-## Pitfalls
+### Pitfalls
 
 - **Blocklist filters.** `127.0.0.1` blocked, `2130706433` allowed — same address, different notation. Allowlist the destination instead.
 - **Validating the URL but not the resolved IP.** DNS rebinding walks straight through hostname checks.
 - **Dismissing blind SSRF.** No echoed response doesn't mean no impact — metadata theft and internal port scanning don't need the body returned.
 - **Forgetting redirects.** An allowed host that 302s to an internal one defeats a naive check. Validate after each hop.
 
-## References
+### References
 
 - OWASP WSTG-INPV-19 (Testing for SSRF)
 - OWASP SSRF Prevention Cheat Sheet
 - CWE-918
 - AWS IMDSv2 documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: linux-privilege-escalation
-domain: 13-linux-and-unix-security
-description: Use when you have a low-privilege shell on a Linux host and need to enumerate the ways up to root — SUID, sudo, cron, capabilities — and how to close each.
-difficulty: intermediate
-tags: [linux, privilege-escalation, enumeration, hardening]
-tools: [linpeas, gtfobins, sudo]
+format: "v2"
+name: "linux-privilege-escalation"
+title: "Linux Privilege Escalation"
+title_fr: "Élévation de privilèges Linux"
+description: "Use when you have a low-privilege shell on a Linux host and need to enumerate the ways up to root — SUID, sudo, cron, capabilities — and how to close each."
+description_fr: "À utiliser quand on dispose d'un shell peu privilégié sur un hôte Linux et qu'il faut recenser les chemins vers root — SUID, sudo, cron, capabilities — puis colmater chacun d'eux."
+domain: "13-linux-and-unix-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A low-priv shell is a starting point, not a dead end. Linux hosts accumulate misconfigurations — a permissive sudo rule, a writable cron script, an SUID binary that can spawn a shell — that turn a normal user into root. This skill covers enumerating those paths systematically and, for defenders, removing them.
 
-## When to use it
+### When to use it
 
 After landing a shell on an authorised engagement, or auditing your own hosts for escalation exposure. The enumeration is the same either way; only the follow-up differs (exploit vs remediate).
 
-## Procedure
+### Procedure
 
 1. Establish who and where you are, then enumerate broadly with an automated script before hand-hunting:
    ```
@@ -43,25 +55,21 @@ After landing a shell on an authorised engagement, or auditing your own hosts fo
 6. **Kernel and service versions** for known local exploits — but treat kernel exploits as a last resort (they crash boxes). Prefer a misconfig path if one exists.
 7. Check the usual extras: readable `/etc/shadow`, credentials in config/history files, writable `/etc/passwd`, PATH hijacking on a root-run script that calls a binary by relative name.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# fast triage
 sudo -l                                  # sudo rights (check GTFOBins)
 find / -perm -4000 -type f 2>/dev/null   # SUID binaries
 getcap -r / 2>/dev/null                  # capabilities
 find / -writable -type f 2>/dev/null | grep -vE '/proc|/sys'
 cat /etc/crontab /etc/cron.d/* 2>/dev/null
 
-# automated enumeration
 ./linpeas.sh          # broad, colour-coded by likelihood
 ./lse.sh -l1          # linux smart enumeration
 
-# every SUID/sudo/cap escape lives here:
-#   https://gtfobins.github.io
 ```
 
-## Reading the output
+### Reading the output
 
 - **A `sudo -l` entry that GTFOBins can turn into a shell** is the cleanest escalation — often a single command to root.
 - **A non-standard SUID binary** (something that isn't `passwd`, `ping`, `mount`…) is a lead; cross-reference GTFOBins.
@@ -69,7 +77,7 @@ cat /etc/crontab /etc/cron.d/* 2>/dev/null
 - **A root cron job calling a world-writable script** = reliable root on the next tick.
 - linpeas highlighting in **red/yellow** flags the highest-probability paths — start there, but verify manually; it also flags noise.
 
-## The fix
+### The fix
 
 Each path has a specific remediation:
 
@@ -80,16 +88,22 @@ Each path has a specific remediation:
 - **Patch** the kernel and services so local exploits don't apply.
 - **Baseline it:** the CIS Benchmark automation skill enforces most of this at scale so hosts don't drift back.
 
-## Pitfalls
+### Pitfalls
 
 - **Reaching for kernel exploits first.** They're unreliable and can crash the host. Exhaust misconfig paths before touching a local kernel exploit — especially on production.
 - **Trusting the scanner blindly.** linpeas flags possibilities, not confirmations; verify before reporting, and before firing anything destructive.
 - **Missing capabilities.** Teams that lock down SUID often forget `getcap` — a `cap_setuid` binary is just as good as SUID root.
 - **Fixing the binary, not the pattern.** One writable script fixed while the deploy keeps recreating it world-writable helps nothing. Fix the source.
 
-## References
+### References
 
 - GTFOBins (gtfobins.github.io)
 - PEASS-ng / linpeas documentation
 - CIS Benchmarks for Linux
 - MITRE ATT&CK — T1548 (Abuse Elevation Control Mechanism)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: admission-control
-domain: 07-container-and-kubernetes-security
-description: Use when enforcing security policy at deploy time in Kubernetes — admission controllers (OPA/Kyverno) that reject non-compliant resources before they run, gating the cluster.
-difficulty: intermediate
-tags: [kubernetes, admission-control, opa, kyverno, policy-as-code]
-tools: [opa-gatekeeper, kyverno]
+format: "v2"
+name: "admission-control"
+title: "Admission Control"
+title_fr: "Contrôle d'admission"
+description: "Use when enforcing security policy at deploy time in Kubernetes — admission controllers (OPA/Kyverno) that reject non-compliant resources before they run, gating the cluster."
+description_fr: "À utiliser pour imposer une politique de sécurité au moment du déploiement dans Kubernetes — des admission controllers (OPA/Kyverno) qui rejettent les ressources non conformes avant qu'elles ne s'exécutent, verrouillant l'accès au cluster."
+domain: "07-container-and-kubernetes-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The most reliable way to keep dangerous configurations out of a cluster is to reject them at the door — before they're ever created. Admission controllers intercept every resource request to the Kubernetes API and can validate it against policy, blocking non-compliant resources (a privileged pod, an image from an untrusted registry, a missing security context) at deploy time. This skill covers using admission control (OPA/Gatekeeper, Kyverno) to enforce security policy as code, the gate that makes the other container controls non-optional.
 
-## When to use it
+### When to use it
 
 Hardening a cluster to *enforce* rather than just recommend security policy. It's what turns pod-security, image, and RBAC best practices from guidelines into hard requirements — non-compliant resources simply can't be deployed. Essential for any cluster where you can't manually review every deployment.
 
-## Procedure
+### Procedure
 
 1. **Understand admission control's place.** When a resource is created/updated, admission controllers run before it's persisted — **validating** (accept/reject) and optionally **mutating** (modifying, e.g. adding a default security context). This deploy-time gate is where you enforce policy consistently, rather than hoping every manifest is written correctly.
 2. **Deploy a policy engine.** OPA/Gatekeeper (policy in Rego) or Kyverno (policy in YAML, Kubernetes-native and often simpler) are the standard tools. They let you write policies as code, versioned and reviewed. Kyverno is usually easier to adopt for Kubernetes-native teams.
@@ -29,7 +41,7 @@ Hardening a cluster to *enforce* rather than just recommend security policy. It'
 6. **Version policies as code and test them.** Admission policies are code — store in git, review changes, and test that they reject what they should and allow legitimate resources. A policy that blocks legitimate deploys causes outages; one that's too loose lets bad configs through.
 7. **Monitor and maintain.** Track policy violations (what's being rejected) as a signal, and maintain policies as the cluster and threats evolve.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 best way to keep dangerous configs out = reject them at the DOOR (deploy time, before running)
@@ -51,7 +63,7 @@ policies as CODE: git + review + TEST (too strict = outage ; too loose = bad con
 monitor violations ; maintain
 ```
 
-## Reading the setup
+### Reading the setup
 
 - **No admission control** = security policy is advisory only; a privileged pod, an untrusted image, or a root container can be deployed freely, relying on everyone writing manifests correctly. Admission control is what makes policy enforceable — a high-value addition.
 - **Policies enforcing "reject privileged / require non-root / trusted registries only"** = the dangerous configurations can't be deployed at all; this is the gate that makes pod-security and image controls hard requirements.
@@ -60,7 +72,7 @@ monitor violations ; maintain
 - **A policy that's too loose** (allows what it should block) = false comfort; test that policies actually reject non-compliant resources.
 - **Versioned, tested, monitored admission policies enforcing the key controls** = the deploy-time gate working; the cluster enforces its security posture automatically.
 
-## The fix / best practice
+### The fix / best practice
 
 - **Deploy an admission policy engine** (Kyverno or OPA/Gatekeeper) and enforce the key security policies as code.
 - **Reject dangerous pod configs, require trusted/signed images, require hardened security contexts** — making the other container controls non-optional.
@@ -69,7 +81,7 @@ monitor violations ; maintain
 - **Use mutation for secure defaults** carefully and predictably.
 - **Monitor violations** and maintain policies as the environment evolves.
 
-## Pitfalls
+### Pitfalls
 
 - **No admission control.** Without it, security policy is just advice; dangerous configs deploy freely. It's the enforcement that makes the other controls real.
 - **Enforcing untested policies.** Policies that block legitimate deployments cause outages; roll out in audit mode, fix, then enforce.
@@ -77,9 +89,15 @@ monitor violations ; maintain
 - **Unpredictable mutations.** Auto-modifying resources helps compliance but changes what users deployed; keep mutations predictable and documented.
 - **Set-and-forget.** Clusters and threats evolve; policies need maintenance, and violation trends are a useful signal.
 
-## References
+### References
 
 - Kyverno and OPA/Gatekeeper documentation; Kubernetes admission controllers reference
 - The pod-security-standards, supply-chain-for-images, and kubernetes-rbac-audit skills
 - The devsecops policy-as-code skill (same discipline) and CIS Kubernetes Benchmark
 - MITRE ATT&CK for Containers
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

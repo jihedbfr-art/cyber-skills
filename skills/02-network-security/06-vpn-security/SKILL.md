@@ -1,21 +1,33 @@
 ---
-name: vpn-security
-domain: 02-network-security
-description: Use when assessing or hardening a VPN — IPsec or WireGuard configuration, authentication, and the exposure a remote-access gateway creates — so the tunnel doesn't become the way in.
-difficulty: intermediate
-tags: [network, vpn, ipsec, wireguard, remote-access]
-tools: [ike-scan, nmap]
+format: "v2"
+name: "vpn-security"
+title: "Vpn Security"
+title_fr: "Sécurité des VPN"
+description: "Use when assessing or hardening a VPN — IPsec or WireGuard configuration, authentication, and the exposure a remote-access gateway creates — so the tunnel doesn't become the way in."
+description_fr: "À utiliser pour évaluer ou durcir un VPN — configuration IPsec ou WireGuard, authentification et exposition créée par une passerelle d'accès distant — afin que le tunnel ne devienne pas la porte d'entrée des attaquants."
+domain: "02-network-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A VPN extends your trusted network to remote users — which makes the VPN gateway a high-value target and a common breach entry point. Weak authentication, outdated VPN software with known CVEs, or a tunnel that drops users straight into a flat internal network turns remote access into attacker access. This skill covers assessing a VPN's configuration and exposure, and hardening it so the tunnel protects rather than exposes.
 
-## When to use it
+### When to use it
 
 Assessing a remote-access VPN (the gateway is internet-facing, so it's in scope for external recon and testing), or hardening your own. VPN gateways have been the initial access vector in many major breaches, which makes this high-priority.
 
-## Procedure
+### Procedure
 
 1. **Identify the VPN and its version — the first, highest-value check.** VPN appliances (Fortinet, Pulse/Ivanti, Citrix, Palo Alto, Cisco) have had a steady stream of critical, actively-exploited CVEs. An outdated gateway exposed to the internet is frequently the breach. Fingerprint it and check the version against known vulnerabilities:
    ```
@@ -29,15 +41,12 @@ Assessing a remote-access VPN (the gateway is internet-facing, so it's in scope 
 5. **Check split-tunnel vs full-tunnel** and its implications, and confirm the gateway logs connections and authentication attempts for detection.
 6. **Test for the known exposure classes** the specific appliance is prone to (within scope) — auth bypass, path traversal, and the current CVEs for that product.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# 1. fingerprint + version (the #1 risk: outdated exploited appliance)
 nmap -sV -p 443,500,4500 gateway
 ike-scan -M gateway                  # IKE mode, ciphers, DH groups
-# check the product/version against current CVEs (KEV catalog)
 
-# assess
 auth        MFA required? or password-only? (password-only + leaked creds = in)
 protocol    IPsec (avoid aggressive-mode PSK, weak DH) | WireGuard (modern)
             PPTP = broken, flag it
@@ -48,7 +57,7 @@ logging     connections + auth attempts logged for detection
 VPN gateways = frequent breach entry point -> patch fast, MFA, segment
 ```
 
-## Reading the assessment
+### Reading the assessment
 
 - **An outdated VPN appliance with a known/exploited CVE** = the highest-priority finding by far; these are among the most common breach entry points and are actively scanned for. Patch immediately or take it offline.
 - **Password-only authentication** = one leaked or phished credential grants network access. MFA is the difference between a stolen password and a breach here.
@@ -57,7 +66,7 @@ VPN gateways = frequent breach entry point -> patch fast, MFA, segment
 - **No logging on the gateway** = you can't detect a compromised VPN account or an exploitation attempt — a blind spot on a prime target.
 - **Patched appliance + MFA + strong crypto + segmented access + logging** = the hardened state.
 
-## The fix
+### The fix
 
 - **Keep the VPN gateway patched — urgently.** Given how heavily these are targeted, treat VPN appliance patches as emergency priority, and watch the KEV catalog for the product. This single practice prevents most VPN breaches.
 - **Require MFA** on VPN authentication, ideally phishing-resistant (ties into the MFA skill) — it defeats credential-based access even when passwords leak.
@@ -66,7 +75,7 @@ VPN gateways = frequent breach entry point -> patch fast, MFA, segment
 - **Log and monitor** VPN connections and auth attempts; alert on anomalies (impossible travel, connections from a compromised account).
 - **Minimise exposure** — restrict the management interface, and disable unused VPN features/protocols.
 
-## Pitfalls
+### Pitfalls
 
 - **Neglecting appliance patching.** VPN gateways are among the most exploited internet-facing systems; a delayed patch is how many breaches start. Patch fast.
 - **Password-only VPN auth.** The single most impactful weakness after patching — add MFA.
@@ -74,9 +83,15 @@ VPN gateways = frequent breach entry point -> patch fast, MFA, segment
 - **Legacy protocols/config.** PPTP and weak IKE are broken or crackable; modernise.
 - **No monitoring on a prime target.** A compromised VPN account is invisible without logging.
 
-## References
+### References
 
 - CISA Known Exploited Vulnerabilities catalog (VPN appliance CVEs feature heavily)
 - NIST SP 800-77 (Guide to IPsec VPNs), WireGuard documentation
 - The MFA, network-segmentation, and OSINT credential-leaks skills
 - CWE-287 (improper authentication), CWE-1188 (insecure default)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

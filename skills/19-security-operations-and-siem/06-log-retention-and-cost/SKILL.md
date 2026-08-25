@@ -1,21 +1,33 @@
 ---
-name: log-retention-and-cost
-domain: 19-security-operations-and-siem
-description: Use when balancing log retention against SIEM cost — keeping the data you need for detection, hunting, and compliance without paying premium ingest for everything.
-difficulty: intermediate
-tags: [soc, siem, retention, cost, logging]
-tools: []
+format: "v2"
+name: "log-retention-and-cost"
+title: "Log Retention And Cost"
+title_fr: "Rétention des logs et coût"
+description: "Use when balancing log retention against SIEM cost — keeping the data you need for detection, hunting, and compliance without paying premium ingest for everything."
+description_fr: "À utiliser pour équilibrer la rétention des logs et le coût du SIEM — garder les données nécessaires à la détection, la chasse et la conformité sans payer le tarif premium pour tout ingérer."
+domain: "19-security-operations-and-siem"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 SIEMs typically charge by data volume, so "log everything forever" is a fast route to a budget blowout — but under-retaining leaves you unable to detect, hunt, or investigate. Log retention and cost is the balancing act: keep the right data, for the right time, in the right tier of storage. This skill covers making that trade-off deliberately, so security value drives spend rather than the SIEM bill dictating (and quietly gutting) your visibility.
 
-## When to use it
+### When to use it
 
 Designing or optimising a SIEM deployment, when SIEM costs are escalating, or when retention limits are hurting investigations (you needed logs from 90 days ago and they're gone). It's a recurring tension in every SOC and a place where cost pressure can silently erode security if not managed deliberately.
 
-## Procedure
+### Procedure
 
 1. **Understand the drivers of retention need.** Three things dictate how long to keep what: **detection** (recent data for real-time rules), **hunting/investigation** (weeks to months, because intrusions are often found late — the average dwell time means you need history), and **compliance** (regulations may mandate specific retention periods). Each source's retention should be driven by which of these apply to it.
 2. **Tier storage by value and access need — the key lever.** Not all logs need to be in the expensive, hot, searchable SIEM tier. Route high-value, frequently-queried security logs to the SIEM (hot); send high-volume or lower-value data to cheaper cold/archive storage that's still retrievable when needed. This is how you keep long retention without paying premium ingest for everything.
@@ -25,7 +37,7 @@ Designing or optimising a SIEM deployment, when SIEM costs are escalating, or wh
 6. **Monitor and forecast cost.** Track ingest volume and cost trends; a new noisy source can spike the bill. Forecasting prevents surprise overruns and the panic response of slashing retention (which cuts visibility).
 7. **Review the balance periodically** — sources, volumes, and needs change; revisit what's retained where.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 SIEM charges by VOLUME -> "log everything forever" = budget blowout
@@ -48,7 +60,7 @@ critical logs (auth/audit): longer + tamper-protected
 monitor + FORECAST cost (noisy new source = bill spike) ; review periodically
 ```
 
-## Reading the trade-off
+### Reading the trade-off
 
 - **Retaining only the compliance minimum** = a frequent trap; an intrusion that started before your window can't be investigated because the logs are gone. Match retention to realistic dwell time, which usually exceeds the compliance floor.
 - **Everything in the hot SIEM tier** = paying premium ingest for high-volume low-value data; tiering high-volume logs to cheap archive keeps them retrievable at a fraction of the cost. The main cost lever.
@@ -57,7 +69,7 @@ monitor + FORECAST cost (noisy new source = bill spike) ; review periodically
 - **Critical auth/audit logs under-retained or unprotected** = exactly the data you need in an incident, missing or tamperable. These warrant longer, protected retention.
 - **Value-tiered storage, dwell-time-matched retention, ingest filtering, protected critical logs, forecasted cost** = the balance — full visibility at sustainable cost.
 
-## Pitfalls
+### Pitfalls
 
 - **Retaining to the compliance minimum only.** Intrusions are found late; if your window is shorter than the dwell time, the investigation hits a wall. Retain for investigation, not just compliance.
 - **Everything in the expensive tier.** Paying hot-tier ingest for high-volume low-value logs blows the budget; tier by value and access need.
@@ -66,9 +78,15 @@ monitor + FORECAST cost (noisy new source = bill spike) ; review periodically
 - **Under-retaining or exposing critical logs.** Auth/audit logs are incident essentials; keep them longer and tamper-protected.
 - **No cost forecasting.** A noisy source spikes the bill and forces a panic response; monitor and forecast volume.
 
-## References
+### References
 
 - The log-pipeline-design, detection log-source-coverage, and auditd/cloudtrail logging skills
 - NIST SP 800-92 (log management, including retention)
 - Compliance frameworks with logging requirements (PCI-DSS, HIPAA, etc.) via the GRC domain
 - SIEM vendor pricing/tiering documentation
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: url-and-attachment-detonation
-domain: 17-social-engineering-defence
-description: Use when safely analysing suspicious links and attachments — detonating them in isolation to determine if they're malicious without exposing yourself or the network.
-difficulty: intermediate
-tags: [social-engineering, phishing, detonation, sandbox, analysis]
-tools: [any.run, cuckoo, urlscan]
+format: "v2"
+name: "url-and-attachment-detonation"
+title: "Url And Attachment Detonation"
+title_fr: "Détonation de liens et pièces jointes"
+description: "Use when safely analysing suspicious links and attachments — detonating them in isolation to determine if they're malicious without exposing yourself or the network."
+description_fr: "À utiliser pour analyser en toute sécurité des liens et des pièces jointes suspects — en les détonant en isolement pour déterminer s'ils sont malveillants sans s'exposer soi-même ni exposer le réseau."
+domain: "17-social-engineering-defence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 When a suspicious email is reported, someone has to determine whether the link or attachment is actually malicious — and doing that safely, without infecting yourself or triggering the payload on a real system, is the skill. Detonation means analysing a URL or file in an isolated environment where it can do its worst harmlessly. This skill covers safely detonating and analysing phishing links and attachments, the analysis step behind phishing triage and response.
 
-## When to use it
+### When to use it
 
 Analysing reported phishing (the phishing-email-analysis skill hands off here), or any suspicious link/file. The overriding principle is safety: these are potentially malicious, so they're analysed in isolation, never opened on a normal workstation.
 
-## Procedure
+### Procedure
 
 1. **Never open it on your workstation — the safety rule.** A suspicious link or attachment is potentially malicious; opening it on a normal system infects it or triggers the payload. All analysis happens in isolation — a sandbox or an analysis service that detonates it away from your environment.
 2. **Analyse URLs without visiting them directly.** Submit the URL to a service that fetches and analyses it in isolation (urlscan.io, VirusTotal, a sandbox), showing the destination, any redirect chain, and whether it's a credential-harvest page or malware host — without your browser touching it:
@@ -29,7 +41,7 @@ Analysing reported phishing (the phishing-email-analysis skill hands off here), 
 6. **Mind confidentiality and evasion.** Public sandboxes/services expose the sample — don't submit confidential documents or targeted samples that could tip off an attacker to public services; use a self-hosted sandbox for sensitive analysis. Also, some malware detects sandboxes and plays dead (the malware evasion angle).
 7. **Feed the verdict into response.** A confirmed-malicious link/attachment drives blocking (URL/hash/sender), pulling the email from other mailboxes, and hunting for other recipients — the phishing-analysis and IR response.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 someone must decide: is this link/attachment malicious? — SAFELY (no self-infection / payload trigger)
@@ -54,7 +66,7 @@ CONFIDENTIALITY: public services EXPOSE the sample -> self-host for sensitive/ta
 verdict -> response (block, pull email, hunt recipients)
 ```
 
-## Reading the analysis
+### Reading the analysis
 
 - **A URL resolving to a credential-harvest login page on a lookalike domain** = confirmed phishing; the fake login is designed to steal credentials. Capture the URL for blocking and note the harvesting intent. A common, high-confidence verdict.
 - **An attachment that drops files and connects to a C2 in the sandbox** = confirmed malicious; the detonation reveals the payload's behaviour and its indicators. Extract the IoCs.
@@ -63,7 +75,7 @@ verdict -> response (block, pull email, hunt recipients)
 - **A redirect chain ending at malware** = the URL looked benign but redirects to a payload; the isolated fetch reveals the real destination your browser would have reached.
 - **Confirmed-malicious verdict with extracted IoCs** = drives the response (block URL/hash/sender, pull the email, hunt other recipients) — the point of the analysis.
 
-## Pitfalls
+### Pitfalls
 
 - **Opening it on your workstation.** The cardinal safety error — a suspicious link/attachment is potentially malicious; opening it infects you or triggers the payload. Isolation only.
 - **Visiting URLs directly to "check".** Your browser touching the URL can harvest, exploit, or confirm your address; submit it to an isolation service instead.
@@ -72,9 +84,15 @@ verdict -> response (block, pull email, hunt recipients)
 - **Not extracting IoCs.** A verdict without indicators doesn't drive blocking and hunting; capture the URL, hash, and C2 for response.
 - **Trusting reputation absence as safety.** For targeted attacks, no detections doesn't mean benign; detonate if unsure.
 
-## References
+### References
 
 - urlscan.io, VirusTotal, any.run, Joe Sandbox, and Cuckoo/CAPE documentation
 - The phishing-email-analysis, malware dynamic-analysis-sandboxing, and extracting-iocs skills
 - The building-a-malware-lab skill (self-hosted sandbox for sensitive samples)
 - SANS phishing analysis resources
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: ransomware-response
-domain: 22-incident-response
-description: Use when responding to a ransomware incident — the specific playbook for containment, the pay/don't-pay reality, recovery from backups, and what makes it different from other incidents.
-difficulty: advanced
-tags: [incident-response, ransomware, recovery, backups, extortion]
-tools: []
+format: "v2"
+name: "ransomware-response"
+title: "Ransomware Response"
+title_fr: "Réponse à une attaque par rançongiciel"
+description: "Use when responding to a ransomware incident — the specific playbook for containment, the pay/don't-pay reality, recovery from backups, and what makes it different from other incidents."
+description_fr: "À utiliser lors d'un incident de rançongiciel — le plan d'action spécifique pour le confinement, la réalité du choix de payer ou non, la restauration depuis les sauvegardes, et ce qui distingue ce type d'incident des autres."
+domain: "22-incident-response"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Ransomware is the incident everyone fears and the one where the first hour decides the outcome. It combines active destruction (encryption in progress), extortion, and often data theft — so the response differs from a normal intrusion. This skill is the ransomware-specific playbook: contain the encryption, preserve options, and recover, without making the panic-driven mistakes that turn a bad day into a catastrophe.
 
-## When to use it
+### When to use it
 
 The moment ransomware is suspected — encrypted files, ransom notes, mass file renames, or an alert on known ransomware behaviour. It builds on the general IR skills (triage, containment, evidence) with the specifics that ransomware demands.
 
-## Procedure
+### Procedure
 
 1. **Contain the encryption immediately — this is the priority.** Ransomware spreads and encrypts actively, so every minute of delay is more data lost. **Network-isolate** affected hosts fast (disconnect from the network, keep them powered on to preserve memory and any keys in RAM). Isolate shared storage and disable the spreading mechanism (a compromised account, a scheduled task).
 2. **Preserve evidence while containing.** Capture memory where feasible before anything reboots — encryption keys or the malware may be recoverable, and it aids attribution. Don't wipe hosts yet; you need them for scoping and possible decryption.
@@ -26,7 +38,7 @@ The moment ransomware is suspected — encrypted files, ransom notes, mass file 
 7. **Eradicate and recover from clean state.** Rebuild affected systems from known-good images/backups, reset credentials broadly (assume they're all compromised), close the entry vector, and restore in a controlled order. Don't just decrypt-in-place and move on — the attacker was in your environment.
 8. **Communicate and report** per your plan — internal stakeholders, and external obligations (regulators, affected parties) especially if data was stolen.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 first hour (in order)
@@ -48,7 +60,7 @@ recovery
   restore in controlled order. never trust a decrypted-in-place host.
 ```
 
-## Reading the situation
+### Reading the situation
 
 - **Encryption still in progress** = containment speed is everything; isolate aggressively now, memory capture second. Losses scale with delay.
 - **Signs of data exfiltration** = reclassify as a breach with notification duties, not merely an availability event — this changes the legal and comms path entirely.
@@ -56,7 +68,7 @@ recovery
 - **Backups also encrypted or nonexistent** = the hard case; recovery options narrow, and the pay decision gets harder — escalate immediately with that reality stated plainly.
 - **A known family with a public decryptor** = you may recover without paying or full restore; check before any drastic action.
 
-## Pitfalls
+### Pitfalls
 
 - **Powering off infected hosts.** Loses memory that may hold keys and attribution, and doesn't help recovery. Network-isolate, keep powered on.
 - **Restoring before confirming backups are clean.** Restoring from a backup the attacker already encrypted or backdoored just re-infects you. Verify and test-restore first.
@@ -64,9 +76,15 @@ recovery
 - **Making pay/don't-pay a technical call.** It's an executive/legal/insurer decision with major consequences; surface factors and escalate, don't decide it at the keyboard.
 - **Decrypting in place and declaring victory.** The attacker was inside; without eradication and credential resets, they come back.
 
-## References
+### References
 
 - NIST SP 800-61r2 (incident handling) and NIST ransomware guidance
 - CISA #StopRansomware Guide
 - No More Ransom project (family identification and free decryptors)
 - FBI/CISA guidance on ransom payment considerations
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

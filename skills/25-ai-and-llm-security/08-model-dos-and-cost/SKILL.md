@@ -1,21 +1,33 @@
 ---
-name: model-dos-and-cost
-domain: 25-ai-and-llm-security
-description: Use when an LLM app could be driven to exhaust resources or run up a large bill through crafted inputs — testing for unbounded consumption and the limits that contain it.
-difficulty: intermediate
-tags: [ai, llm, dos, cost, resource-consumption, owasp-llm]
-tools: []
+format: "v2"
+name: "model-dos-and-cost"
+title: "Model Dos And Cost"
+title_fr: "Déni de service et coût du modèle"
+description: "Use when an LLM app could be driven to exhaust resources or run up a large bill through crafted inputs — testing for unbounded consumption and the limits that contain it."
+description_fr: "À utiliser quand une application LLM pourrait être poussée à épuiser des ressources ou générer une facture importante via des entrées conçues à cet effet — tester la consommation non bornée et les limites qui la contiennent."
+domain: "25-ai-and-llm-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 LLM calls are slow and expensive, which makes them a resource-consumption target unlike a normal API. A single crafted request can force the model to generate enormous output, an unbounded agent loop can rack up thousands of calls, and a public LLM endpoint with no limits is a direct line to your compute budget. This skill covers testing an LLM app for denial-of-service and cost-exhaustion, and the controls that bound both.
 
-## When to use it
+### When to use it
 
 Any LLM feature exposed to users, especially public-facing ones, agent loops that call the model repeatedly, and anything billed per-token against a provider. The "denial of wallet" angle — where the attack costs you money rather than downtime — is specific to this domain and easy to overlook.
 
-## Procedure
+### Procedure
 
 1. **Check for basic request rate limiting** on the LLM endpoint. Without it, an attacker sends unlimited expensive calls — costly and potentially degrading for everyone. Confirm per-user and per-IP limits exist (the API rate-limiting skill's methods apply).
 2. **Test output-length amplification.** Can a small prompt force a very large, expensive completion? Ask the model to produce maximum-length output ("write 10,000 words on…", "repeat X many times") and see whether output tokens are capped:
@@ -27,7 +39,7 @@ Any LLM feature exposed to users, especially public-facing ones, agent loops tha
 5. **Test for recursive/expensive patterns** — prompts that trigger the model to call itself, expand fractally, or chain sub-tasks without bound.
 6. **Assess the cost model.** Is spend capped anywhere (per user, per session, globally)? An uncapped pay-per-token endpoint means the attack's cost scales directly to your bill — flag this as financial impact even at modest request volume.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 consumption vectors to test
@@ -46,7 +58,7 @@ controls to verify
   agent step/iteration cap, timeouts, per-user/global spend caps
 ```
 
-## Reading the output
+### Reading the output
 
 - **No rate limiting on the LLM endpoint** = both DoS and cost-exhaustion are open; an attacker's script maps directly to your bill and your capacity. High impact.
 - **Uncapped output length** = one cheap request produces a maximally expensive completion; a strong amplification factor for an attacker.
@@ -54,7 +66,7 @@ controls to verify
 - **No spend cap anywhere** = "denial of wallet"; even without taking the service down, an attacker runs up real money. Rate it as financial impact, not just availability.
 - **Sensible token/rate/step/spend limits present** = the good state; confirm they actually enforce (test past the limit).
 
-## The fix
+### The fix
 
 - **Cap input and output tokens** per request — a hard maximum on completion length kills output amplification, and an input cap bounds context cost.
 - **Rate limit** per user and per IP on the LLM endpoint (gateway-enforced), so no single client can flood it.
@@ -63,16 +75,22 @@ controls to verify
 - **Validate and limit input size** (document/upload length) before it reaches the model.
 - **Use a smaller/cheaper model** for untrusted or high-volume paths where you can, reducing the per-call blast radius.
 
-## Pitfalls
+### Pitfalls
 
 - **Rate limiting requests but not output length.** One allowed request that generates a novel is still expensive. Cap tokens, not just call count.
 - **Ignoring denial of wallet.** Teams test for downtime and miss that the real damage is the bill. An uncapped pay-per-token endpoint is a financial vulnerability.
 - **Unbounded agent loops.** The convenience of "let the agent keep working until done" becomes unbounded cost when the task never converges or is adversarially steered.
 - **No global spend alarm.** Per-user limits help, but a distributed attack or a missed edge case still adds up — a budget alarm is the backstop that tells you before the invoice does.
 
-## References
+### References
 
 - OWASP Top 10 for LLM Applications — LLM04 Model Denial of Service / Unbounded Consumption
 - OWASP API Security — Unrestricted Resource Consumption (API4)
 - Provider rate-limit and quota documentation
 - CWE-770 (Allocation of Resources Without Limits)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

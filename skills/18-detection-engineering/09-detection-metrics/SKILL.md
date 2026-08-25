@@ -1,21 +1,33 @@
 ---
-name: detection-metrics
-domain: 18-detection-engineering
-description: Use when measuring the quality of a detection programme — the metrics that show whether detections work and where to improve, instead of vanity counts of how many rules exist.
-difficulty: intermediate
-tags: [detection, metrics, quality, coverage, measurement]
-tools: []
+format: "v2"
+name: "detection-metrics"
+title: "Detection Metrics"
+title_fr: "Métriques de détection"
+description: "Use when measuring the quality of a detection programme — the metrics that show whether detections work and where to improve, instead of vanity counts of how many rules exist."
+description_fr: "À utiliser pour mesurer la qualité d'un programme de détection — les métriques qui montrent si les détections fonctionnent vraiment et où progresser, plutôt qu'un simple décompte flatteur du nombre de règles."
+domain: "18-detection-engineering"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 "How many detection rules do you have?" is a vanity metric — it says nothing about whether you'd catch an attack. Measuring a detection programme well means tracking quality and coverage: what you can detect, how reliably, how fast, and how much noise it costs. This skill covers the metrics that actually reveal a programme's health and drive improvement, so effort goes where it matters rather than toward inflating a rule count.
 
-## When to use it
+### When to use it
 
 Assessing and improving a detection programme, and reporting its state to leadership. Good metrics turn a subjective "we have lots of rules" into an evidence-based view of "here's what we catch, here's the gaps, here's the noise" — which drives both engineering priorities and investment.
 
-## The metrics that matter
+### The metrics that matter
 
 - **Coverage (quality-weighted)** — what fraction of relevant ATT&CK techniques you detect, weighted by detection quality, not just presence (from the mapping-to-attack skill). This answers "what can we catch?".
 - **Detection efficacy** — do detections actually fire on the techniques they target (from the testing-detections skill)? Validated detections vs assumed ones. This answers "do they work?".
@@ -23,7 +35,7 @@ Assessing and improving a detection programme, and reporting its state to leader
 - **Mean time to detect (MTTD)** — how fast a real attack is caught after it starts. This answers "are we fast enough?".
 - **Alert volume and analyst load** — how many alerts the programme generates and whether the SOC can keep up. Detections that overwhelm the SOC aren't helping.
 
-## Procedure
+### Procedure
 
 1. **Avoid the vanity metric.** "Number of rules" is the trap — it rewards adding rules regardless of quality, and a thousand noisy or untested rules are worse than fifty good ones. Don't lead with it, and don't optimise for it.
 2. **Measure coverage against ATT&CK, quality-weighted.** Track which relevant techniques you detect and how well, so the metric reflects real capability, not a rule tally. Trend it over time to show progress.
@@ -33,7 +45,7 @@ Assessing and improving a detection programme, and reporting its state to leader
 6. **Use metrics to drive action, not just report.** Each metric should point somewhere: low coverage in a relevant area → build detections there; low efficacy → test and fix; high false-positives → tune; high MTTD → improve the detections or telemetry. Metrics that don't change behaviour are overhead.
 7. **Report the honest picture to leadership** in terms of capability and gaps (not rule counts), to justify investment and show trajectory (ties into the reporting discipline).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 VANITY (don't lead with / optimise for): "number of rules"
@@ -53,7 +65,7 @@ metrics that MATTER (each -> an action)
 drive ACTION, not just reporting ; report CAPABILITY + gaps to leadership (not counts)
 ```
 
-## Reading the metrics
+### Reading the metrics
 
 - **A high rule count presented as success** = the vanity trap; it says nothing about whether you'd catch an attack, and often hides noisy, untested rules. Reframe around coverage, efficacy, and precision.
 - **Low quality-weighted coverage in a relevant area** = a real capability gap; a technique attackers targeting you use, that you can't catch well. This drives where to build next.
@@ -63,7 +75,7 @@ drive ACTION, not just reporting ; report CAPABILITY + gaps to leadership (not c
 - **Alert volume exceeding SOC capacity** = the programme is unsustainable; more detections here make it worse, not better. Load metrics reveal it.
 - **Coverage, efficacy, precision, MTTD, and load trended and driving action** = a measured, improving programme.
 
-## Pitfalls
+### Pitfalls
 
 - **Optimising for rule count.** The classic vanity metric — it rewards quantity over quality and can make the programme *worse* (more noise, more untested rules). Measure capability, not tally.
 - **Coverage without quality-weighting.** Counting techniques with "a rule" overstates capability; weight by whether the detection actually detects well.
@@ -71,8 +83,14 @@ drive ACTION, not just reporting ; report CAPABILITY + gaps to leadership (not c
 - **Metrics that don't drive action.** A dashboard nobody acts on is overhead; each metric should point to a specific improvement.
 - **Reporting counts to leadership.** It misleads (looks like progress) and doesn't justify investment well; report capability and gaps instead.
 
-## References
+### References
 
 - The mapping-to-attack, testing-detections, and reducing-false-positives skills
 - The vuln-mgmt reporting-to-stakeholders skill (same anti-vanity-metric discipline)
 - MITRE ATT&CK (coverage baseline) and SANS detection-engineering metrics resources
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

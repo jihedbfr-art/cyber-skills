@@ -1,21 +1,33 @@
 ---
-name: broken-object-level-authorization
-domain: 04-api-security
-description: Use when testing whether an API lets one user access another user's objects by changing an ID — the BOLA/IDOR flaw that tops the OWASP API list, plus the server-side fix.
-difficulty: intermediate
-tags: [owasp-api, bola, idor, authorization, access-control]
-tools: [burp, curl, ffuf]
+format: "v2"
+name: "broken-object-level-authorization"
+title: "Broken Object Level Authorization"
+title_fr: "Contrôle d'accès défaillant au niveau des objets"
+description: "Use when testing whether an API lets one user access another user's objects by changing an ID — the BOLA/IDOR flaw that tops the OWASP API list, plus the server-side fix."
+description_fr: "À utiliser pour tester si une API laisse un utilisateur accéder aux objets d'un autre en changeant simplement un identifiant — la faille BOLA/IDOR en tête du classement OWASP API — et pour appliquer le correctif côté serveur."
+domain: "04-api-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Broken Object Level Authorization is the API's most common serious bug: the endpoint authenticates *who you are* but never checks whether *this object is yours*. Swap the ID in `/api/orders/1042` for `1041` and you read someone else's order. This skill covers finding it, proving it cleanly, and fixing it where it belongs — server-side, per request.
 
-## When to use it
+### When to use it
 
 Every API endpoint that takes an object identifier — path (`/users/{id}`), query (`?account=`), body field, or header. Especially anything returning or modifying data tied to a specific user, order, document, or tenant. If the client sends an ID and gets data back, test it.
 
-## Procedure
+### Procedure
 
 1. Authenticate as a normal, low-privilege user and browse the app so the API issues requests with real object IDs. Capture them in your proxy.
 2. Pick a request that fetches one of *your* objects, e.g. `GET /api/v1/invoices/5001`. Note the ID and that it returned your data.
@@ -34,20 +46,16 @@ Every API endpoint that takes an object identifier — path (`/users/{id}`), que
    ffuf -H "Authorization: Bearer <your-token>" -u https://api.tld/v1/invoices/FUZZ -w ids.txt -mc 200
    ```
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# baseline: your own object
 curl -H "Authorization: Bearer $A" https://api.tld/v1/users/1001
 
-# horizontal: someone else's object, your token
 curl -H "Authorization: Bearer $A" https://api.tld/v1/users/1002
 
-# two-account proof (create as A, read as B)
 curl -H "Authorization: Bearer $A" -X POST https://api.tld/v1/docs -d '{"title":"t"}'
 curl -H "Authorization: Bearer $B" https://api.tld/v1/docs/<id-from-A>
 
-# other places IDs hide
 ?account_id=1002        # query string
 X-Account-Id: 1002      # header the server trusts
 {"userId": 1002}        # request body
@@ -55,14 +63,14 @@ X-Account-Id: 1002      # header the server trusts
 
 Watch for GUIDs instead of integers — harder to guess but *not* a fix. If the object leaks through another endpoint or a predictable pattern, BOLA still applies.
 
-## Reading the output
+### Reading the output
 
 - **`200` + data that isn't yours** = confirmed BOLA. The status is the giveaway: the server processed the request and handed over the object.
 - **`403` / `401`** = the check exists. Good — but test other methods and other endpoints; authorization is often enforced on read and forgotten on update/delete.
 - **`404` for another user's real object** = the safe pattern (don't confirm existence to unauthorised callers). Verify the object truly exists via the owner's account before calling it fixed.
 - **A GUID that only works via one path** isn't safety — check whether the ID leaks elsewhere (list endpoints, referrers, other users' data).
 
-## The fix
+### The fix
 
 Add an ownership check on **every** object access, enforced on the server using the authenticated identity from the token — never trusting an ID or owner field the client sent:
 
@@ -84,15 +92,21 @@ Principles that make it stick:
 - Enforce it in a central layer (policy/guard/middleware), so a new endpoint doesn't reintroduce the gap.
 - Random GUIDs and hashed IDs raise the guessing cost but are not access control. Keep the check regardless.
 
-## Pitfalls
+### Pitfalls
 
 - **Testing GET only.** The nastiest BOLAs are on `PUT`/`PATCH`/`DELETE`, where the check is skipped more often.
 - **Dumping data to "prove impact."** Pull the minimum to demonstrate it. Mass-extracting real user records can breach the very scope you're testing under.
 - **Assuming GUIDs are safe.** Unguessable is not unauthorised. The bug is the missing check, not the ID format.
 - **Only checking horizontal access.** Also test vertical — can a user reach an admin-only object by ID?
 
-## References
+### References
 
 - OWASP API Security Top 10 — API1:2023 Broken Object Level Authorization
 - OWASP WSTG-ATHZ-04 (IDOR)
 - CWE-639, CWE-284
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

@@ -1,21 +1,33 @@
 ---
-name: build-provenance
-domain: 09-software-supply-chain-security
-description: Use when attesting where and how software was built — generating build provenance so consumers can verify an artifact came from the expected source and pipeline, uncompromised.
-difficulty: intermediate
-tags: [supply-chain, provenance, attestation, slsa, integrity]
-tools: [slsa, in-toto, sigstore]
+format: "v2"
+name: "build-provenance"
+title: "Build Provenance"
+title_fr: "Provenance de build"
+description: "Use when attesting where and how software was built — generating build provenance so consumers can verify an artifact came from the expected source and pipeline, uncompromised."
+description_fr: "À utiliser pour attester où et comment un logiciel a été construit — générer une provenance de build permettant aux consommateurs de vérifier qu'un artefact provient bien de la source et du pipeline attendus, sans compromission."
+domain: "09-software-supply-chain-security"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Build provenance is verifiable metadata about *how* an artifact was produced — the source it was built from, the builder that built it, the process and inputs. It's what lets a consumer trust that an artifact wasn't subverted during the build, catching the class of attack (SolarWinds) where the build process itself is compromised to produce malicious-but-legitimately-signed artifacts. This skill covers generating and using build provenance in the supply-chain context, complementing the DevSecOps SLSA skill from the supply-chain-integrity angle.
 
-## When to use it
+### When to use it
 
 Producing software others depend on (or consuming software where build integrity matters). It's the "how was this built" layer of supply-chain assurance, sitting alongside signing (who published) and SBOM (what's inside). It builds on artifact signing and connects to the DevSecOps build-provenance-slsa skill.
 
-## Procedure
+### Procedure
 
 1. **Understand what provenance adds beyond signing and SBOM.** Signing proves the publisher; an SBOM lists the contents; provenance proves the *build process* — that the artifact came from the expected source, through the expected builder, with the expected inputs. Together they answer who/what/how. Provenance is the piece that catches build subversion.
 2. **Generate provenance as a signed attestation.** The build produces an attestation (in-toto format, signed via Sigstore) recording: the source repository and commit, the builder identity and platform, the build parameters, and the materials/inputs. SLSA provenance generators for common CI systems produce this automatically.
@@ -25,7 +37,7 @@ Producing software others depend on (or consuming software where build integrity
 6. **Use provenance for the whole dependency chain, ideally.** The strongest supply-chain security verifies provenance not just for your own builds but for the dependencies you consume — though ecosystem support for this is still maturing. Consuming provenance-attested dependencies raises assurance.
 7. **Combine with signing, SBOM, and the other controls** for full supply-chain integrity — provenance (how), signing (who), SBOM (what), integrity hashes (unmodified).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 provenance = verifiable metadata on HOW an artifact was built (source, builder, process, inputs)
@@ -44,7 +56,7 @@ the three layers together: SIGN (who published) + SBOM (what's inside) + PROVENA
 combine with signing + SBOM + integrity hashes = full assurance
 ```
 
-## Reading the practice
+### Reading the practice
 
 - **Signing and SBOM without provenance** = you know who published and what's inside, but not that the build wasn't subverted; a compromised build produces malicious artifacts that sign legitimately and have accurate SBOMs. Provenance is the layer that catches build-process compromise.
 - **Provenance generated but not published/verifiable** = useless; consumers can't retrieve or check it. Attach it to the artifact and verify on consumption — verification is the whole point.
@@ -53,7 +65,7 @@ combine with signing + SBOM + integrity hashes = full assurance
 - **Consuming dependencies with verified provenance** = higher supply-chain assurance than trusting names alone; the maturing frontier of dependency security.
 - **Generated, published, and consumption-verified provenance alongside signing and SBOM** = full supply-chain integrity — who, what, and how, all verifiable.
 
-## Pitfalls
+### Pitfalls
 
 - **Relying on signing/SBOM without provenance.** They prove publisher and contents but not build integrity; a subverted build produces legitimately-signed artifacts with accurate SBOMs (SolarWinds). Add provenance.
 - **Generating provenance without verifying it.** Unverified provenance protects nothing; the consumption-time verification (expected source/builder/level) is what makes it valuable.
@@ -61,9 +73,15 @@ combine with signing + SBOM + integrity hashes = full assurance
 - **Not publishing provenance with the artifact.** Consumers can't verify what they can't access; attach it.
 - **Verifying existence, not contents.** An attacker's build also produces provenance — with the wrong source/builder. Verify the expected values, not just presence.
 
-## References
+### References
 
 - SLSA framework (slsa.dev), in-toto attestations, Sigstore
 - The devsecops build-provenance-slsa, artifact-integrity skills and this domain's artifact-signing-sigstore, sbom-generation skills
 - The SolarWinds attack (canonical build-subversion case)
 - OpenSSF supply-chain security guidance
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

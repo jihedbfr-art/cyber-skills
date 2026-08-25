@@ -1,21 +1,33 @@
 ---
-name: data-stacking
-domain: 20-threat-hunting
-description: Use when hunting with frequency analysis — stacking data to surface the rare outlier across a large dataset, one of the most reliable techniques for finding what doesn't belong.
-difficulty: intermediate
-tags: [threat-hunting, stacking, frequency-analysis, outliers, technique]
-tools: []
+format: "v2"
+name: "data-stacking"
+title: "Data Stacking"
+title_fr: "Empilement de données (data stacking)"
+description: "Use when hunting with frequency analysis — stacking data to surface the rare outlier across a large dataset, one of the most reliable techniques for finding what doesn't belong."
+description_fr: "À utiliser pour chasser par analyse de fréquence : empiler les données pour faire émerger la valeur rare au sein d'un grand jeu de données, l'une des techniques les plus fiables pour repérer ce qui n'a pas sa place."
+domain: "20-threat-hunting"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 One of the most dependable hunting techniques is deceptively simple: count how often each value appears across a large dataset, and look at the rare ones. Attackers, by nature, do things that are uncommon in your environment — a tool nobody else runs, a service name that appears once, a scheduled task on a single host. Data stacking (frequency analysis, "long tail analysis") surfaces those rare outliers by counting. This skill covers the technique that turns "find the needle" into "sort by frequency and look at the bottom."
 
-## When to use it
+### When to use it
 
 Whenever you're hunting across many similar entities (hundreds of hosts, thousands of processes) and the malicious thing is likely to be *rare*. It's a workhorse technique underneath endpoint hunting, persistence hunting, and more — simple, powerful, and applicable to almost any dataset with a lot of instances.
 
-## Procedure
+### Procedure
 
 1. **Pick a dataset with many instances and a field where rare = suspicious.** Stacking works when normal produces high-frequency values and malicious produces rare ones: process names across a fleet, service names, scheduled task names, DLLs loaded, autorun entries, parent-child process pairs, user-agents. The more homogeneous the environment, the sharper the technique.
 2. **Count the frequency of each value.** Aggregate and count — how many hosts run each process, how often each service name appears, how many times each autorun entry is seen. This is a simple group-by-and-count, but the framing is what makes it powerful.
@@ -25,7 +37,7 @@ Whenever you're hunting across many similar entities (hundreds of hosts, thousan
 6. **Combine with other signals.** Stacking surfaces the rare; combine with context (what is this process, where's it running, who ran it) and other hunt techniques to confirm. Rarity plus a suspicious characteristic is a strong lead.
 7. **Operationalise findings** — a malicious outlier becomes an IoC/detection; and the stacking itself can be automated as a recurring hunt (surface new rare values periodically).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 simplest reliable hunt: COUNT each value across a big dataset -> look at the RARE ones
@@ -44,7 +56,7 @@ simplest reliable hunt: COUNT each value across a big dataset -> look at the RAR
 7. operationalise: malicious outlier -> IoC/detection ; automate recurring stack
 ```
 
-## Reading the stack
+### Reading the stack
 
 - **A value in the long tail** (a process/service/task seen on one or a few hosts out of many) = the outlier the technique exists to surface; in a homogeneous environment, the rare thing is disproportionately likely to be the attacker. Investigate the bottom of the frequency list.
 - **A rare process on a single host that's on no others** = a classic stacking find; attacker tools and custom malware are, by definition, not broadly deployed, so they sit in the tail.
@@ -53,7 +65,7 @@ simplest reliable hunt: COUNT each value across a big dataset -> look at the RAR
 - **A homogeneous environment** (identical corporate builds) = where stacking is sharpest; the more things *should* look alike, the more a rare value stands out. Heterogeneous environments have a noisier tail.
 - **Rarity plus a suspicious characteristic** (rare process + unusual path + odd parent) = a strong lead; combining stacking with context confirms the outlier.
 
-## Pitfalls
+### Pitfalls
 
 - **Treating rare as malicious.** Rarity surfaces candidates, not conclusions; plenty of rare things are benign (niche tools, one-off legitimate activity). Investigate each outlier rather than assuming.
 - **Stacking a heterogeneous dataset.** The technique is sharpest when normal is homogeneous; in a highly varied environment the long tail is large and noisy, diluting the signal. Segment to comparable groups.
@@ -61,9 +73,15 @@ simplest reliable hunt: COUNT each value across a big dataset -> look at the RAR
 - **Ignoring context.** A rare value alone is weak; combine with what/where/who to confirm. Rarity plus a suspicious characteristic is the strong lead.
 - **Not automating.** Stacking is easy to repeat; automating it as a recurring hunt (surface new rare values) catches new outliers over time rather than a one-off look.
 
-## References
+### References
 
 - SANS threat hunting resources (frequency analysis / long-tail analysis)
 - The endpoint-hunting, anomaly-baselining, and operationalising-a-hunt skills
 - The detection reducing-false-positives skill (rarity and baselining overlap)
 - MITRE ATT&CK (the techniques whose artifacts stack well: persistence, execution)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

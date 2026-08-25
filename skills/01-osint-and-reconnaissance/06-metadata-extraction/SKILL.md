@@ -1,21 +1,33 @@
 ---
-name: metadata-extraction
-domain: 01-osint-and-reconnaissance
-description: Use when mining an organisation's public documents for hidden metadata — usernames, software versions, internal paths, and names that leak from published files.
-difficulty: beginner
-tags: [osint, metadata, documents, recon, information-disclosure]
-tools: [exiftool, metagoofil, foca]
+format: "v2"
+name: "metadata-extraction"
+title: "Metadata Extraction"
+title_fr: "Extraction de métadonnées"
+description: "Use when mining an organisation's public documents for hidden metadata — usernames, software versions, internal paths, and names that leak from published files."
+description_fr: "À utiliser pour extraire des documents publics d'une organisation les métadonnées cachées — noms d'utilisateur, versions logicielles, chemins internes et noms qui fuitent des fichiers publiés."
+domain: "01-osint-and-reconnaissance"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 Every document an organisation publishes — PDFs, Office files, images — carries metadata the authors never meant to share: the username who created it, the software and version, internal file paths, printer names, sometimes GPS coordinates on photos. Harvest a company's public documents and their metadata paints a picture of internal usernames, software in use, and naming conventions. This skill covers extracting and using that metadata. It's passive: you analyse published files, you don't touch the target's systems.
 
-## When to use it
+### When to use it
 
 External recon to build a picture of an organisation's internal environment (usernames for password attacks, software versions for vulnerability targeting), or a self-audit of what your published documents leak. Pairs with subdomain enumeration and Google dorking (which find the documents).
 
-## Procedure
+### Procedure
 
 1. **Collect the org's public documents.** Search engines and dorking surface them; automated tools can crawl a domain for downloadable files. Gather PDFs, DOCX, XLSX, PPTX, and images:
    ```
@@ -31,25 +43,21 @@ External recon to build a picture of an organisation's internal environment (use
 6. **Check images for GPS/EXIF** — photos may carry location and device data.
 7. **Aggregate.** One document is a data point; a corpus reveals the username pattern, the software stack, and internal naming — that aggregate is the real value.
 
-## Cheatsheet
+### Cheatsheet
 
 ```bash
-# collect public documents from a domain
 metagoofil -d example.com -t pdf,doc,docx,xls,xlsx,ppt,pptx -o loot
-# (FOCA is a GUI alternative that does collect + analyse)
 
-# extract metadata (all fields, including unknown/duplicate)
 exiftool -a -u -g1 file.pdf
 exiftool loot/*                        # batch
 
-# the high-value fields
 Author / Creator / Last Modified By   -> usernames + naming convention
 Producer / Application / Software      -> software + versions in use
 file paths in metadata                 -> internal structure (C:\Users\..., shares)
 GPS / EXIF (images)                    -> location, device
 ```
 
-## Reading the output
+### Reading the output
 
 - **Usernames in Author/Creator fields** = the org's account-naming convention (`first.last`, `flast`, etc.) — directly useful for password spraying and targeted phishing. Often the highest-value find.
 - **Software and versions** = the internal stack; an outdated version named in metadata is a targeting lead for known vulnerabilities.
@@ -57,7 +65,7 @@ GPS / EXIF (images)                    -> location, device
 - **A consistent pattern across many documents** = confidence that the username/software convention is real, not a one-off — the aggregate is what matters.
 - **GPS in images** = physical location exposure, relevant for people-focused recon or physical assessments.
 
-## The fix (for your own documents)
+### The fix (for your own documents)
 
 - **Strip metadata before publishing.** Scrub documents on the way out — Office has a "Document Inspector"/remove-personal-info feature, and tools like ExifTool can bulk-clean files. Make it part of the publishing process.
 - **Set generic authorship** where possible (a role/department rather than a personal username) so published files don't leak account names.
@@ -65,16 +73,22 @@ GPS / EXIF (images)                    -> location, device
 - **Policy and awareness** — authors rarely realise documents carry this; a simple "scrub before publishing" step closes most of it.
 - **Understand the username exposure feeds other attacks** — once the convention is public, pair the fix with MFA and anti-spraying controls, since you can't recall what's already out.
 
-## Pitfalls
+### Pitfalls
 
 - **Dismissing it as low-value.** Individually a document leaks little; the *corpus* reveals your username convention and software stack — exactly what an attacker needs to target people and systems. Judge it in aggregate.
 - **Cleaning new documents but ignoring the archive.** Years of published files may already be indexed; audit and remediate what's out there.
 - **Assuming "delete personal info" catches everything.** Different file types hide metadata in different places; verify with ExifTool that it's actually gone.
 - **Overlooking images.** People focus on documents and forget photos carry EXIF/GPS.
 
-## References
+### References
 
 - ExifTool documentation (exiftool.org)
 - OWASP WSTG-INFO — metadata and information leakage
 - Metagoofil / FOCA documentation
 - CWE-200 (Exposure of Sensitive Information)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

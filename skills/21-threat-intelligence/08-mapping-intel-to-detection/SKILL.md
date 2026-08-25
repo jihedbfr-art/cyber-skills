@@ -1,21 +1,33 @@
 ---
-name: mapping-intel-to-detection
-domain: 21-threat-intelligence
-description: Use when turning threat intelligence into detections and hunts — closing the loop so intel drives defence instead of sitting in a platform as unused reports.
-difficulty: intermediate
-tags: [threat-intel, detection, operationalising, hunting, integration]
-tools: []
+format: "v2"
+name: "mapping-intel-to-detection"
+title: "Mapping Intel To Detection"
+title_fr: "Du renseignement à la détection"
+description: "Use when turning threat intelligence into detections and hunts — closing the loop so intel drives defence instead of sitting in a platform as unused reports."
+description_fr: "À utiliser pour transformer le renseignement sur la menace en détections et en chasses — fermer la boucle pour que le renseignement alimente la défense au lieu de dormir dans une plateforme sous forme de rapports inutilisés."
+domain: "21-threat-intelligence"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 The most common failure of a threat-intel programme is that the intel doesn't reach defence — it accumulates in a platform as reports and indicators nobody operationalises. Intelligence only has value when it drives action: indicators become blocks and alerts, TTPs become detections and hunts. This skill covers closing that loop — turning threat intel into concrete detection and defensive action — the connective tissue between the intel domain and the detection/hunting domains.
 
-## When to use it
+### When to use it
 
 Continuously, as the output side of the intel programme. It's what makes intelligence worth collecting; without it, all the collection, vetting, and enrichment produces nothing. It connects directly to threat-informed detection (which consumes intel to prioritise) and operationalising-a-hunt (the mirror discipline for hunting).
 
-## Procedure
+### Procedure
 
 1. **Route indicators into automated detection and blocking.** Vetted indicators (past the false-positive checks) should flow automatically into the SIEM/EDR/firewall as detections and blocks — an IP/domain/hash tied to a threat becomes an alert or block without manual work. This is the tactical loop, and automation is essential (perishable indicators must land fast).
 2. **Turn TTPs into behavioural detections — the higher-value loop.** Actor and campaign intelligence describes *how* adversaries operate; translate those TTPs into behavioural detections (Sigma rules mapped to ATT&CK — the detection domain). This is far more durable than indicator blocking, because it catches the technique regardless of infrastructure (Pyramid of Pain).
@@ -25,7 +37,7 @@ Continuously, as the output side of the intel programme. It's what makes intelli
 6. **Close the loop back — internal findings become intel.** Detections and hunts that find threats produce new intel (IoCs, TTPs) that feeds back into the intel programme — the most relevant intel of all is what actually hit you. The loop runs both ways.
 7. **Measure that intel drives action.** Track detections created from intel, blocks applied, hunts run, and threats caught — evidence the intel is operationalised, not shelved. Intel that produces no detections or blocks isn't earning its cost.
 
-## Cheatsheet
+### Cheatsheet
 
 ```
 #1 intel-programme failure: intel sits in the platform, UNUSED. value = DRIVING ACTION.
@@ -46,7 +58,7 @@ MEASURE: detections created / blocks applied / hunts run / threats caught
   no detections or blocks from intel = shelved, not earning its cost
 ```
 
-## Reading the loop
+### Reading the loop
 
 - **Intel accumulating in a platform with no detections or blocks produced** = the classic, most-common failure; all the collection and enrichment produces nothing if it doesn't reach defence. Operationalising is what makes intel worth having.
 - **Indicators flowing automatically into detection/blocking** = the tactical loop working; perishable indicators land fast without manual work. Manual indicator handling is too slow and doesn't scale.
@@ -56,7 +68,7 @@ MEASURE: detections created / blocks applied / hunts run / threats caught
 - **Internal findings feeding back into intel** = the loop running both ways; what hit you is the best intel, and closing this loop makes the programme compound.
 - **Measured detections/blocks/hunts/catches from intel** = proof it's operationalised; without these, the intel is shelved.
 
-## Pitfalls
+### Pitfalls
 
 - **Intel that never reaches defence.** The dominant failure — collection, vetting, and enrichment produce nothing if intel sits unused in a platform. Operationalising into detection/blocking/hunting is the whole point.
 - **Only blocking indicators.** Indicator blocking is the perishable, low-durability loop; the high-value move is turning TTPs into behavioural detections that survive infrastructure changes. Do both, but invest in TTPs.
@@ -65,9 +77,15 @@ MEASURE: detections created / blocks applied / hunts run / threats caught
 - **A one-way loop.** Not feeding internal detections/hunts back into intel misses the most relevant intelligence — what actually targeted you. Close the loop both ways.
 - **Not measuring.** Without tracking detections/blocks/hunts produced from intel, you can't tell if it's operationalised or shelved.
 
-## References
+### References
 
 - The detection threat-informed-detection, writing-sigma-rules, and mapping-to-attack skills
 - The threat-hunting operationalising-a-hunt and hunting-with-attack skills
 - The SOC enrichment-and-context and detection alert-enrichment skills
 - The Pyramid of Pain (indicators vs TTPs durability)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.

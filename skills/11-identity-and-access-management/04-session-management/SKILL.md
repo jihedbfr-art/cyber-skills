@@ -1,21 +1,33 @@
 ---
-name: session-management
-domain: 11-identity-and-access-management
-description: Use when reviewing how an app issues, protects, and ends sessions — cookie flags, fixation, rotation, timeout — and the settings that make sessions safe.
-difficulty: beginner
-tags: [iam, session, cookies, authentication, web]
-tools: [burp, curl]
+format: "v2"
+name: "session-management"
+title: "Session Management"
+title_fr: "Gestion des sessions"
+description: "Use when reviewing how an app issues, protects, and ends sessions — cookie flags, fixation, rotation, timeout — and the settings that make sessions safe."
+description_fr: "À utiliser pour auditer la façon dont une application émet, protège et termine ses sessions : attributs de cookie, fixation de session, rotation, expiration, et les réglages qui rendent une session réellement sûre."
+domain: "11-identity-and-access-management"
+tags: [cybersecurity, engineering, best-practices]
+maturity: "stable"
+audience: ["backend-engineer", "security-engineer", "coding-agent"]
+requires: ["bash", "git"]
+updated: "2026-08-08"
 ---
 
-## Purpose
+
+
+## Prerequisites
+- Target system, dependencies and environment configured.
+
+## Usage
+### Purpose
 
 A session is what keeps a user logged in after they authenticate, which makes the session token as valuable as the password. This skill covers the properties a session must have — protected in transit, unpredictable, rotated at login, and actually killed at logout — and how to check each one.
 
-## When to use it
+### When to use it
 
 On any app that keeps users logged in. Fast to review, and the failures (fixation, missing flags, sessions that outlive logout) are common and directly exploitable.
 
-## Procedure
+### Procedure
 
 1. Capture the session cookie after login and inspect its flags. The four that matter are `Secure`, `HttpOnly`, `SameSite`, and a sane `Path`:
    ```
@@ -28,13 +40,11 @@ On any app that keeps users logged in. Fast to review, and the failures (fixatio
 5. **Timeout** — confirm an idle session expires server-side and that there's an absolute lifetime, not just a client timer.
 6. **Scope** — check the cookie isn't over-shared (`Domain` too broad, `Path=/` when it needn't be) and that it isn't reflected anywhere (URL, logs).
 
-## Cheatsheet
+### Cheatsheet
 
 ```
-# a well-configured session cookie
 Set-Cookie: session=<opaque-random>; Secure; HttpOnly; SameSite=Lax; Path=/
 
-# review checklist
 Secure      -> only sent over HTTPS
 HttpOnly    -> not readable by JS (blunts XSS token theft)
 SameSite    -> Lax or Strict (CSRF defence in depth)
@@ -44,7 +54,7 @@ timeout     -> idle + absolute expiry, enforced server-side
 entropy     -> long, unpredictable, not sequential
 ```
 
-## Reading the output
+### Reading the output
 
 - **Missing `HttpOnly`** = an XSS bug becomes session theft. **Missing `Secure`** = the token can leak over HTTP.
 - **Same session ID before and after login** = session fixation, straightforwardly exploitable.
@@ -52,7 +62,7 @@ entropy     -> long, unpredictable, not sequential
 - **Short/sequential tokens** = guessable sessions; test whether adjacent IDs belong to other users.
 - **`SameSite=None` without good reason** widens CSRF exposure.
 
-## The fix
+### The fix
 
 - Set `Secure`, `HttpOnly`, and `SameSite=Lax` (or `Strict` for sensitive apps) on the session cookie. Keep `Domain`/`Path` as narrow as the app allows.
 - **Rotate the session identifier on every login and privilege change** — this is the fixation fix. Invalidate the pre-auth session.
@@ -61,15 +71,21 @@ entropy     -> long, unpredictable, not sequential
 - Enforce both idle and absolute timeouts on the server. The client timer is a courtesy, not a control.
 - Never put the session token in a URL, and keep it out of logs.
 
-## Pitfalls
+### Pitfalls
 
 - **Client-side-only logout.** Clearing the cookie in the browser while the server still honours the token is not logout.
 - **Trusting `SameSite` as the whole CSRF story.** It helps, but pair it with proper anti-CSRF tokens on state-changing requests.
 - **Rotating at login but not at privilege elevation.** A step-up to admin should also refresh the session.
 - **Rolling your own token generator.** Use the platform's session manager; homemade entropy is where predictable IDs come from.
 
-## References
+### References
 
 - OWASP Session Management Cheat Sheet
 - OWASP WSTG-SESS (Session Management Testing)
 - CWE-384 (Session Fixation), CWE-613 (Insufficient Session Expiration)
+
+## Inputs
+- Relevant source code, logs, network traces, or system specifications.
+
+## Outputs
+- Analysis findings, security audit report, or generated code artifacts.
