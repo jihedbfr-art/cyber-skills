@@ -10,7 +10,7 @@ tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
 audience: ["backend-engineer", "security-engineer", "coding-agent"]
 requires: ["bash", "git"]
-updated: "2026-08-08"
+updated: "2026-10-13"
 ---
 
 
@@ -36,7 +36,7 @@ Setting up a new repo, or hardening an existing one that's had a leak scare. Hig
    # .pre-commit-config.yaml
    repos:
      - repo: https://github.com/gitleaks/gitleaks
-       rev: v8.18.0
+       rev: v8.30.1
        hooks:
          - id: gitleaks
    ```
@@ -46,36 +46,37 @@ Setting up a new repo, or hardening an existing one that's had a leak scare. Hig
 2. Add a **CI job** as the backstop — not every developer will have the hook installed, so the pipeline enforces it for the whole team:
    ```yaml
    # ci step
-   - run: gitleaks detect --source . --redact --exit-code 1
+   - run: gitleaks git --redact --exit-code 1 .
    ```
+   The job must fetch the commits it intends to scan. A shallow checkout cannot support a claim that the entire repository history was checked.
 3. Scan **full history** once when adopting this on an existing repo — you want to know what's already leaked, not just what's new:
    ```
-   gitleaks detect --source . --log-opts="--all"
+   gitleaks git --redact --log-opts="--all" .
    ```
 4. Tune to cut false positives without going blind. Add a `.gitleaks.toml` allowlist for known test fixtures and example values, but keep it tight — an over-broad allowlist defeats the point.
-5. Turn on the platform's native **push protection** (GitHub/GitLab secret scanning) as a third layer that blocks at the server regardless of local setup.
+5. Turn on the platform's native **push protection** where available as a third layer that blocks at the server regardless of local setup.
 6. Define the response for a real hit (see below) so a caught secret is actually remediated, not just un-committed.
 
 ### Cheatsheet
 
 ```bash
-gitleaks protect --staged --redact
+gitleaks git --pre-commit --staged --redact .
 
-gitleaks detect --source . --redact
+gitleaks git --redact .
 
-gitleaks detect --source . --log-opts="--all"
+gitleaks git --redact --log-opts="--all" .
 
-gitleaks detect --source . --exit-code 1 --report-format sarif --report-path gl.sarif
+gitleaks dir --redact .
 
-trufflehog git file://. --only-verified
+gitleaks git --redact --exit-code 1 --report-format sarif --report-path gl.sarif .
 ```
 
 ### Reading the output
 
-- **A verified live credential** (trufflehog's `--only-verified` confirms it still works) is the top priority — treat as an active exposure.
+- **A finding that may be a live credential** needs prompt owner-side validation and rotation. Do not paste or test its value in an unrelated service.
 - **A hit in history but not the current tree** still counts: the secret must be rotated, deletion isn't remediation.
 - **Repeated false positives on the same fixture** mean it's time for a scoped allowlist entry — don't let noise train the team to ignore the scanner.
-- **A clean CI run** is only as good as the ruleset; periodically confirm the scanner still detects a planted test secret.
+- **A clean CI run** is only as good as the ruleset and the scanned range. `gitleaks git` inspects commits; `gitleaks dir` inspects current files, including files outside Git history. Check which one your pipeline actually runs.
 
 ### The response when a real secret is caught
 
@@ -90,7 +91,8 @@ Rotate first — the credential is burned the moment it was committed, so revoke
 
 ### References
 
-- gitleaks and trufflehog documentation
+- [Gitleaks usage and pre-commit hook](https://github.com/gitleaks/gitleaks#usage)
+- [Gitleaks release v8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1)
 - OWASP DevSecOps Guideline — secrets management
 - GitHub/GitLab secret scanning and push protection docs
 
