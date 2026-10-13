@@ -53,6 +53,7 @@ Use a test environment with two accounts, one allowed to read and one allowed to
 | Call | Expected result | What a different result means |
 |---|---|---|
 | No credentials: connect, then try the read tool | Connection or call is refused | An anonymous caller can reach a capability |
+| Valid credentials, no tool role: call both tools | Both refused | Authentication is being mistaken for authorization |
 | Reader: call the read tool | Allowed | If refused, check authentication and context propagation before changing role rules |
 | Reader: call the privileged tool | Refused, with no side effect | Tool authorization is missing or uses an identity supplied by the model |
 | Administrator: call the privileged tool | Allowed | If refused, compare the HTTP identity, mapped role and identity visible in the tool callback |
