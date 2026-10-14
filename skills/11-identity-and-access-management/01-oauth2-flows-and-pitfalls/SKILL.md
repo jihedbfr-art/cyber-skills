@@ -10,7 +10,7 @@ tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
 audience: ["backend-engineer", "security-engineer", "coding-agent"]
 requires: ["bash", "git"]
-updated: "2026-08-08"
+updated: "2026-10-14"
 ---
 
 
@@ -85,6 +85,8 @@ pkce: verifier required? S256 not plain?
 - Treat OAuth as *authorisation*. For "log in with", use **OIDC** on top and validate the ID token properly — OAuth alone was never an authentication protocol, and using it as one is its own class of bug.
 
 ### Pitfalls
+
+For an HTTP MCP server, test access-token audience binding separately from OIDC ID-token validation. The [MCP token-boundary procedure](mcp-token-boundaries.md) and its [French version](mcp-token-boundaries.fr.md) cover wrong-audience tokens and downstream token passthrough without logging bearer values.
 
 - **Prefix/substring redirect matching.** `https://app.tld.evil.com` passes a naive check. Exact match only.
 - **Implicit flow still in the wild.** Tokens in the URL leak; migrate SPAs to PKCE.
