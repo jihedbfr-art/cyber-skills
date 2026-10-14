@@ -10,7 +10,7 @@ tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
 audience: ["backend-engineer", "security-engineer", "coding-agent"]
 requires: ["bash", "git"]
-updated: "2026-08-08"
+updated: "2026-10-14"
 ---
 
 
@@ -49,6 +49,8 @@ Any API that carries auth in a JWT (bearer tokens, some session cookies). Decode
 6. **Validation gaps without forgery:** even with a good signature, check whether the server ignores `exp` (replay an expired token) or ignores `aud`/`iss` (a token minted for another service is accepted here).
 
 ### Cheatsheet
+
+For Keycloak role conversion, also test the shape of access claims and the type of each role. Use the [tested procedure](keycloak-role-claims.md) or its [French version](keycloak-role-claims.fr.md). Signature verification alone does not exercise this converter behavior.
 
 ```bash
 jwt_tool <token> -M pb            # playbook of common checks
