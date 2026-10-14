@@ -10,7 +10,7 @@ tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
 audience: ["backend-engineer", "security-engineer", "coding-agent"]
 requires: ["bash", "git"]
-updated: "2026-08-08"
+updated: "2026-10-14"
 ---
 
 
@@ -31,11 +31,29 @@ Hardening any CI/CD setup, especially given how often pipelines are the target o
 
 1. **Least-privilege the pipeline's access.** Pipelines often run with broad permissions (deploy to prod, read all secrets, write to any repo). Scope each pipeline/job to the minimum it needs — a build job doesn't need deploy credentials; a test job doesn't need production access. Over-privileged pipelines turn one compromised workflow into total compromise.
 2. **Pin third-party actions/dependencies — a key supply-chain control.** Pipelines pull in reusable actions/steps (GitHub Actions, GitLab includes), and referencing them by mutable tag (`@v3`) means a compromised or repointed action runs in your pipeline. Pin third-party actions by **commit SHA**, not tag, so you run exactly the reviewed code. A tag can be moved to malicious code; a SHA can't.
+   Apply the same review to service images used by integration tests. A mutable image tag can disappear or point to different contents. Check the publisher and registry, choose a published version, and record what the test actually exercises. For stronger repeatability, pin the reviewed image digest as well.
 3. **Protect the branches and the pipeline config.** Require reviews on the branches that trigger deployment, and protect the pipeline configuration itself (the workflow files) — if an attacker can edit the pipeline config in a PR, they can make it do anything. Require review for changes to pipeline definitions specifically.
 4. **Secure secret handling.** Pipeline secrets (deploy keys, cloud credentials, signing keys) are high-value; scope them to the jobs that need them, don't expose them to PR builds from forks (a common exfiltration path — a malicious PR reads the secrets), and prefer short-lived/OIDC-based credentials over long-lived static secrets.
 5. **Guard against poisoned pipeline execution.** An attacker who can influence what the pipeline runs (via a PR that modifies build scripts, or injects into a build step) can execute code in your trusted CI environment. Don't run untrusted PR code with access to secrets/production; separate untrusted-PR builds from privileged pipelines.
 6. **Isolate and clean runners** (the secure-runners skill) — especially self-hosted runners, which persist state between jobs and can be a foothold.
 7. **Log and monitor pipeline activity.** Treat the pipeline as the high-value target it is — log configuration changes, secret access, and deployments, and alert on anomalies (a workflow suddenly accessing secrets it never did).
+
+### Check a test service image / Vérifier une image de test
+
+When a test fails before its assertions because the runner cannot pull an image, isolate the registry error before changing application code. In the MinIO test image case, `minio/minio:latest` returned 404 in CI. The replacement was reviewed as an S3-compatible test double and the integration test was changed to assert the bucket created after publication. That proves the tested S3 path, not full MinIO compatibility.
+
+Quand un test échoue avant ses assertions parce que le runner ne peut pas télécharger une image, identifier d'abord la réponse du registre. Dans le cas de `minio/minio:latest`, la CI recevait une erreur 404. Le substitut S3 choisi a été vérifié à la source, puis le test d'intégration a contrôlé la création du bucket après publication. Cela valide ce trajet S3 précis, pas toute la compatibilité MinIO.
+
+```bash
+# Use the exact image reference from the failing test or CI log.
+docker manifest inspect adobe/s3mock:5.2.3 >/dev/null
+docker pull adobe/s3mock:5.2.3
+docker image inspect adobe/s3mock:5.2.3 --format '{{json .RepoDigests}}'
+```
+
+Confirm the repository and tag on the publisher's own page, then review the digest returned by the registry. Run the affected integration test and check a behavior assertion against the service; a successful pull alone does not prove compatibility. Treat 401 (authorization), 404 (reference unavailable), and network timeouts as different causes. Do not print registry credentials into CI logs.
+
+Confirmer le dépôt et la version sur la page de l'éditeur, puis relever le digest fourni par le registre. Exécuter le test d'intégration concerné et vérifier une assertion métier contre le service : un téléchargement réussi ne prouve pas la compatibilité. Distinguer 401 (autorisation), 404 (référence indisponible) et délai réseau. Ne jamais afficher les identifiants du registre dans les logs CI.
 
 ### Cheatsheet
 
@@ -90,6 +108,7 @@ harden
 - GitHub Actions / GitLab CI security hardening documentation
 - The secure-runners, artifact-integrity, and build-provenance-slsa skills
 - The software-supply-chain-security domain
+- [Adobe S3Mock](https://github.com/adobe/S3Mock) and its [published Docker tags](https://hub.docker.com/r/adobe/s3mock/tags)
 
 ## Inputs
 - Relevant source code, logs, network traces, or system specifications.
