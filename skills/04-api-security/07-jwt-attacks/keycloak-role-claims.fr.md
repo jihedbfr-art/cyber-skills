@@ -19,22 +19,19 @@ Ne pas convertir les valeurs non textuelles en noms de rôles. Ignorer les chaî
 
 ## Rejouer les tests vérifiés
 
-Utiliser un nouveau clone pour cette procédure. Les deux versions sont des corrections proposées, pas des releases.
+Les deux correctifs sont fusionnés dans la branche `main` du toolkit. Dans un nouveau clone :
 
 ```bash
 git clone https://github.com/jihedbfr-art/spring-keycloak-toolkit.git
 cd spring-keycloak-toolkit
-git checkout 6026018
-mvn -q -Dtest=KeycloakRealmRoleConverterTest test
-git checkout 920441e
 mvn -q -Dtest=KeycloakRealmRoleConverterTest test
 ```
 
-La première version teste les entrées invalides des listes de rôles ; la seconde teste les objets d'accès malformés. Elles appartiennent à deux branches distinctes. Pour vérifier les deux comportements dans une implémentation, conserver les trois tests de régression : `ignoresNonStringAndBlankRoleValues`, `ignoresMalformedAccessClaims` et `keepsValidResourceRolesWhenRealmClaimIsMalformed`.
+Un correctif teste les entrées invalides des listes de rôles ; l'autre teste les objets d'accès malformés. Pour vérifier les deux comportements dans votre propre implémentation, conserver les trois tests de régression : `ignoresNonStringAndBlankRoleValues`, `ignoresMalformedAccessClaims` et `keepsValidResourceRolesWhenRealmClaimIsMalformed`.
 
 ## Preuves et portée
 
-Les nouvelles assertions échouaient avant chaque correction. Le 14 octobre 2026, l'implémentation combinée a passé 25 tests locaux, dont l'intégration Keycloak 26.7.1 sous Docker, avec Spring Boot 4.1.0 et Java 17. Cela vérifie les chemins de conversion et d'intégration exercés. Ce résultat ne démontre pas qu'un attaquant peut émettre un jeton accepté, et ne remplace pas la validation de la signature, de l'issuer, de l'audience et de la durée de validité.
+Les nouvelles assertions échouaient avant chaque correction. Le 15 octobre 2026, l'implémentation fusionnée a passé 27 tests locaux, dont l'intégration Keycloak 26.7.1 sous Docker, avec Spring Boot 4.1.0 et Java 17. Cela vérifie les chemins de conversion et d'intégration exercés. Ce résultat ne démontre pas qu'un attaquant peut émettre un jeton accepté, et ne remplace pas la validation de la signature, de l'issuer, de l'audience et de la durée de validité.
 
 Sources : [correction et test des entrées de rôles](https://github.com/jihedbfr-art/spring-keycloak-toolkit/commit/6026018), [correction des claims d'accès](https://github.com/jihedbfr-art/spring-keycloak-toolkit/commit/7055489), [PR #10](https://github.com/jihedbfr-art/spring-keycloak-toolkit/pull/10), [PR #11](https://github.com/jihedbfr-art/spring-keycloak-toolkit/pull/11).
 

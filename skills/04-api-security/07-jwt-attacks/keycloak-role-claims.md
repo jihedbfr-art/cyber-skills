@@ -19,22 +19,19 @@ Do not coerce non-string values to role names. Ignore blank strings. Check that 
 
 ## Replay the verified tests
 
-Use a new checkout for this procedure. The two snapshots are proposed changes, not releases.
+Both fixes are merged into the toolkit's `main` branch. In a new checkout:
 
 ```bash
 git clone https://github.com/jihedbfr-art/spring-keycloak-toolkit.git
 cd spring-keycloak-toolkit
-git checkout 6026018
-mvn -q -Dtest=KeycloakRealmRoleConverterTest test
-git checkout 920441e
 mvn -q -Dtest=KeycloakRealmRoleConverterTest test
 ```
 
-The first snapshot tests invalid entries inside role lists; the second tests malformed access objects. They are separate branches. To validate both behaviors in your implementation, retain all three regression tests: `ignoresNonStringAndBlankRoleValues`, `ignoresMalformedAccessClaims` and `keepsValidResourceRolesWhenRealmClaimIsMalformed`.
+One fix tests invalid entries inside role lists; the other tests malformed access objects. To validate both behaviors in your own implementation, retain all three regression tests: `ignoresNonStringAndBlankRoleValues`, `ignoresMalformedAccessClaims` and `keepsValidResourceRolesWhenRealmClaimIsMalformed`.
 
 ## Evidence and scope
 
-The new assertions failed before each fix. On 14 October 2026, the combined implementation passed 25 local tests, including Keycloak 26.7.1 under Docker, with Spring Boot 4.1.0 and Java 17. This verifies the exercised conversion and integration paths. It does not establish that an attacker can issue a trusted token, or replace signature, issuer, audience and lifetime validation.
+The new assertions failed before each fix. On 15 October 2026, the merged implementation passed 27 local tests, including Keycloak 26.7.1 under Docker, with Spring Boot 4.1.0 and Java 17. This verifies the exercised conversion and integration paths. It does not establish that an attacker can issue a trusted token, or replace signature, issuer, audience and lifetime validation.
 
 Sources: [role-entry fix and test](https://github.com/jihedbfr-art/spring-keycloak-toolkit/commit/6026018), [access-claim fix](https://github.com/jihedbfr-art/spring-keycloak-toolkit/commit/7055489), [PR #10](https://github.com/jihedbfr-art/spring-keycloak-toolkit/pull/10), [PR #11](https://github.com/jihedbfr-art/spring-keycloak-toolkit/pull/11).
 
