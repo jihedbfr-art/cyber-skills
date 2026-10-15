@@ -19,7 +19,7 @@ Use when an API authenticates with JSON Web Tokens — testing for algorithm con
 - **Maturity:** `stable`
 - **Audience:** `["backend-engineer", "security-engineer", "coding-agent"]`
 - **Requirements:** `["bash", "git"]`
-- **Last Updated:** 2026-08-08
+- **Last Updated:** 2026-10-14
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
