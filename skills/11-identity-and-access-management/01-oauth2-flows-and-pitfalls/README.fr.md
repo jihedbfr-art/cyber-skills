@@ -19,7 +19,7 @@
 - **Maturité :** `stable`
 - **Public visé :** `["backend-engineer", "security-engineer", "coding-agent"]`
 - **Prérequis techniques :** `["bash", "git"]`
-- **Dernière mise à jour :** 2026-08-08
+- **Dernière mise à jour :** 2026-10-15
 
 ## Instructions Agent
 Le fichier canonique consommable par un agent IA (`Claude Code`, `Antigravity`, `Cursor`) est disponible dans [SKILL.md](./SKILL.md).

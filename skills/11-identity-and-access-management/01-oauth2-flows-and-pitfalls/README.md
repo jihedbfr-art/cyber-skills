@@ -19,7 +19,7 @@ Use when choosing or reviewing an OAuth2 flow — picking the right grant for th
 - **Maturity:** `stable`
 - **Audience:** `["backend-engineer", "security-engineer", "coding-agent"]`
 - **Requirements:** `["bash", "git"]`
-- **Last Updated:** 2026-08-08
+- **Last Updated:** 2026-10-15
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
