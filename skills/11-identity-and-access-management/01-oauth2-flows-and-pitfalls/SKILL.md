@@ -10,7 +10,7 @@ tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
 audience: ["backend-engineer", "security-engineer", "coding-agent"]
 requires: ["bash", "git"]
-updated: "2026-10-14"
+updated: "2026-10-15"
 ---
 
 

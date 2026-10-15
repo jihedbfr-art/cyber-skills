@@ -35,7 +35,19 @@ EOF
 
 Un timeout ou un serveur injoignable ne constitue pas un rejet réussi. Établir d'abord le cas témoin avec un jeton valide et un client MCP. Ne conserver dans le rapport que le statut, le nom du cas, la référence du build et le résultat de validation.
 
-## Contrôler la frontière aval et corriger
+## Exercice : une réponse n'est pas une décision d'autorisation
+
+Utiliser l'[atelier de réponses hors ligne](https://github.com/jihedbfr-art/ai-skills/blob/cfdfc41/skills/05-mcp-protocol-and-tools/mcp-sse-transport-and-resource-providers/result-lab/README.fr.md) et ses fixtures synthétiques. Prédire ces résultats avant de les exécuter :
+
+| Fixture | Observation | Conclusion de sécurité |
+|---|---|---|
+| `tool-error.json` | Sortie 1, `tool_error` | Un échec d'exécution, pas la preuve qu'il vient de la politique de rôles attendue |
+| `protocol-error.json` | Sortie 2, `protocol_error` | Un échec de protocole ne démontre pas un contrôle d'audience |
+| `untrusted-content.json` | Sortie 0, `candidate_success` | Le texte peut contenir une instruction non fiable malgré une structure acceptée |
+
+Garder le test d'autorisation indépendant : un jeton correctement signé de mauvaise audience doit encore être rejeté par un vrai serveur. L'atelier n'envoie pas de requête HTTP, ne valide aucun jeton et ne prouve aucune politique d'accès. Sa sortie contient seulement la classification et le code de retour ; ne pas ajouter le contenu brut de la réponse au dossier de preuves. Le commit lié est une version proposée, pas une release.
+
+## Isolation aval et correction
 
 Utiliser une API simulée qui compare en interne la valeur d'autorisation reçue au jeton de test et ne retourne que leur égalité. Le jeton MCP entrant ne doit pas être transmis tel quel. Configurer un identifiant aval distinct, avec l'audience et les droits attendus ; l'échange de jetons est une conception possible, pas une fonctionnalité implémentée par cette procédure. Voir les [consignes sur la transmission des jetons](https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices#token-passthrough).
 
