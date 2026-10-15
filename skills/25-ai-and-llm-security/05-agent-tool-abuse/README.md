@@ -19,7 +19,7 @@ Use when an LLM agent can call tools or take actions — testing whether it can 
 - **Maturity:** `stable`
 - **Audience:** `["backend-engineer", "security-engineer", "coding-agent"]`
 - **Requirements:** `["bash", "git"]`
-- **Last Updated:** 2026-08-08
+- **Last Updated:** 2026-10-13
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).

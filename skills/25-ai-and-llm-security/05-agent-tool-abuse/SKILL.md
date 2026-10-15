@@ -10,7 +10,7 @@ tags: [cybersecurity, engineering, best-practices]
 maturity: "stable"
 audience: ["backend-engineer", "security-engineer", "coding-agent"]
 requires: ["bash", "git"]
-updated: "2026-08-08"
+updated: "2026-10-13"
 ---
 
 
@@ -45,6 +45,22 @@ Test only agents you own or are authorised to assess, and use inert actions — 
 5. **Test authorisation boundaries between users/tenants.** Can user A's session get the agent to act on user B's data through a tool that doesn't scope by caller?
 6. **Test the confirmation gate.** For consequential actions, is there a real out-of-model approval, or does the agent execute autonomously? Try to make it act without a confirmation step.
 7. **Check chaining.** Can several innocuous tools combine into something harmful (read a secret with one, exfiltrate it with another)?
+
+### Run a tool-boundary check
+
+Use a test environment with two accounts, one allowed to read and one allowed to perform the privileged action. Replace the action with a marker operation that cannot change production data. Call the tool through the same transport and client that users actually use; a direct call to the protected method does not exercise the agent-to-tool boundary.
+
+| Call | Expected result | What a different result means |
+|---|---|---|
+| No credentials: connect, then try the read tool | Connection or call is refused | An anonymous caller can reach a capability |
+| Valid credentials, no tool role: call both tools | Both refused | Authentication is being mistaken for authorization |
+| Reader: call the read tool | Allowed | If refused, check authentication and context propagation before changing role rules |
+| Reader: call the privileged tool | Refused, with no side effect | Tool authorization is missing or uses an identity supplied by the model |
+| Administrator: call the privileged tool | Allowed | If refused, compare the HTTP identity, mapped role and identity visible in the tool callback |
+| Reader again after administrator | Refused | Identity may have leaked between sessions or workers |
+| Reader and administrator at the same time | Reader refused; administrator allowed | Concurrent calls may share or overwrite security context |
+
+Record the transport status and the tool result separately. Some protocols report a denied tool call inside a successful transport response. Log the caller's test role, tool name, allow/deny decision and a request identifier; redact credentials and tool arguments containing personal data. For a Maven integration suite that drives a real client, run `mvn -q verify` and inspect the test report. A green unit test around the policy method alone does not establish that the live tool route enforces it.
 
 ### Cheatsheet
 
