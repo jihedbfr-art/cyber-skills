@@ -19,7 +19,7 @@ Use when securing the CI/CD pipeline itself — least-privilege runners, pinned 
 - **Maturity:** `stable`
 - **Audience:** `["backend-engineer", "security-engineer", "coding-agent"]`
 - **Requirements:** `["bash", "git"]`
-- **Last Updated:** 2026-08-08
+- **Last Updated:** 2026-10-14
 
 ## Agent Instructions
 The canonical agent-executable specification is available in [SKILL.md](./SKILL.md).
